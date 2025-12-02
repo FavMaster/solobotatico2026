@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.3.1 (Architecture B)
+ * Version 1.3.1 (Architecture B) - Mise à jour Liens
  * Chargement HTML + CSS + JS sans ouverture automatique
  ****************************************************/
 
