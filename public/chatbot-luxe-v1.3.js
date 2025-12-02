@@ -1,6 +1,6 @@
 /********************************************
  * SOLO'IA'TICO — CHATBOT LUXE VERSION 1.3
- * Fichier complet prêt à être déployé
+ * Fichier complet prêt à être déployé - 1
  ********************************************/
 
 /* CSS à injecter */
