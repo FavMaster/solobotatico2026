@@ -11,20 +11,20 @@
   /****************************************************
    * 1) Charger le fichier CSS
    ****************************************************/
-  function loadCSS() {
+function loadCSS() {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "https://soloatico2026-bot.vercel.app/chatbot/chatbot.css";
+    link.href = "https://soloiatico-2026.vercel.app/chatbot/chatbot.css";
     document.head.appendChild(link);
-  }
+}
 
   /****************************************************
    * 2) Charger le template HTML
    ****************************************************/
-  async function loadHTML() {
-    const response = await fetch("https://soloatico2026-bot.vercel.app/chatbot/chatbot.html");
+async function loadHTML() {
+    const response = await fetch("https://soloiatico-2026.vercel.app/chatbot/chatbot.html");
     return await response.text();
-  }
+}
 
   /****************************************************
    * 3) Injecter l’HTML dans la page
