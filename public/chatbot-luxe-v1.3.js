@@ -249,7 +249,7 @@ const html = `
        filter: drop-shadow(0 0 4px rgba(0,0,0,0.6));" />
 </div>
 
-<div id="chatWindow">
+<div id="chatWindow" style="display:none;">
   <div id="chatHeader"
        style="background:url('https://soloatico.es/bot2026/images/header.jpg')
        center/cover no-repeat;
