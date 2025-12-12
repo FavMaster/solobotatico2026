@@ -4,6 +4,8 @@
  * Chargement HTML + CSS + JS sans ouverture automatique
  ****************************************************/
 
+// Force Vercel update 2025-02-25
+
 (function() {
 
   console.log("Solo’IA’tico Chatbot v1.3.1 — Initialisation…");
