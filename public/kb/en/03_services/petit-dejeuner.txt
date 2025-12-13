@@ -1,0 +1,23 @@
+INTENT: petit_dejeuner
+CATEGORY: services
+LANG: EN
+---
+
+SHORT:
+Breakfast is included and delivered at your preferred time in front of your door.
+It can be enjoyed in your suite or on one of our rooftop terraces.
+
+LONG:
+Breakfast is included in your stay at Solo Ático Guest Suites.
+It is delivered at the time of your choice directly in front of your door,
+so you can enjoy it in complete peace and privacy,
+in bed, at the table in your suite or on one of the Ático terraces.
+
+It features a generous selection of sweet and savory items,
+including freshly squeezed orange juice,
+fresh fruit, truita, pastries,
+cold cuts and many other delights,
+depending on the chef’s inspiration of the day.
+
+A warm and gourmet atmosphere to start your day in the best possible way,
+surrounded by comfort and serenity.

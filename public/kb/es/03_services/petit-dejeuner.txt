@@ -1,0 +1,23 @@
+INTENT: petit_dejeuner
+CATEGORY: services
+LANG: ES
+---
+
+SHORT:
+El desayuno está incluido y se entrega a la hora deseada frente a su puerta.
+Puede disfrutarse en la suite o en una de nuestras terrazas rooftop.
+
+LONG:
+El desayuno está incluido en su estancia en Solo Ático Guest Suites.
+Se entrega a la hora que usted elija directamente frente a su puerta,
+para que pueda disfrutarlo con total tranquilidad,
+en la cama, en la mesa de su suite o en una de las terrazas del Ático.
+
+Incluye una cuidada selección de productos dulces y salados,
+como zumo de naranja recién exprimido por nosotros,
+frutas frescas, truita, bollería,
+embutidos y muchas otras sorpresas,
+según la inspiración y el humor del chef.
+
+Un ambiente cálido y gourmet para empezar el día de la mejor manera,
+en un entorno de confort y serenidad.

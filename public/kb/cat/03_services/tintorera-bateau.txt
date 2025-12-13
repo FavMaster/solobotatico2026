@@ -1,0 +1,39 @@
+INTENT: tintorera_bateau
+CATEGORY: services
+LANG: CAT
+---
+
+SHORT:
+Tintorera és una experiència de passeig privat en vaixell a bord d’un llaüt català tradicional.
+Ideal per banyar-se, gaudir de la posta de sol i descobrir la Costa Brava d’una manera única.
+
+LONG:
+Tintorera és un llaüt català tradicional de 6,5 metres, amb més de 70 anys d’història.
+Aquesta embarcació plena d’encant és perfecta per a sortides romàntiques, banys al mar,
+postes de sol des del mar i per descobrir la Costa Brava d’una altra manera.
+
+Tot està preparat per viure un moment de pur plaer mariner: solàrium, coberta de teca,
+fusteria, el suau so del motor…
+i el bon humor de Laurent, el vostre amfitrió i capità.
+
+La flexibilitat, el vostre benestar i la vostra seguretat són la nostra prioritat.
+
+El preu inclou:
+– Combustible  
+– Capità  
+– Begudes i snacks a bord  
+
+Capacitat màxima: 4 persones
+
+Tarifes:
+1 hora: 125 €  
+Hora addicional: 50 €  
+
+Exemples:
+2h → 175 €  
+3h → 225 €  
+4h → 275 €  
+
+Si sou més de 4 persones, es pot llogar un altre vaixell al port.
+Sense titulació? Cap problema: Laurent us pot acompanyar
+per 300 € el dia complet o 200 € mitja jornada (a convenir).

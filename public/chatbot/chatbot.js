@@ -68,11 +68,16 @@ if (!chatWin || !openBtn) {
     chatWin.style.display = "none";
 
     /****************************************************
-     * 5) Ouvrir seulement au clic
+     * 5) Ouvrir / fermer seulement au clic - Toggle
      ****************************************************/
-    openBtn.addEventListener("click", () => {
-      chatWin.style.display = "flex";
-    });
+  openBtn.addEventListener("click", () => {
+  if (chatWin.style.display === "flex") {
+    chatWin.style.display = "none";
+  } else {
+    chatWin.style.display = "flex";
+  }
+});
+
 
     /****************************************************
      * 6) Fonction d’envoi

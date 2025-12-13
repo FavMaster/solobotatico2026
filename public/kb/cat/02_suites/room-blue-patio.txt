@@ -1,0 +1,25 @@
+INTENT: room_blue_patio
+CATEGORY: chambres
+LANG: CAT
+---
+
+SHORT:
+La habitació Blue Patio és un petit refugi acollidor amb vista interior al pati de la residència.
+Ideal per als amants de la platja que busquen un allotjament tranquil i funcional.
+
+LONG:
+La Blue Patio no és una suite, sinó una habitació curosament equipada, pensada com un petit cocó de confort.
+Ofereix vistes interiors al pati de la residència, garantint calma i tranquil·litat durant l’estada.
+
+És l’opció ideal per als viatgers que volen gaudir de la platja i de la regió,
+sense renunciar a comoditats i serveis de qualitat.
+
+Descripció:
+Capacitat: 2 persones  
+Llit: 1 llit doble Queen Size  
+Bany amb banyera i dutxa  
+Vestidor  
+
+Comoditats:
+Wi-Fi, televisió, tovalloles, sabó, xampú, assecador de cabell.  
+Esmorzar inclòs – Smart TV (Netflix, Prime Video, Disney+)

@@ -1,0 +1,27 @@
+INTENT: suite_bourlardes
+CATEGORY: suites
+LANG: ES
+---
+
+SHORT:
+La Suite Bourlardes es una suite atípica e íntima, un verdadero refugio de paz.
+Su terraza privada sin vistas directas permite disfrutar del sol y del entorno con total tranquilidad.
+
+LONG:
+Cada una de nuestras suites tiene su propia personalidad, permitiendo que cada huésped encuentre su espacio.
+Sea cual sea su elección, una promesa permanece: una vista panorámica para vivir momentos inolvidables.
+
+La Suite Bourlardes destaca por su distribución original y su ambiente tranquilo.
+Ofrece un espacio privado con una terraza sin vis-à-vis, ideal para relajarse, tomar el sol o disfrutar de un momento de calma absoluta.
+
+Descripción:
+Capacidad: 2 personas  
+Cama: 1 cama doble Queen Size  
+Baño con bañera y ducha  
+Vestidor  
+Terraza privada  
+
+Comodidades:
+Wi-Fi, televisión, toallas, jabón, champú, secador de pelo, ventilador.  
+En invierno, chimenea para una experiencia cálida y única.  
+Desayuno incluido – Smart TV (Netflix, Prime Video, Disney+)

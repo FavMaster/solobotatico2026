@@ -1,0 +1,39 @@
+INTENT: tintorera_bateau
+CATEGORY: services
+LANG: ES
+---
+
+SHORT:
+Tintorera es un paseo en barco privado a bordo de un llaut catalán tradicional.
+Ideal para bañarse, disfrutar de la puesta de sol, descubrir la costa y vivir momentos inolvidables en la Costa Brava.
+
+LONG:
+Tintorera es un llaut catalán tradicional de 6,5 metros, con más de 70 años de historia.
+Esta embarcación llena de encanto es perfecta para paseos románticos, baños en el mar,
+puestas de sol desde el mar y descubrir la Costa Brava de una forma diferente.
+
+Todos los ingredientes están reunidos para un momento de puro placer marino: su solárium,
+su cubierta de teca, sus maderas, el suave sonido de su motor…
+y el buen humor de Laurent, su anfitrión y capitán.
+
+La flexibilidad, su bienestar y su seguridad son nuestras prioridades.
+
+El precio incluye:
+– Combustible  
+– Capitán  
+– Bebidas y snacks a bordo  
+
+Capacidad máxima: 4 personas
+
+Tarifas:
+1 hora: 125 €  
+Hora adicional: 50 €  
+
+Ejemplos:
+2h → 175 €  
+3h → 225 €  
+4h → 275 €  
+
+Si son más de 4 personas, es posible alquilar otro barco en el puerto.
+¿Sin licencia? No hay problema: Laurent puede acompañarlos
+por 300 € el día completo o 200 € media jornada (a convenir).

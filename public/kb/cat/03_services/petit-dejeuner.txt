@@ -1,0 +1,23 @@
+INTENT: petit_dejeuner
+CATEGORY: services
+LANG: CAT
+---
+
+SHORT:
+L’esmorzar està inclòs i es deixa a l’hora desitjada davant la vostra porta.
+Es pot gaudir a la suite o en una de les nostres terrasses rooftop.
+
+LONG:
+L’esmorzar està inclòs en la vostra estada a Solo Ático Guest Suites.
+Es deixa a l’hora que escolliu directament davant la vostra porta,
+perquè el pugueu gaudir amb total tranquil·litat,
+al llit, a la taula de la vostra suite o en una de les terrasses de l’Atico.
+
+Inclou una acurada selecció de dolç i salat,
+amb suc de taronja acabat d’esprémer per nosaltres,
+fruita fresca, truita, brioixeria,
+embotits i moltes altres sorpreses,
+segons la inspiració i l’estat d’ànim del xef.
+
+Un ambient càlid i gurmet per començar el dia de la millor manera,
+envoltats de confort i serenitat.

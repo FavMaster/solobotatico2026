@@ -1,0 +1,20 @@
+INTENT: piscine_rooftop
+CATEGORY: services
+LANG: NL
+---
+
+SHORT:
+Het privézwembad op het rooftop biedt een panoramisch uitzicht op de haven, de zee en de zonsondergangen.
+Een rustige en exclusieve plek om te ontspannen en te genieten.
+
+LONG:
+Ons privézwembad op het rooftop is één van de kenmerkende plekken van Solo Ático Guest Suites.
+Het biedt een uitzonderlijk panoramisch uitzicht over de haven, de Middellandse Zee
+en de zonsondergangen, wat op elk moment van de dag een unieke sfeer creëert.
+
+Het zwembad is ontworpen als een rustige ontspanningsruimte, ideaal om te genieten
+van een verfrissende duik, een boek te lezen in de zon of een cocktail te drinken met zicht op zee.
+De sfeer is kalm en sereen, perfect om volledig tot rust te komen.
+
+Een ware oase van rust, hoog boven de residentie,
+voor bevoorrechte momenten in een exclusieve omgeving.

@@ -1,0 +1,25 @@
+INTENT: room_blue_patio
+CATEGORY: chambres
+LANG: FR
+---
+
+SHORT:
+La chambre Blue Patio est un cocon confortable avec vue intérieure sur le patio de la résidence.
+Idéale pour les amateurs de plage à la recherche d’un point de chute calme et pratique.
+
+LONG:
+La Blue Patio n’est pas une suite mais une chambre soigneusement aménagée, pensée comme un véritable cocon.
+Elle offre une vue intérieure sur le patio de la résidence, garantissant calme et tranquillité pendant votre séjour.
+
+C’est l’option parfaite pour les voyageurs souhaitant profiter pleinement de la plage et de la région,
+tout en bénéficiant de commodités et de prestations de qualité.
+
+Description :
+Capacité : 2 personnes  
+Lit : 1 lit double Queen Size  
+Salle de bain avec baignoire et douche  
+Dressing  
+
+Commodités :
+Wi-Fi, télévision, serviettes, savon, shampoing, sèche-cheveux.  
+Petit-déjeuner inclus – Smart TV (Netflix, Prime Video, Disney+)

@@ -1,0 +1,27 @@
+INTENT: suite_neus
+CATEGORY: suites
+LANG: ES
+---
+
+SHORT:
+La Suite Neus es un espacio luminoso y acogedor, ideal para parejas o viajeros que buscan calma.
+Ofrece una vista excepcional al puerto, al paseo marítimo y al mar, con magníficos atardeceres.
+
+LONG:
+Cada una de nuestras suites posee su propia identidad y un carácter único donde cada huésped puede sentirse identificado.
+Más allá de estas diferencias, hay una promesa común: una vista panorámica espectacular que acompaña sus momentos inolvidables.
+
+La Suite Neus es un refugio luminoso en tonos suaves, ideal para parejas, viajeros que buscan tranquilidad y confort, o para quienes desean trabajar en un entorno sereno.
+
+Ofrece vistas impresionantes al puerto, al paseo marítimo y al mar, así como atardeceres espectaculares al final de cada día.
+
+Descripción:
+Capacidad: 2 personas  
+Cama: 1 cama doble Queen Size  
+Baño con bañera y ducha, vistas al mar  
+Vestidor  
+Balcón  
+
+Comodidades:
+Aire acondicionado, Wi-Fi, televisión, toallas, jabón, champú, secador de pelo.  
+Desayuno incluido – Smart TV (Netflix, Prime Video, Disney+)

@@ -1,0 +1,39 @@
+INTENT: tintorera_bateau
+CATEGORY: services
+LANG: EN
+---
+
+SHORT:
+Tintorera is a private boat experience aboard a traditional Catalan llaut.
+Perfect for swimming, sunset cruises, coastal discovery and unforgettable moments on the Costa Brava.
+
+LONG:
+Tintorera is a traditional 6.5-meter Catalan llaut, more than 70 years old.
+This charming classic boat is ideal for romantic outings, swimming in the sea,
+sunset cruises and discovering the Costa Brava from a different perspective.
+
+Everything is in place for a pure maritime pleasure: sun deck, teak deck,
+wooden details, the gentle sound of the engine…
+and the good mood of Laurent, your host and captain.
+
+Flexibility, comfort and safety are our top priorities.
+
+The price includes:
+– Fuel  
+– Captain  
+– Drinks and snacks on board  
+
+Maximum capacity: 4 guests
+
+Rates:
+1 hour: €125  
+Additional hour: €50  
+
+Examples:
+2h → €175  
+3h → €225  
+4h → €275  
+
+If you are more than 4 guests, another boat can be rented at the harbor.
+No license? No problem: Laurent can guide you
+for €300 per day or €200 for a half-day (upon agreement).

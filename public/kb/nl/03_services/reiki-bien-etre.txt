@@ -1,0 +1,33 @@
+INTENT: reiki_bien_etre
+CATEGORY: services
+LANG: NL
+---
+
+SHORT:
+Reiki is een Japanse energetische behandeling die diepe ontspanning,
+mentale rust en spanningsverlichting bevordert en nieuwe energie geeft.
+
+LONG:
+Tijdens uw verblijf bij Solo Ático Guest Suites kunt u genieten van een welzijnsmoment
+dat lichaam en geest opnieuw in balans brengt.
+
+Reiki is een Japanse energetische behandeling die diep inwerkt om ontspanning,
+mentale rust, spanningsverlichting en hernieuwde energie te bieden.
+De behandelingen vinden plaats in een zachte en rustgevende sfeer, verrijkt met
+negatieve ionen afkomstig van de zee.
+
+Van ontspannende hot stone massages tot complete Reiki-behandelingen,
+biedt Sophia, uw gastvrouw en Reiki-therapeute, een unieke energetische
+ontspanningservaring om volledig tot rust te komen.
+
+Er zijn twee formules:
+
+– Ontspannende hot stone massage  
+  Duur: 45 minuten  
+  Prijs: €75
+
+– Complete Reiki- en hot stone behandeling  
+  Duur: 90 minuten  
+  Prijs: €125
+
+Wij raden aan dit welzijnsmoment vooraf te reserveren om uw verblijf te personaliseren.

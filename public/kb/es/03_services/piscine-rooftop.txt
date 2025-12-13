@@ -1,0 +1,20 @@
+INTENT: piscine_rooftop
+CATEGORY: services
+LANG: ES
+---
+
+SHORT:
+La piscina privada en la azotea ofrece vistas panorámicas al puerto, al mar y a las puestas de sol.
+Un espacio tranquilo y exclusivo, ideal para relajarse y disfrutar del momento.
+
+LONG:
+Nuestra piscina privada situada en la azotea es uno de los espacios emblemáticos de Solo Ático Guest Suites.
+Ofrece una vista panorámica excepcional del puerto, del mar Mediterráneo y de las puestas de sol,
+creando una atmósfera única a cualquier hora del día.
+
+Pensada como un espacio de calma y descanso, la piscina rooftop es ideal para disfrutar
+de un baño relajante, leer al sol o saborear un cóctel frente al mar.
+El ambiente es sereno, perfecto para desconectar y relajarse.
+
+Un auténtico refugio de tranquilidad, en lo más alto de la residencia,
+para vivir momentos privilegiados en un entorno exclusivo.

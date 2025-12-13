@@ -1,0 +1,25 @@
+INTENT: room_blue_patio
+CATEGORY: chambres
+LANG: EN
+---
+
+SHORT:
+The Blue Patio room is a cozy retreat with an interior view over the residence patio.
+Perfect for beach lovers looking for a calm and practical place to stay.
+
+LONG:
+Blue Patio is not a suite but a carefully designed room, created as a comfortable and peaceful cocoon.
+It offers an interior view of the residence patio, ensuring a quiet and relaxing stay.
+
+It is the ideal option for travelers who want to enjoy the beach and the region,
+while benefiting from quality amenities and services.
+
+Description:
+Capacity: 2 guests  
+Bed: 1 Queen Size double bed  
+Bathroom with bathtub and shower  
+Dressing area  
+
+Amenities:
+Wi-Fi, television, towels, soap, shampoo, hair dryer.  
+Breakfast included – Smart TV (Netflix, Prime Video, Disney+)

@@ -1,0 +1,27 @@
+INTENT: suite_bourlardes
+CATEGORY: suites
+LANG: EN
+---
+
+SHORT:
+The Bourlardes Suite is a unique and intimate suite, offering a true haven of peace.
+Its private terrace with no overlooking views allows you to enjoy the sun and relax in complete privacy.
+
+LONG:
+Each of our suites has its own personality, allowing every guest to feel at home.
+Whatever your choice, one promise remains: panoramic views to create unforgettable moments.
+
+The Bourlardes Suite stands out for its original layout and peaceful atmosphere.
+It offers a private space with a secluded terrace, perfect for relaxing, sunbathing or enjoying absolute calm.
+
+Description:
+Capacity: 2 guests  
+Bed: 1 Queen Size double bed  
+Bathroom with bathtub and shower  
+Dressing area  
+Private terrace  
+
+Amenities:
+Wi-Fi, television, towels, soap, shampoo, hair dryer, fan.  
+In winter, an open fireplace for a warm and unique experience.  
+Breakfast included – Smart TV (Netflix, Prime Video, Disney+)

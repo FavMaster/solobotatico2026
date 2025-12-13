@@ -1,0 +1,34 @@
+INTENT: reiki_bien_etre
+CATEGORY: services
+LANG: ES
+---
+
+SHORT:
+El Reiki es un tratamiento energético japonés que aporta una profunda relajación,
+calma mental y liberación de tensiones, ayudando a recuperar la energía.
+
+LONG:
+Durante su estancia en Solo Ático Guest Suites, déjese mimar con un momento de bienestar
+pensado para reequilibrar cuerpo y mente.
+
+El Reiki es un tratamiento energético japonés que actúa en profundidad para aportar relajación,
+calma mental, liberación de tensiones y un nuevo impulso de energía.
+Los tratamientos se realizan en una atmósfera suave y relajante, enriquecida por los iones
+negativos provenientes directamente del mar.
+
+Desde el masaje relajante con piedras calientes hasta el tratamiento completo de Reiki,
+Sophia, su anfitriona y terapeuta Reiki, le propone una experiencia de relajación energética
+única, ideal para recentrarse y desconectar.
+
+Se ofrecen dos opciones:
+
+– Masaje relajante con piedras calientes  
+  Duración: 45 minutos  
+  Precio: 75 €
+
+– Tratamiento completo de Reiki y piedras calientes  
+  Duración: 90 minutos  
+  Precio: 125 €
+
+Le recomendamos reservar este momento de bienestar con antelación para personalizar
+su estancia.

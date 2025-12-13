@@ -1,0 +1,20 @@
+INTENT: piscine_rooftop
+CATEGORY: services
+LANG: EN
+---
+
+SHORT:
+The private rooftop pool offers panoramic views of the harbor, the sea and the sunsets.
+A calm and exclusive space, perfect for relaxing and enjoying the moment.
+
+LONG:
+Our private rooftop pool is one of the signature features of Solo Ático Guest Suites.
+It offers exceptional panoramic views over the harbor, the Mediterranean Sea and the sunsets,
+creating a unique atmosphere at any time of day.
+
+Designed as a peaceful relaxation area, the rooftop pool is ideal for enjoying
+a refreshing swim, reading in the sun or sipping a cocktail facing the sea.
+The ambiance is calm and serene, perfect for unwinding and disconnecting.
+
+A true haven of tranquility, perched at the top of the residence,
+to enjoy privileged moments in an exclusive setting.

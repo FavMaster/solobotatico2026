@@ -1,0 +1,115 @@
+INTENT: solotogo_guide
+CATEGORY: guide_client
+LANG: FR
+---
+
+SHORT:
+SoloToGo est notre sélection personnelle de restaurants et bonnes adresses autour de L’Escala.
+Ce ne sont pas “les meilleures adresses”, mais celles que nous aimons vraiment.
+
+LONG:
+SoloToGo est notre guide personnel de bonnes adresses autour de L’Escala.
+Il ne s’agit pas d’une bible gastronomique,
+mais simplement des lieux que nous apprécions et que nous aimons recommander à nos hôtes.
+
+En haute saison, pensez à réserver à l’avance.
+
+POUR VOUS RESTAURER
+
+1. Juste en bas de chez nous
+
+– Le Navili  
+https://maps.app.goo.gl/Z4JmUpUzemQttPAS8
+
+– Le MOS  
+https://maps.app.goo.gl/jiAmUyqAeT6Xxj2J7
+
+2. Sur le port
+
+– Bol Roig  
+https://maps.app.goo.gl/WbKmMyFonT743reb8
+
+– La Llar dels Pescadors (à côté de la criée)  
+https://maps.app.goo.gl/WWJ5zbTX4TyMnWFM9
+
+3. Comme à la maison… et on aime !
+
+– Frites Belges – Sandwich Chez Les Ch’tis  
+https://maps.app.goo.gl/TyABbv5PbqdsVpDt7
+
+4. Pizza à proximité (2 minutes)
+
+– Pizza Pazza  
+https://maps.app.goo.gl/M3UPnYBJWboRMDU26
+
+5. Montgó – un havre de paix
+
+– Restaurant La Garota (notre préféré)  
+https://maps.app.goo.gl/ST94v1spFZTdTKGZ8
+
+– Oreig Restaurant – Bistronomique, poissons, sushi et bien plus  
+https://maps.app.goo.gl/4Lf7uvNvH4q2bMfLA
+
+6. San Pere – Plage de kite
+
+– El Riuet d’Empúries – Chiringuito  
+https://maps.app.goo.gl/77ZEuxP5koxrYvNb9
+
+– El Pati del Riuet – Restaurant  
+https://maps.app.goo.gl/vdqZna3f6opvozMH8
+
+7. Sant Martí – Ruines d’Empúries
+
+– Meson del Conde  
+https://maps.app.goo.gl/RNx2JPe4t5id32FB9
+
+– La Terrassa d’Empúries  
+https://maps.app.goo.gl/kzvDv8SuLqXW1rig8
+
+8. Vieux village de L’Escala
+
+– Café del Mar  
+https://maps.app.goo.gl/iJSnGsUruRuqM5Lb8
+
+– 1869  
+https://maps.app.goo.gl/ydxZ5QyD5RV3K48s8
+
+– Ultramar  
+https://maps.app.goo.gl/TLcWwvy5RBb2TR6L9
+
+9. Plus gastronomique
+
+– Restaurant Mas Concas  
+À l’entrée ou à la sortie de L’Escala  
+https://maps.app.goo.gl/eWA49Hx3xWCox2mWA
+
+– La Gruta – Guide Michelin  
+https://maps.app.goo.gl/zmJgDYtsqDE75KwD7
+
+10. Japonais (un peu plus loin, mais ça vaut le détour)
+
+– Far Nomo – Llafranc (sur place)  
+À environ 42 minutes, lieu insolite avec vue spectaculaire  
+https://maps.app.goo.gl/JEthQYwvFJGpqvNp8
+
+– Yako Sushi – Figueres (sur place ou à emporter)  
+À environ 30 minutes  
+https://maps.app.goo.gl/QYPXBYPYai8jwCoN9
+
+– Sushi Gyoza – Figueres (à emporter)  
+À environ 30 minutes  
+https://maps.app.goo.gl/Ap38Fb53HsznDUMZ8
+
+11. Gastronomie catalane
+
+– Restaurante Ibèric – Ullastret  
+À environ 27 minutes  
+https://maps.app.goo.gl/cWZFVnVwLGM62xqS8
+
+– Restaurant Mas Pou – Palau-sator  
+À environ 30 minutes  
+https://maps.app.goo.gl/dNkUHmCNJY5L9gXp7
+
+– Restaurant La Serra – Sant Esteve de Guialbes  
+À environ 30 minutes  
+https://maps.app.goo.gl/Ap38Fb53HsznDUMZ8

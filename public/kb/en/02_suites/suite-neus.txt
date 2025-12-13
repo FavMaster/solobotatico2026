@@ -1,0 +1,27 @@
+INTENT: suite_neus
+CATEGORY: suites
+LANG: EN
+---
+
+SHORT:
+The Neus Suite is a bright and soothing space, ideal for couples or travelers seeking peace and quiet.
+It offers exceptional views over the port, the promenade and the sea, with beautiful sunsets.
+
+LONG:
+Each of our suites has its own identity and distinctive character, allowing every guest to feel at home.
+Beyond these differences, one promise remains: a spectacular panoramic view that frames unforgettable moments.
+
+The Neus Suite is a bright cocoon with soft tones, ideal for couples, travelers looking for calm and comfort, or those wishing to work in a peaceful environment.
+
+It offers breathtaking views of the port, the promenade and the sea, as well as stunning sunsets at the end of each day.
+
+Description:
+Capacity: 2 guests  
+Bed: 1 Queen Size double bed  
+Bathroom with bathtub and shower, sea view  
+Dressing area  
+Balcony  
+
+Amenities:
+Air conditioning, Wi-Fi, television, towels, soap, shampoo, hair dryer.  
+Breakfast included – Smart TV (Netflix, Prime Video, Disney+)

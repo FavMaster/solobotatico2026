@@ -1,0 +1,116 @@
+INTENT: solotogo_guide
+CATEGORY: guide_client
+LANG: NL
+---
+
+SHORT:
+SoloToGo is onze persoonlijke selectie van restaurants en favoriete adressen rond L’Escala.
+Geen ultieme gids, maar plekken waar wij echt van houden.
+
+LONG:
+SoloToGo is onze persoonlijke gids met goede adressen in en rond L’Escala.
+Het is geen gastronomische bijbel,
+maar een eerlijke selectie van plaatsen die wij waarderen
+en graag aanbevelen aan onze gasten.
+
+In het hoogseizoen raden wij aan om vooraf te reserveren.
+
+WAAR ETEN
+
+1. Direct beneden bij ons
+
+– Le Navili  
+https://maps.app.goo.gl/Z4JmUpUzemQttPAS8
+
+– Le MOS  
+https://maps.app.goo.gl/jiAmUyqAeT6Xxj2J7
+
+2. In de haven
+
+– Bol Roig  
+https://maps.app.goo.gl/WbKmMyFonT743reb8
+
+– La Llar dels Pescadors (naast de visafslag)  
+https://maps.app.goo.gl/WWJ5zbTX4TyMnWFM9
+
+3. Comfortfood zoals bij ons thuis
+
+– Frites Belges – Sandwich Chez Les Ch’tis  
+https://maps.app.goo.gl/TyABbv5PbqdsVpDt7
+
+4. Goede pizza in de buurt (2 minuten)
+
+– Pizza Pazza  
+https://maps.app.goo.gl/M3UPnYBJWboRMDU26
+
+5. Montgó – een oase van rust
+
+– Restaurant La Garota (onze favoriet)  
+https://maps.app.goo.gl/ST94v1spFZTdTKGZ8
+
+– Oreig Restaurant – Bistronomisch, vis, sushi en meer  
+https://maps.app.goo.gl/4Lf7uvNvH4q2bMfLA
+
+6. San Pere – Kitesurfstrand
+
+– El Riuet d’Empúries – Chiringuito  
+https://maps.app.goo.gl/77ZEuxP5koxrYvNb9
+
+– El Pati del Riuet – Restaurant  
+https://maps.app.goo.gl/vdqZna3f6opvozMH8
+
+7. Sant Martí – Ruïnes van Empúries
+
+– Meson del Conde  
+https://maps.app.goo.gl/RNx2JPe4t5id32FB9
+
+– La Terrassa d’Empúries  
+https://maps.app.goo.gl/kzvDv8SuLqXW1rig8
+
+8. Oude dorp van L’Escala
+
+– Café del Mar  
+https://maps.app.goo.gl/iJSnGsUruRuqM5Lb8
+
+– 1869  
+https://maps.app.goo.gl/ydxZ5QyD5RV3K48s8
+
+– Ultramar  
+https://maps.app.goo.gl/TLcWwvy5RBb2TR6L9
+
+9. Gastronomisch
+
+– Restaurant Mas Concas  
+Aan de ingang of uitgang van L’Escala  
+https://maps.app.goo.gl/eWA49Hx3xWCox2mWA
+
+– La Gruta – Michelin Gids  
+https://maps.app.goo.gl/zmJgDYtsqDE75KwD7
+
+10. Japans (iets verder, maar de moeite waard)
+
+– Far Nomo – Llafranc (ter plaatse)  
+Ongeveer 42 minuten, unieke locatie met prachtig uitzicht  
+https://maps.app.goo.gl/JEthQYwvFJGpqvNp8
+
+– Yako Sushi – Figueres (ter plaatse of afhalen)  
+Ongeveer 30 minuten  
+https://maps.app.goo.gl/QYPXBYPYai8jwCoN9
+
+– Sushi Gyoza – Figueres (afhalen)  
+Ongeveer 30 minuten  
+https://maps.app.goo.gl/Ap38Fb53HsznDUMZ8
+
+11. Catalaanse gastronomie
+
+– Restaurante Ibèric – Ullastret  
+Ongeveer 27 minuten  
+https://maps.app.goo.gl/cWZFVnVwLGM62xqS8
+
+– Restaurant Mas Pou – Palau-sator  
+Ongeveer 30 minuten  
+https://maps.app.goo.gl/dNkUHmCNJY5L9gXp7
+
+– Restaurant La Serra – Sant Esteve de Guialbes  
+Ongeveer 30 minuten  
+https://maps.app.goo.gl/Ap38Fb53HsznDUMZ8

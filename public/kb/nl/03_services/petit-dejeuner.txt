@@ -1,0 +1,23 @@
+INTENT: petit_dejeuner
+CATEGORY: services
+LANG: NL
+---
+
+SHORT:
+Het ontbijt is inbegrepen en wordt op het door u gewenste tijdstip voor uw deur geleverd.
+U kunt ervan genieten in uw suite of op een van onze rooftopterrassen.
+
+LONG:
+Het ontbijt is inbegrepen bij uw verblijf in Solo Ático Guest Suites.
+Het wordt op het door u gekozen tijdstip voor uw deur geplaatst,
+zodat u er in alle rust van kunt genieten,
+in bed, aan tafel in uw suite of op een van de terrassen van de Ático.
+
+Het ontbijt bestaat uit een heerlijke mix van zoete en hartige producten,
+zoals versgeperst sinaasappelsap,
+vers fruit, truita, viennoiserie,
+charcuterie en andere verrassingen,
+afhankelijk van de inspiratie van de chef.
+
+Een warme en gastronomische start van de dag,
+in een sfeer van comfort en ontspanning.

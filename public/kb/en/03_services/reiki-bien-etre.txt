@@ -1,0 +1,33 @@
+INTENT: reiki_bien_etre
+CATEGORY: services
+LANG: EN
+---
+
+SHORT:
+Reiki is a Japanese energy healing treatment that promotes deep relaxation,
+mental calm and tension release, helping to restore energy.
+
+LONG:
+During your stay at Solo Ático Guest Suites, treat yourself to a moment of well-being
+designed to rebalance body and mind.
+
+Reiki is a Japanese energy healing technique that works deeply to provide relaxation,
+mental calm, tension release and renewed energy.
+Treatments take place in a soft and soothing atmosphere, enhanced by negative ions
+coming directly from the sea.
+
+From relaxing hot stone massages to complete Reiki treatments,
+Sophia, your host and Reiki therapist, offers a unique energy relaxation experience,
+ideal for reconnecting with yourself and letting go.
+
+Two options are available:
+
+– Relaxing hot stone massage  
+  Duration: 45 minutes  
+  Price: €75
+
+– Complete Reiki & hot stone treatment  
+  Duration: 90 minutes  
+  Price: €125
+
+We recommend booking this wellness experience in advance to personalize your stay.

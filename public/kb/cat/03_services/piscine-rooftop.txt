@@ -1,0 +1,20 @@
+INTENT: piscine_rooftop
+CATEGORY: services
+LANG: CAT
+---
+
+SHORT:
+La piscina privada al rooftop ofereix vistes panoràmiques sobre el port, el mar i les postes de sol.
+Un espai tranquil i exclusiu, ideal per relaxar-se i gaudir del moment.
+
+LONG:
+La nostra piscina privada situada al rooftop és un dels espais emblemàtics de Solo Ático Guest Suites.
+Ofereix una vista panoràmica excepcional sobre el port, el mar Mediterrani i les postes de sol,
+creant una atmosfera única en qualsevol moment del dia.
+
+Pensada com un espai de calma i relaxació, la piscina rooftop és ideal per gaudir
+d’un bany relaxant, llegir al sol o assaborir un còctel davant del mar.
+L’ambient és tranquil i serè, perfecte per desconnectar i relaxar-se.
+
+Un autèntic refugi de tranquil·litat, al capdamunt de la residència,
+per viure moments privilegiats en un entorn exclusiu.

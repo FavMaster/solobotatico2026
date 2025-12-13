@@ -1,0 +1,25 @@
+INTENT: room_blue_patio
+CATEGORY: chambres
+LANG: NL
+---
+
+SHORT:
+De Blue Patio kamer is een gezellig verblijf met uitzicht op de binnentuin van de residentie.
+Ideaal voor strandliefhebbers die een rustige en praktische uitvalsbasis zoeken.
+
+LONG:
+Blue Patio is geen suite maar een zorgvuldig ingerichte kamer, ontworpen als een comfortabel en rustig cocon.
+Ze biedt een binnenzicht op de patio van de residentie, wat zorgt voor een serene en ontspannen sfeer.
+
+Deze kamer is perfect voor reizigers die volop van het strand en de regio willen genieten,
+met alle nodige comfort en kwaliteitsvoorzieningen.
+
+Beschrijving:
+Capaciteit: 2 personen  
+Bed: 1 Queen Size tweepersoonsbed  
+Badkamer met bad en douche  
+Dressing  
+
+Voorzieningen:
+Wi-Fi, televisie, handdoeken, zeep, shampoo, haardroger.  
+Ontbijt inbegrepen – Smart TV (Netflix, Prime Video, Disney+)

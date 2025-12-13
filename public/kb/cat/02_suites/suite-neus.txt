@@ -1,0 +1,27 @@
+INTENT: suite_neus
+CATEGORY: suites
+LANG: CAT
+---
+
+SHORT:
+La Suite Neus és un espai lluminós i tranquil, ideal per a parelles o viatgers que busquen calma.
+Ofereix unes vistes excepcionals al port, al passeig marítim i al mar, amb postes de sol espectaculars.
+
+LONG:
+Cadascuna de les nostres suites té una identitat pròpia i un caràcter singular on cada hoste pot sentir-se identificat.
+Més enllà d’aquestes diferències, hi ha una promesa comuna: una vista panoràmica espectacular com a escenari de moments inoblidables.
+
+La Suite Neus és un refugi lluminós de tons suaus, ideal per a parelles, viatgers que busquen tranquil·litat i confort, o per a aquells que desitgen treballar en un entorn serè.
+
+Ofereix unes vistes impressionants al port, al passeig marítim i al mar, així com postes de sol espectaculars cada final de dia.
+
+Descripció:
+Capacitat: 2 persones  
+Llit: 1 llit doble Queen Size  
+Bany amb banyera i dutxa, vistes al mar  
+Vestidor  
+Balcó  
+
+Comoditats:
+Aire condicionat, Wi-Fi, televisió, tovalloles, sabó, xampú, assecador de cabell.  
+Esmorzar inclòs – Smart TV (Netflix, Prime Video, Disney+)

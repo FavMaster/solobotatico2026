@@ -1,0 +1,32 @@
+INTENT: infos_pratiques
+CATEGORY: infos_pratiques
+LANG: EN
+---
+
+SHORT:
+Your hosts are Sophia and Laurent.
+Check-in from 2:00 PM and check-out until 11:00 AM.
+We are easily reachable via WhatsApp.
+
+LONG:
+Your hosts at Solo Ático Guest Suites are Sophia and Laurent.
+We are delighted to welcome you and remain available throughout your stay
+for any question, recommendation or special request.
+
+SCHEDULE
+– Check-in: from 2:00 PM  
+– Check-out: until 11:00 AM  
+
+WHATSAPP CONTACT
+– Laurent: +34 621 21 06 42  
+– Sophia: +34 621 12 83 03  
+
+Feel free to contact us anytime via WhatsApp,
+whether for a practical question,
+a recommendation,
+or to personalize your stay.
+
+ADDRESS
+Carrer Romeu de Corbera 1  
+17130 L’Escala  
+Spain

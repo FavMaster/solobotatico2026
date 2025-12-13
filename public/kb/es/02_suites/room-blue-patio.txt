@@ -1,0 +1,25 @@
+INTENT: room_blue_patio
+CATEGORY: chambres
+LANG: ES
+---
+
+SHORT:
+La habitación Blue Patio es un acogedor refugio con vistas interiores al patio de la residencia.
+Ideal para los amantes de la playa que buscan un lugar tranquilo y práctico.
+
+LONG:
+La Blue Patio no es una suite, sino una habitación cuidadosamente acondicionada, pensada como un pequeño refugio de confort.
+Ofrece vistas interiores al patio de la residencia, garantizando calma y tranquilidad durante su estancia.
+
+Es la opción perfecta para los viajeros que desean disfrutar de la playa y de la región,
+mientras cuentan con comodidades y servicios de calidad.
+
+Descripción:
+Capacidad: 2 personas  
+Cama: 1 cama doble Queen Size  
+Baño con bañera y ducha  
+Vestidor  
+
+Comodidades:
+Wi-Fi, televisión, toallas, jabón, champú, secador de pelo.  
+Desayuno incluido – Smart TV (Netflix, Prime Video, Disney+)
