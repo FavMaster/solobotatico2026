@@ -117,6 +117,19 @@ loadKBTest();
   }
 });
 
+// Fermer le chatbot si clic en dehors
+document.addEventListener("click", (e) => {
+  if (!isOpen) return;
+
+  const clickedInsideChat = chatWin.contains(e.target);
+  const clickedOnButton = openBtn.contains(e.target);
+
+  if (!clickedInsideChat && !clickedOnButton) {
+    chatWin.style.display = "none";
+    isOpen = false;
+  }
+});
+
 
     /****************************************************
      * 6) Fonction d’envoi
