@@ -229,6 +229,26 @@ const currentLang = detectLanguage();
 console.log("🌍 Langue détectée :", currentLang);
 
 
+/****************************************************
+ * Détection automatique de la langue
+ ****************************************************/
+function detectLanguage(message = "") {
+  const htmlLang = document.documentElement.lang;
+  if (htmlLang) {
+    return htmlLang.split("-")[0]; // fr-FR → fr
+  }
+
+  const text = message.toLowerCase();
+
+  if (text.match(/\b(el|la|los|las|qué|hacer|reserva)\b/)) return "es";
+  if (text.match(/\b(wat|doen|kamer|boot|eten)\b/)) return "nl";
+  if (text.match(/\b(què|fer|habitació|reserva)\b/)) return "cat";
+  if (text.match(/\b(what|room|boat|booking)\b/)) return "en";
+
+  return "fr"; // fallback
+}
+
+
 
 /****************************************************
  * 6) Fonction d’envoi (KB connectée)
@@ -251,7 +271,9 @@ async function sendMessage() {
   typing.style.display = "flex";
 
   // Résolution KB
-  const kbPath = resolveKBPath(userText, currentLang);
+const lang = detectLanguage(userText);
+const kbPath = resolveKBPath(userText, lang);
+
 
   let botText = "";
 
