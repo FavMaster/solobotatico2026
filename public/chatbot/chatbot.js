@@ -153,7 +153,7 @@ async function loadKB(lang, section, file) {
 }
 
 /****************************************************
- * 6) Router KB — CHEMIN ABSOLU VERCEL
+ * Router KB — chemins ABSOLUS Vercel
  ****************************************************/
 function resolveKBPath(message, lang = "fr") {
   const text = message.toLowerCase();
@@ -185,57 +185,26 @@ function resolveKBPath(message, lang = "fr") {
   if (text.includes("restaurant") || text.includes("manger"))
     return `${KB_BASE_URL}/kb/${lang}/05_solotogo/guide-client-solotogo.txt`;
 
-  if (
-    text.includes("check") ||
-    text.includes("heure") ||
-    text.includes("adresse")
-  )
+  if (text.includes("check") || text.includes("heure") || text.includes("adresse"))
     return `${KB_BASE_URL}/kb/${lang}/06_infos-pratiques/infos-pratiques.txt`;
 
   return null;
 }
 
-/****************************************************
- * Détection automatique de la langue
- ****************************************************/
-function detectLanguage() {
-  // 1) Langue du HTML <html lang="xx">
-  const htmlLang = document.documentElement.lang?.toLowerCase();
 
-  if (htmlLang) {
-    if (htmlLang.startsWith("fr")) return "fr";
-    if (htmlLang.startsWith("es")) return "es";
-    if (htmlLang.startsWith("en")) return "en";
-    if (htmlLang.startsWith("nl")) return "nl";
-    if (htmlLang.startsWith("ca")) return "cat";
-  }
-
-  // 2) Langue du navigateur
-  const navLang = navigator.language.toLowerCase();
-
-  if (navLang.startsWith("fr")) return "fr";
-  if (navLang.startsWith("es")) return "es";
-  if (navLang.startsWith("en")) return "en";
-  if (navLang.startsWith("nl")) return "nl";
-  if (navLang.startsWith("ca")) return "cat";
-
-  // 3) Fallback
-  return "fr";
-}
 
 // Langue active du chatbot
 const currentLang = detectLanguage();
 
 console.log("🌍 Langue détectée :", currentLang);
 
-
 /****************************************************
- * Détection automatique de la langue
+ * Détection automatique de la langue (message + HTML)
  ****************************************************/
 function detectLanguage(message = "") {
   const htmlLang = document.documentElement.lang;
   if (htmlLang) {
-    return htmlLang.split("-")[0]; // fr-FR → fr
+    return htmlLang.split("-")[0];
   }
 
   const text = message.toLowerCase();
@@ -245,9 +214,8 @@ function detectLanguage(message = "") {
   if (text.match(/\b(què|fer|habitació|reserva)\b/)) return "cat";
   if (text.match(/\b(what|room|boat|booking)\b/)) return "en";
 
-  return "fr"; // fallback
+  return "fr";
 }
-
 
 
 /****************************************************
@@ -270,42 +238,34 @@ async function sendMessage() {
   // Typing
   typing.style.display = "flex";
 
-  // Résolution KB
-const lang = detectLanguage(userText);
-const kbPath = resolveKBPath(userText, lang);
+  const lang = detectLanguage(userText);
+  const kbPath = resolveKBPath(userText, lang);
 
+  let reply = "";
 
-  let botText = "";
-
-  try {
-    if (!kbPath) {
-      botText =
-        "Je peux vous renseigner sur nos suites, services, le bateau Tintorera, le Reiki ou que faire à L’Escala 😊";
-    } else {
-      const response = await fetch(
-        `https://solobotatico2026.vercel.app${kbPath}`
-      );
-
-      if (!response.ok) throw new Error("KB introuvable");
-
+  if (!kbPath) {
+    reply =
+      "Je peux vous renseigner sur nos suites, services, le bateau Tintorera, le Reiki ou que faire à L’Escala 😊";
+  } else {
+    try {
+      console.log("📚 Chargement KB :", kbPath);
+      const response = await fetch(kbPath);
       const text = await response.text();
-      botText = text.substring(0, 600) + "…";
+      reply = text.substring(0, 600) + "…";
+    } catch (err) {
+      reply = "Désolé, cette information n’est pas encore disponible.";
     }
-  } catch (e) {
-    botText = "Désolé, je n’arrive pas à accéder à cette information pour le moment.";
   }
 
   typing.style.display = "none";
 
   const bot = document.createElement("div");
   bot.className = "msg botMsg";
-  bot.textContent = botText;
+  bot.textContent = reply;
   bodyEl.appendChild(bot);
 
   bodyEl.scrollTop = bodyEl.scrollHeight;
 }
-
-
 
     sendBtn.addEventListener("click", sendMessage);
     input.addEventListener("keydown", e => {
