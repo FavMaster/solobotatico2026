@@ -65,6 +65,7 @@ if (!chatWin || !openBtn) {
 /****************************************************
  * TEST KB — Chargement présentation FR
  ****************************************************/
+console.log("🧪 TEST KB : fonction appelée");
 async function loadKBTest() {
   try {
     const response = await fetch(
