@@ -62,6 +62,40 @@ if (!chatWin || !openBtn) {
 }
 
 
+/****************************************************
+ * TEST KB — Chargement présentation FR
+ ****************************************************/
+async function loadKBTest() {
+  try {
+    const response = await fetch(
+      "/kb/fr/01_presentation/presentation-generale.txt"
+    );
+
+    if (!response.ok) {
+      throw new Error("Fichier KB introuvable");
+    }
+
+    const text = await response.text();
+
+    const botBubble = document.createElement("div");
+    botBubble.className = "msg botMsg";
+    botBubble.textContent =
+      text.substring(0, 400) + "…";
+
+    bodyEl.appendChild(botBubble);
+    bodyEl.scrollTop = bodyEl.scrollHeight;
+
+    console.log("KB chargée avec succès");
+
+  } catch (err) {
+    console.error("Erreur chargement KB :", err);
+  }
+}
+
+/* Lancer le test */
+loadKBTest();
+
+
     /****************************************************
      * 4) Garantir que le chatbot est FERMÉ au chargement
      ****************************************************/
