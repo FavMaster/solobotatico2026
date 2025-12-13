@@ -56,6 +56,9 @@ await new Promise(requestAnimationFrame);
     const bodyEl = document.getElementById("chatBody");
     const typing = document.getElementById("typing");
 
+let isOpen = false;
+
+
 if (!chatWin || !openBtn) {
   console.error("❌ Chatbot non initialisé : chatWindow ou bouton introuvable");
   return;
@@ -66,9 +69,6 @@ if (!chatWin || !openBtn) {
  * TEST KB — Chargement présentation FR
  ****************************************************/
 console.log("🧪 TEST KB : fonction appelée");
-// Ouvrir temporairement le chatbot pour voir le test KB
-
-chatWin.style.display = "flex";
 
 async function loadKBTest() {
   try {
@@ -101,23 +101,32 @@ async function loadKBTest() {
 loadKBTest();
 
 
-    /****************************************************
-     * 4) Garantir que le chatbot est FERMÉ au chargement
-     ****************************************************/
-//    chatWin.style.display = "none";
+ /****************************************************
+ * 4) État du chatbot
+ ****************************************************/
+let isOpen = false;
 
-    /****************************************************
-     * 5) Ouvrir / fermer seulement au clic - Toggle
-     ****************************************************/
-  openBtn.addEventListener("click", () => {
-  if (chatWin.style.display === "flex") {
+// Toujours fermé au départ
+chatWin.style.display = "none";
+
+/****************************************************
+ * 5) Ouvrir / fermer via bouton (toggle)
+ ****************************************************/
+openBtn.addEventListener("click", (e) => {
+  e.stopPropagation(); // empêche le clic extérieur immédiat
+
+  if (isOpen) {
     chatWin.style.display = "none";
+    isOpen = false;
   } else {
     chatWin.style.display = "flex";
+    isOpen = true;
   }
 });
 
-// Fermer le chatbot si clic en dehors
+/****************************************************
+ * 6) Fermer si clic en dehors
+ ****************************************************/
 document.addEventListener("click", (e) => {
   if (!isOpen) return;
 
@@ -129,7 +138,6 @@ document.addEventListener("click", (e) => {
     isOpen = false;
   }
 });
-
 
     /****************************************************
      * 6) Fonction d’envoi
