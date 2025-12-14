@@ -279,14 +279,14 @@ function detectTopic(message) {
 
 
 /****************************************************
- * 7.2) Fonction d’envoi — Réponse courte / détaillée
+ * 7.3) Fonction d’envoi — Réponse courte + KB
  ****************************************************/
 async function sendMessage() {
   if (!input.value.trim()) return;
 
   const userText = input.value;
 
-  // Message utilisateur
+  /* Message utilisateur */
   const userBubble = document.createElement("div");
   userBubble.className = "msg userMsg";
   userBubble.textContent = userText;
@@ -295,63 +295,54 @@ async function sendMessage() {
   input.value = "";
   bodyEl.scrollTop = bodyEl.scrollHeight;
 
+  /* Typing */
   typing.style.display = "flex";
 
+  /* Détection */
   const lang = detectLanguage(userText);
+  const topic = detectTopic(userText);
   const kbPath = resolveKBPath(userText, lang);
-
-  let shortText = "";
-  let fullText = "";
-
-  if (!kbPath) {
-    shortText =
-      "Je peux vous renseigner sur nos suites, services, le bateau Tintorera, le Reiki ou que faire à L’Escala 😊";
-  } else {
-    try {
-      console.log("📚 Chargement KB :", kbPath);
-      const response = await fetch(kbPath);
-      fullText = await response.text();
-      shortText = fullText.substring(0, 300) + "…";
-    } catch (err) {
-      shortText = "Désolé, cette information n’est pas encore disponible.";
-    }
-  }
 
   typing.style.display = "none";
 
-  // Message bot
- const lang = detectLanguage(userText);
-const topic = detectTopic(userText);
-const kbPath = resolveKBPath(userText, lang);
+  /* Message bot */
+  const bot = document.createElement("div");
+  bot.className = "msg botMsg";
 
-typing.style.display = "none";
+  /* 1️⃣ Réponse courte */
+  const shortBlock = document.createElement("div");
+  shortBlock.innerHTML = `<b>${getShortAnswer(topic, lang)}</b><br><br>`;
+  bot.appendChild(shortBlock);
 
-const bot = document.createElement("div");
-bot.className = "msg botMsg";
+  /* 2️⃣ Réponse détaillée */
+  if (kbPath) {
+    try {
+      console.log("📚 Chargement KB :", kbPath);
+      const response = await fetch(kbPath);
+      const text = await response.text();
 
-// 1️⃣ Réponse courte
-const shortText = document.createElement("div");
-shortText.innerHTML = `<b>${getShortAnswer(topic, lang)}</b><br><br>`;
-bot.appendChild(shortText);
+      const detail = document.createElement("div");
+      detail.textContent = text.substring(0, 700) + "…";
+      bot.appendChild(detail);
+    } catch (err) {
+      bot.appendChild(
+        document.createTextNode(
+          "Désolé, cette information n’est pas encore disponible."
+        )
+      );
+    }
+  } else {
+    bot.appendChild(
+      document.createTextNode(
+        "Je peux vous renseigner sur nos suites, services, le bateau Tintorera, le Reiki ou que faire à L’Escala 😊"
+      )
+    );
+  }
 
-// 2️⃣ Réponse détaillée KB
-if (kbPath) {
-  const response = await fetch(kbPath);
-  const text = await response.text();
-
-  const detail = document.createElement("div");
-  detail.textContent = text.substring(0, 700) + "…";
-  bot.appendChild(detail);
-} else {
-  bot.appendChild(
-    document.createTextNode(
-      "Je peux vous renseigner sur nos suites, services, le bateau Tintorera ou les activités à L’Escala 😊"
-    )
-  );
+  bodyEl.appendChild(bot);
+  bodyEl.scrollTop = bodyEl.scrollHeight;
 }
 
-bodyEl.appendChild(bot);
-bodyEl.scrollTop = bodyEl.scrollHeight;
 
 
 
