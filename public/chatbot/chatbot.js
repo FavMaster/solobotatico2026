@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE - Fav - Chemin directe
- * Version 1.3.1 (Architecture B) - KB OK
+ * Version 1.4 (Architecture B) - KB OK - Short/Long
  * Chargement HTML + CSS + JS sans ouverture automatique
  ****************************************************/
 
@@ -8,7 +8,7 @@
 
 (function() {
 
-  console.log("Solo’IA’tico Chatbot v1.3.1 — Initialisation…");
+  console.log("Solo’IA’tico Chatbot v1.4 — Initialisation…");
 
 /****************************************************
  * BASE URL KB (Vercel)
