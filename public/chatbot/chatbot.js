@@ -363,7 +363,7 @@ function parseKB(text) {
 
 
 /****************************************************
- * 7.4.1) Fonction d’envoi — Intentions + KB intelligente (FIX)
+ * 7.4.1) Fonction d’envoi — Intentions + KB propre
  ****************************************************/
 async function sendMessage() {
   if (!input.value.trim()) return;
@@ -388,103 +388,84 @@ async function sendMessage() {
   const topic = detectTopic(userText);
   const kbPath = resolveKBPath(userText, lang);
 
-  /* Message bot */
   const bot = document.createElement("div");
   bot.className = "msg botMsg";
 
-  /****************************************************
-   * 🔴 PRIORITÉ ABSOLUE — LISTE DES SUITES
-   * (même si intent est mal détectée)
-   ****************************************************/
-  if (
-    intent === "list_suites" ||
-    (topic === "suite" && !kbPath)
-  ) {
-    typing.style.display = "none";
-
-    bot.innerHTML = `
-      <b>Nous proposons trois hébergements au Solo Ático ✨</b><br><br>
-      • <b>Suite Neus</b> – lumineuse, vue port & mer<br>
-      • <b>Suite Bourlardes</b> – terrasse privée sans vis-à-vis<br>
-      • <b>Chambre Blue Patio</b> – cocon calme côté patio<br><br>
-      Souhaitez-vous que je vous détaille l’un d’eux ?
-    `;
-
-    bodyEl.appendChild(bot);
-    bodyEl.scrollTop = bodyEl.scrollHeight;
-    return; // ⬅️ CRUCIAL
-  }
-
-  /****************************************************
-   * INTENTION : AIDE GÉNÉRALE
-   ****************************************************/
-  if (intent === "help") {
-    typing.style.display = "none";
-
-    bot.textContent =
-      "Je peux vous renseigner sur nos suites, services, le bateau Tintorera, le Reiki ou vous suggérer des activités à L’Escala 😊";
-
-    bodyEl.appendChild(bot);
-    bodyEl.scrollTop = bodyEl.scrollHeight;
-    return;
-  }
-
-  /****************************************************
-   * INTENTION : SUJET PRÉCIS → KB
-   ****************************************************/
   try {
-    /* Intro courte premium */
-    const intro = document.createElement("div");
-    intro.innerHTML = `<b>${getShortAnswer(topic, lang)}</b><br><br>`;
-    bot.appendChild(intro);
-
-    if (kbPath) {
-      console.log("📚 Chargement KB :", kbPath);
-
-      const response = await fetch(kbPath);
-      if (!response.ok) throw new Error("KB introuvable");
-
-      const rawText = await response.text();
-      const kb = parseKB(rawText); // { short, long }
-
-      /* Résumé KB */
-      if (kb.short) {
-        const shortText = document.createElement("div");
-        shortText.textContent = kb.short;
-        bot.appendChild(shortText);
-      }
-
-      /* Bouton description complète */
-      if (kb.long) {
-        const moreBtn = document.createElement("button");
-        moreBtn.className = "kbMoreBtn";
-        moreBtn.textContent = "Voir la description complète";
-
-        moreBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-
-          const longText = document.createElement("div");
-          longText.className = "kbLongText";
-          longText.textContent = kb.long;
-
-          bot.appendChild(document.createElement("br"));
-          bot.appendChild(longText);
-          moreBtn.remove();
-
-          bodyEl.scrollTop = bodyEl.scrollHeight;
-        });
-
-        bot.appendChild(document.createElement("br"));
-        bot.appendChild(moreBtn);
-      }
-    } else {
-      bot.appendChild(
-        document.createTextNode(
-          "Pouvez-vous préciser votre demande ? Je serai ravi de vous aider 😊"
-        )
-      );
+    /****************************************************
+     * INTENTION : LISTE DES SUITES
+     ****************************************************/
+    if (intent === "list_suites") {
+      bot.innerHTML = `
+        <b>Nous proposons trois hébergements au Solo Ático ✨</b><br><br>
+        • <b>Suite Neus</b> – lumineuse, vue port & mer<br>
+        • <b>Suite Bourlardes</b> – terrasse privée sans vis-à-vis<br>
+        • <b>Chambre Blue Patio</b> – cocon calme côté patio<br><br>
+        Souhaitez-vous que je vous détaille l’un d’eux ?
+      `;
     }
 
+    /****************************************************
+     * INTENTION : AIDE
+     ****************************************************/
+    else if (intent === "help") {
+      bot.textContent =
+        "Je peux vous renseigner sur nos suites, services, le bateau Tintorera, le Reiki ou que faire à L’Escala 😊";
+    }
+
+    /****************************************************
+     * INTENTION : SUJET PRÉCIS → KB
+     ****************************************************/
+    else {
+      const intro = document.createElement("div");
+      intro.innerHTML = `<b>${getShortAnswer(topic, lang)}</b><br><br>`;
+      bot.appendChild(intro);
+
+      if (kbPath) {
+        console.log("📚 Chargement KB :", kbPath);
+
+        const response = await fetch(kbPath);
+        if (!response.ok) throw new Error("KB introuvable");
+
+        const rawText = await response.text();
+        const kb = parseKB(rawText); // { short, long }
+
+        if (kb.short) {
+          const shortText = document.createElement("div");
+          shortText.textContent = kb.short;
+          bot.appendChild(shortText);
+        }
+
+        if (kb.long) {
+          const moreBtn = document.createElement("button");
+          moreBtn.className = "kbMoreBtn";
+          moreBtn.textContent = "Voir la description complète";
+
+          moreBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+
+            const longText = document.createElement("div");
+            longText.className = "kbLongText";
+            longText.textContent = kb.long;
+
+            bot.appendChild(document.createElement("br"));
+            bot.appendChild(longText);
+            moreBtn.remove();
+
+            bodyEl.scrollTop = bodyEl.scrollHeight;
+          });
+
+          bot.appendChild(document.createElement("br"));
+          bot.appendChild(moreBtn);
+        }
+      } else {
+        bot.appendChild(
+          document.createTextNode(
+            "Pouvez-vous préciser votre demande ? Je serai ravi de vous aider 😊"
+          )
+        );
+      }
+    }
   } catch (err) {
     console.error("❌ Erreur chatbot :", err);
     bot.textContent =
@@ -563,10 +544,6 @@ async function sendMessage() {
   bodyEl.appendChild(bot);
   bodyEl.scrollTop = bodyEl.scrollHeight;
 }
-
-
-
-
 
 
     sendBtn.addEventListener("click", sendMessage);
