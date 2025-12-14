@@ -101,16 +101,41 @@ function detectIntent(message) {
   const text = message.toLowerCase();
 
   // INTENTION : liste des hébergements
-  if (
-    /\b(suite|suites|chambre|chambres|hébergement|logement|room|rooms|accommodation|habitacion|habitaciones|kamer|kamers|habitació|habitacions)\b/.test(text)
-  ) {
+  const suiteKeywords = [
+    "suite",
+    "suites",
+    "chambre",
+    "chambres",
+    "hébergement",
+    "logement",
+    "room",
+    "rooms",
+    "accommodation",
+    "habitacion",
+    "habitaciones",
+    "kamer",
+    "kamers",
+    "habitació",
+    "habitacions"
+  ];
+
+  if (suiteKeywords.some(word => text.includes(word))) {
     return "list_suites";
   }
 
   // INTENTION : aide générale
-  if (
-    /\b(aide|help|ayuda|hulp|que peux|que faire|what can)\b/.test(text)
-  ) {
+  const helpKeywords = [
+    "aide",
+    "help",
+    "ayuda",
+    "hulp",
+    "que peux",
+    "que faire",
+    "what can",
+    "what do you"
+  ];
+
+  if (helpKeywords.some(word => text.includes(word))) {
     return "help";
   }
 
