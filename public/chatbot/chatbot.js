@@ -1,5 +1,5 @@
 /****************************************************
- * SOLO'IA'TICO — CHATBOT LUXE - Fav - Chemin Complet
+ * SOLO'IA'TICO — CHATBOT LUXE - Fav - Chemin directe
  * Version 1.3.1 (Architecture B) - KB OK
  * Chargement HTML + CSS + JS sans ouverture automatique
  ****************************************************/
@@ -134,7 +134,7 @@ document.addEventListener("click", (e) => {
 });
 
 /****************************************************
- *  6A) KB LOADER — Chargement dynamique de fichiers texte
+ * 6A KB LOADER — Chargement dynamique de fichiers texte
  ****************************************************/
 async function loadKB(lang, section, file) {
   try {
@@ -153,7 +153,7 @@ async function loadKB(lang, section, file) {
 }
 
 /****************************************************
- * Router KB — chemins ABSOLUS Vercel
+ * 6B Router KB — chemins ABSOLUS Vercel
  ****************************************************/
 function resolveKBPath(message, lang = "fr") {
   const text = message.toLowerCase();
@@ -217,6 +217,66 @@ function detectLanguage(message = "") {
   return "fr";
 }
 
+/****************************************************
+ * Short Answer
+ ****************************************************/
+
+function getShortAnswer(topic, lang = "fr") {
+  const answers = {
+    fr: {
+      suite: "Voici les informations sur la suite que vous avez demandée ✨",
+      bateau: "La Tintorera vous promet un moment magique en mer 🌊",
+      reiki: "Un moment de détente et d’énergie positive vous attend 🌿",
+      piscine: "Notre piscine rooftop offre une vue à couper le souffle 🏖️",
+      petitdej: "Le petit-déjeuner est inclus et servi avec soin ☕",
+      escale: "L’Escala regorge de choses à découvrir 🌞",
+      default: "Voici les informations que je peux vous partager 😊"
+    },
+    es: {
+      suite: "Aquí tiene la información de la suite ✨",
+      bateau: "La Tintorera le espera para un momento mágico en el mar 🌊",
+      reiki: "Un momento de relajación y bienestar 🌿",
+      piscine: "Nuestra piscina rooftop ofrece una vista increíble 🏖️",
+      petitdej: "El desayuno está incluido ☕",
+      escale: "Hay mucho que descubrir en L’Escala 🌞",
+      default: "Aquí está la información que puedo compartir 😊"
+    }
+    // EN / NL / CAT ensuite
+  };
+
+  return answers[lang]?.[topic] || answers[lang]?.default || answers.fr.default;
+}
+
+
+/****************************************************
+ * Identifier le TOPIC
+ ****************************************************/
+
+function detectTopic(message) {
+  const text = message.toLowerCase();
+
+  if (text.includes("neus") || text.includes("bourlard") || text.includes("suite"))
+    return "suite";
+
+  if (text.includes("bateau") || text.includes("tintorera"))
+    return "bateau";
+
+  if (text.includes("reiki"))
+    return "reiki";
+
+  if (text.includes("piscine"))
+    return "piscine";
+
+  if (text.includes("petit"))
+    return "petitdej";
+
+  if (text.includes("escala") || text.includes("faire"))
+    return "escale";
+
+  return "default";
+}
+
+
 
 /****************************************************
  * 7.2) Fonction d’envoi — Réponse courte / détaillée
@@ -260,27 +320,39 @@ async function sendMessage() {
   typing.style.display = "none";
 
   // Message bot
-  const botBubble = document.createElement("div");
-  botBubble.className = "msg botMsg";
-  botBubble.textContent = shortText;
+ const lang = detectLanguage(userText);
+const topic = detectTopic(userText);
+const kbPath = resolveKBPath(userText, lang);
 
-  // Bouton "Lire la suite" si contenu long
-  if (fullText.length > 350) {
-    const moreBtn = document.createElement("button");
-    moreBtn.className = "readMoreBtn";
-    moreBtn.textContent = "Lire la suite";
+typing.style.display = "none";
 
-    moreBtn.addEventListener("click", () => {
-      botBubble.textContent = fullText;
-      moreBtn.remove();
-    });
+const bot = document.createElement("div");
+bot.className = "msg botMsg";
 
-    botBubble.appendChild(moreBtn);
-  }
+// 1️⃣ Réponse courte
+const shortText = document.createElement("div");
+shortText.innerHTML = `<b>${getShortAnswer(topic, lang)}</b><br><br>`;
+bot.appendChild(shortText);
 
-  bodyEl.appendChild(botBubble);
-  bodyEl.scrollTop = bodyEl.scrollHeight;
+// 2️⃣ Réponse détaillée KB
+if (kbPath) {
+  const response = await fetch(kbPath);
+  const text = await response.text();
+
+  const detail = document.createElement("div");
+  detail.textContent = text.substring(0, 700) + "…";
+  bot.appendChild(detail);
+} else {
+  bot.appendChild(
+    document.createTextNode(
+      "Je peux vous renseigner sur nos suites, services, le bateau Tintorera ou les activités à L’Escala 😊"
+    )
+  );
 }
+
+bodyEl.appendChild(bot);
+bodyEl.scrollTop = bodyEl.scrollHeight;
+
 
 
     sendBtn.addEventListener("click", sendMessage);
