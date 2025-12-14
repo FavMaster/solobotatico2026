@@ -10,24 +10,31 @@ body {
 
 /* Bouton d'ouverture */
 #openChatBtn {
-  transition: all 0.25s ease;
   position: fixed;
   bottom: 20px;
   right: 20px;
+
   width: 72px;
   height: 72px;
-  padding: 0;
+
   background: linear-gradient(135deg, #f7e7c1, #e0c28c);
   border-radius: 50%;
-  cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  cursor: pointer;
+
   box-shadow: 0 6px 18px rgba(0,0,0,0.28);
   border: 1px solid rgba(255,255,255,0.55);
 
-  z-index: 99999; /* 🔥 AU-DESSUS DU MENU LANGUE */
+  /* 🔑 CRITIQUE POUR iOS */
+  z-index: 999999;
+  pointer-events: auto;
+  -webkit-transform: translateZ(0);
 }
+
 
 
 #openChatBtn:hover {
