@@ -247,6 +247,31 @@ function getShortAnswer(topic, lang = "fr") {
   return answers[lang]?.[topic] || answers[lang]?.default || answers.fr.default;
 }
 
+/****************************************************
+ * 7.4) Formatter une réponse élégante (concierge)
+ ****************************************************/
+function formatAnswer(topic, kbText, lang) {
+  const intro = getShortAnswer(topic, lang);
+
+  // Nettoyage & extraction des points forts
+  const lines = kbText
+    .split("\n")
+    .map(l => l.trim())
+    .filter(l => l.length > 40); // évite titres & bruit
+
+  const highlights = lines
+    .slice(0, 3)
+    .map(l => `• ${l}`)
+    .join("<br>");
+
+  return `
+    <b>${intro}</b><br><br>
+    ${highlights}<br><br>
+    🌿 <i>Souhaitez-vous une description complète, ou puis-je vous aider à organiser votre séjour ?</i>
+  `;
+}
+
+
 
 /****************************************************
  * Identifier le TOPIC
@@ -291,8 +316,10 @@ function parseKB(text) {
 }
 
 
+
+
 /****************************************************
- * 7.3) Fonction d’envoi — Réponse courte + KB propre
+ * 7.4) Fonction d’envoi — Réponse courte + KB élégante
  ****************************************************/
 async function sendMessage() {
   if (!input.value.trim()) return;
@@ -316,17 +343,17 @@ async function sendMessage() {
   const topic = detectTopic(userText);
   const kbPath = resolveKBPath(userText, lang);
 
-  /* Message bot */
+  /* Préparer la bulle bot */
   const bot = document.createElement("div");
   bot.className = "msg botMsg";
 
   try {
-    /* 1️⃣ Réponse courte (toujours affichée) */
-    const shortIntro = document.createElement("div");
-    shortIntro.innerHTML = `<b>${getShortAnswer(topic, lang)}</b><br><br>`;
-    bot.appendChild(shortIntro);
+    /* 1️⃣ Réponse courte concierge */
+    const intro = document.createElement("div");
+    intro.innerHTML = `<b>${getShortAnswer(topic, lang)}</b><br><br>`;
+    bot.appendChild(intro);
 
-    /* 2️⃣ Chargement KB si disponible */
+    /* 2️⃣ KB */
     if (kbPath) {
       console.log("📚 Chargement KB :", kbPath);
 
@@ -334,39 +361,39 @@ async function sendMessage() {
       if (!response.ok) throw new Error("KB introuvable");
 
       const rawText = await response.text();
-      const kb = parseKB(rawText); // ⬅️ SHORT / LONG
+      const kb = parseKB(rawText); // { short, long }
 
-      /* Texte court issu de la KB */
+      /* Texte court KB */
       if (kb.short) {
         const shortText = document.createElement("div");
         shortText.textContent = kb.short;
         bot.appendChild(shortText);
       }
 
-      /* Bouton détails */
+      /* Bouton description complète */
       if (kb.long) {
         const moreBtn = document.createElement("button");
         moreBtn.className = "kbMoreBtn";
         moreBtn.textContent = "Voir la description complète";
 
-     moreBtn.addEventListener("click", (e) => {
-  e.stopPropagation(); // ⬅️ LIGNE MAGIQUE
+        moreBtn.addEventListener("click", (e) => {
+          e.stopPropagation(); // ⚠️ empêche fermeture du chatbot
 
-  const longText = document.createElement("div");
-  longText.className = "kbLongText";
-  longText.textContent = kb.long;
+          const longText = document.createElement("div");
+          longText.className = "kbLongText";
+          longText.textContent = kb.long;
 
-  bot.appendChild(document.createElement("br"));
-  bot.appendChild(longText);
+          bot.appendChild(document.createElement("br"));
+          bot.appendChild(longText);
 
-  moreBtn.remove();
-  bodyEl.scrollTop = bodyEl.scrollHeight;
-});
-
+          moreBtn.remove();
+          bodyEl.scrollTop = bodyEl.scrollHeight;
+        });
 
         bot.appendChild(document.createElement("br"));
         bot.appendChild(moreBtn);
       }
+
     } else {
       bot.appendChild(
         document.createTextNode(
