@@ -32,17 +32,15 @@
   }
 
   /****************************************************
-   * Détection langue
+   * Détection langue — PAR MESSAGE (PRIORITAIRE)
    ****************************************************/
   function detectLanguage(message = "") {
-    const htmlLang = document.documentElement.lang;
-    if (htmlLang) return htmlLang.split("-")[0];
-
     const t = message.toLowerCase();
-    if (/\b(el|la|los|qué|hacer)\b/.test(t)) return "es";
-    if (/\b(wat|doen|kamer)\b/.test(t)) return "nl";
-    if (/\b(què|fer|habitació)\b/.test(t)) return "cat";
-    if (/\b(what|room|booking)\b/.test(t)) return "en";
+
+    if (/\b(el|la|los|las|qué|hacer|reserva)\b/.test(t)) return "es";
+    if (/\b(what|room|booking|stay|boat)\b/.test(t)) return "en";
+    if (/\b(wat|doen|kamer|boot|eten)\b/.test(t)) return "nl";
+    if (/\b(què|fer|habitació|reserva)\b/.test(t)) return "cat";
 
     return "fr";
   }
@@ -54,16 +52,16 @@
     const t = message.toLowerCase();
 
     const suites = [
-      "suite", "suites", "chambre", "chambres",
-      "room", "rooms", "kamer", "kamers",
-      "habitacion", "habitaciones"
+      "suite","suites","chambre","chambres",
+      "room","rooms","kamer","kamers",
+      "habitacion","habitaciones"
     ];
 
     if (suites.some(w => t.includes(w))) return "list_suites";
 
     const help = [
-      "aide", "help", "ayuda",
-      "que faire", "what can", "what do"
+      "aide","help","ayuda",
+      "que faire","what can","what do"
     ];
 
     if (help.some(w => t.includes(w))) return "help";
@@ -122,19 +120,33 @@
   }
 
   /****************************************************
-   * Short answers
+   * Short answers — multilingue
    ****************************************************/
   function getShortAnswer(topic, lang) {
-    const fr = {
-      suite: "Voici les informations sur la suite que vous avez demandée ✨",
-      bateau: "La Tintorera vous promet un moment magique en mer 🌊",
-      reiki: "Un moment de détente et d’énergie positive 🌿",
-      piscine: "Notre piscine rooftop offre une vue à couper le souffle 🏖️",
-      petitdej: "Le petit-déjeuner est inclus et servi avec soin ☕",
-      escale: "L’Escala regorge de choses à découvrir 🌞",
-      default: "Voici les informations que je peux vous partager 😊"
+    const answers = {
+      fr: {
+        suite: "Voici les informations sur la suite que vous avez demandée ✨",
+        bateau: "La Tintorera vous promet un moment magique en mer 🌊",
+        reiki: "Un moment de détente et d’énergie positive 🌿",
+        piscine: "Notre piscine rooftop offre une vue à couper le souffle 🏖️",
+        petitdej: "Le petit-déjeuner est inclus et servi avec soin ☕",
+        escale: "L’Escala regorge de choses à découvrir 🌞",
+        default: "Voici les informations que je peux vous partager 😊"
+      },
+      en: {
+        suite: "Here are the details about our suites ✨",
+        bateau: "Tintorera offers a magical moment at sea 🌊",
+        reiki: "A moment of relaxation and positive energy 🌿",
+        piscine: "Our rooftop pool offers breathtaking views 🏖️",
+        petitdej: "Breakfast is included and carefully prepared ☕",
+        escale: "There is so much to discover in L’Escala 🌞",
+        default: "Here is the information I can share with you 😊"
+      }
     };
-    return fr[topic] || fr.default;
+
+    return answers[lang]?.[topic]
+        || answers[lang]?.default
+        || answers.fr.default;
   }
 
   /****************************************************
@@ -150,36 +162,34 @@
     };
   }
 
-/****************************************************
- * Mise en forme élégante du texte LONG
- ****************************************************/
-function formatLongText(text) {
-  // Découpe par lignes ou phrases longues
-  const lines = text
-    .split(/\n|•|- /)
-    .map(l => l.trim())
-    .filter(l => l.length > 30);
+  /****************************************************
+   * Mise en forme élégante du texte LONG
+   ****************************************************/
+  function formatLongText(text) {
+    const lines = text
+      .split(/\n|•|- /)
+      .map(l => l.trim())
+      .filter(l => l.length > 30);
 
-  // Limite raisonnable (évite le roman)
-  const selected = lines.slice(0, 6);
+    const selected = lines.slice(0, 6);
 
-  return `
-    <div class="kbLongWrapper">
-      <ul class="kbLongList">
-        ${selected.map(l => `<li>${l}</li>`).join("")}
-      </ul>
-    </div>
-  `;
-}
+    return `
+      <div class="kbLongWrapper">
+        <ul class="kbLongList">
+          ${selected.map(l => `<li>${l}</li>`).join("")}
+        </ul>
+      </div>
+    `;
+  }
 
   /****************************************************
    * INITIALISATION CHATBOT
    ****************************************************/
   async function initChatbot() {
+
     loadCSS();
     const html = await loadHTML();
     document.body.insertAdjacentHTML("beforeend", html);
-
     await new Promise(requestAnimationFrame);
 
     const chatWin = document.getElementById("chatWindow");
@@ -192,42 +202,34 @@ function formatLongText(text) {
     let isOpen = false;
     chatWin.style.display = "none";
 
-    openBtn.addEventListener("click", (e) => {
+    openBtn.addEventListener("click", e => {
       e.stopPropagation();
       isOpen = !isOpen;
       chatWin.style.display = isOpen ? "flex" : "none";
     });
 
-    document.addEventListener("click", (e) => {
+    document.addEventListener("click", e => {
       if (isOpen && !chatWin.contains(e.target) && !openBtn.contains(e.target)) {
         chatWin.style.display = "none";
         isOpen = false;
       }
     });
 
+    /****************************************************
+     * WhatsApp Buttons
+     ****************************************************/
+    document.getElementById("waLaurent")?.addEventListener("click", e => {
+      e.stopPropagation();
+      window.open("https://wa.me/34621210642", "_blank");
+    });
 
-/****************************************************
- * WhatsApp Buttons — Activation
- ****************************************************/
-const waLaurent = document.getElementById("waLaurent");
-const waSophia  = document.getElementById("waSophia");
-
-if (waLaurent) {
-  waLaurent.addEventListener("click", (e) => {
-    e.stopPropagation();
-    window.open("https://wa.me/34621210642", "_blank");
-  });
-}
-
-if (waSophia) {
-  waSophia.addEventListener("click", (e) => {
-    e.stopPropagation();
-    window.open("https://wa.me/34621128303", "_blank");
-  });
-}
+    document.getElementById("waSophia")?.addEventListener("click", e => {
+      e.stopPropagation();
+      window.open("https://wa.me/34621128303", "_blank");
+    });
 
     /****************************************************
-     * SEND MESSAGE — VERSION SAINE
+     * SEND MESSAGE — VERSION PROPRE
      ****************************************************/
     async function sendMessage() {
       if (!input.value.trim()) return;
@@ -235,10 +237,10 @@ if (waSophia) {
       const userText = input.value.trim();
       input.value = "";
 
-      const userBubble = document.createElement("div");
-      userBubble.className = "msg userMsg";
-      userBubble.textContent = userText;
-      bodyEl.appendChild(userBubble);
+      bodyEl.insertAdjacentHTML(
+        "beforeend",
+        `<div class="msg userMsg">${userText}</div>`
+      );
       bodyEl.scrollTop = bodyEl.scrollHeight;
 
       typing.style.display = "flex";
@@ -269,23 +271,15 @@ if (waSophia) {
         }
 
         else {
-          const intro = document.createElement("div");
-          intro.innerHTML = `<b>${getShortAnswer(topic, lang)}</b><br><br>`;
-          bot.appendChild(intro);
+          bot.innerHTML = `<b>${getShortAnswer(topic, lang)}</b><br><br>`;
 
-          if (!kbPath) {
-            bot.appendChild(document.createTextNode(
-              "Pouvez-vous préciser votre demande ? 😊"
-            ));
-          } else {
+          if (kbPath) {
             const res = await fetch(kbPath);
             const raw = await res.text();
             const kb = parseKB(raw);
 
             if (kb.short) {
-              const s = document.createElement("div");
-              s.textContent = kb.short;
-              bot.appendChild(s);
+              bot.innerHTML += `<div>${kb.short}</div>`;
             }
 
             if (kb.long) {
@@ -293,12 +287,9 @@ if (waSophia) {
               btn.className = "kbMoreBtn";
               btn.textContent = "Voir la description complète";
 
-              btn.addEventListener("click", (e) => {
+              btn.addEventListener("click", e => {
                 e.stopPropagation();
-                const l = document.createElement("div");
-                l.className = "kbLongText";
-                l.textContent = kb.long;
-                bot.appendChild(l);
+                bot.insertAdjacentHTML("beforeend", formatLongText(kb.long));
                 btn.remove();
                 bodyEl.scrollTop = bodyEl.scrollHeight;
               });
@@ -306,6 +297,8 @@ if (waSophia) {
               bot.appendChild(document.createElement("br"));
               bot.appendChild(btn);
             }
+          } else {
+            bot.append("Pouvez-vous préciser votre demande ? 😊");
           }
         }
 
