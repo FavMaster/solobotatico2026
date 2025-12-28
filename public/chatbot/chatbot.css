@@ -8,10 +8,13 @@ body {
   background: #f2f2f2;
 }
 
-/* Bouton d'ouverture */
+html, body {
+  overflow-x: visible !important;
+}
+
 #openChatBtn {
   position: fixed;
-  bottom: 20px;
+  bottom: env(safe-area-inset-bottom, 20px);
   right: 20px;
 
   width: 72px;
@@ -20,7 +23,7 @@ body {
   background: linear-gradient(135deg, #f7e7c1, #e0c28c);
   border-radius: 50%;
 
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
 
@@ -29,11 +32,17 @@ body {
   box-shadow: 0 6px 18px rgba(0,0,0,0.28);
   border: 1px solid rgba(255,255,255,0.55);
 
-  /* 🔑 CRITIQUE POUR iOS */
-  z-index: 999999;
+  z-index: 2147483647; /* MAX SAFE iOS */
   pointer-events: auto;
-  -webkit-transform: translateZ(0);
+
+  /* 🔥 iOS FIXES */
+  transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0,0,0);
+  will-change: transform;
+
+  isolation: isolate;
 }
+
 
 
 
