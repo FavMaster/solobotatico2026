@@ -151,26 +151,55 @@
   }
 
 /****************************************************
- * Mise en forme élégante du texte LONG
+ * Mise en forme élégante du texte LONG — Version PRO
  ****************************************************/
 function formatLongText(text) {
-  // Découpe par lignes ou phrases longues
-  const lines = text
-    .split(/\n|•|- /)
+  if (!text) return "";
+
+  const clean = text
+    .replace(/\r/g, "")
+    .trim();
+
+  const lines = clean
+    .split("\n")
     .map(l => l.trim())
-    .filter(l => l.length > 30);
+    .filter(l => l.length > 0);
 
-  // Limite raisonnable (évite le roman)
-  const selected = lines.slice(0, 6);
+  let html = `<div class="kbLongWrapper">`;
 
-  return `
-    <div class="kbLongWrapper">
-      <ul class="kbLongList">
-        ${selected.map(l => `<li>${l}</li>`).join("")}
-      </ul>
-    </div>
-  `;
+  let count = 0;
+
+  for (const line of lines) {
+    if (count >= 8) break; // limite élégante
+
+    // Titres (finissant par : ou tout en majuscules)
+    if (
+      line.endsWith(":") ||
+      (line === line.toUpperCase() && line.length < 40)
+    ) {
+      html += `<div class="kbLongTitle">${line}</div>`;
+    }
+
+    // Bullet points
+    else if (
+      line.startsWith("-") ||
+      line.startsWith("•")
+    ) {
+      html += `<div class="kbLongBullet">• ${line.replace(/^[-•]\s*/, "")}</div>`;
+      count++;
+    }
+
+    // Paragraphes normaux
+    else if (line.length > 40) {
+      html += `<div class="kbLongParagraph">${line}</div>`;
+      count++;
+    }
+  }
+
+  html += `</div>`;
+  return html;
 }
+
 
   /****************************************************
    * INITIALISATION CHATBOT
