@@ -50,68 +50,48 @@
   /****************************************************
    * Intentions
    ****************************************************/
-function detectIntent(message) {
-  const text = normalizeText(message);
+  function detectIntent(message) {
+    const t = message.toLowerCase();
 
-  const intents = {
-    list_suites: [
-      "suite", "suites", "chambre", "chambres", "logement", "hebergement",
-      "room", "rooms", "accommodation",
-      "habitacion", "habitaciones",
-      "kamer", "kamers",
-      "habitacio", "habitacions"
-    ],
+    const suites = [
+      "suite", "suites", "chambre", "chambres",
+      "room", "rooms", "kamer", "kamers",
+      "habitacion", "habitaciones"
+    ];
 
-    help: [
-      "aide", "help", "ayuda", "hulp",
-      "que peux", "que faire", "what can", "what do you"
-    ],
+    if (suites.some(w => t.includes(w))) return "list_suites";
 
-    booking: [
-      "reserver", "reservation", "booking", "book", "disponibilite"
-    ]
-  };
+    const help = [
+      "aide", "help", "ayuda",
+      "que faire", "what can", "what do"
+    ];
 
-  for (const intent in intents) {
-    if (intents[intent].some(word => text.includes(word))) {
-      return intent;
-    }
+    if (help.some(w => t.includes(w))) return "help";
+
+    return "specific";
   }
-
-  return "specific";
-}
-
 
   /****************************************************
    * Topic
    ****************************************************/
- function detectTopic(message) {
-  const text = normalizeText(message);
+  function detectTopic(message) {
+    const t = message.toLowerCase();
 
-  if (text.includes("neus")) return "suite_neus";
-  if (text.includes("bourlard")) return "suite_bourlardes";
-  if (text.includes("blue")) return "suite_blue";
+    if (t.includes("neus") || t.includes("bourlard") || t.includes("suite"))
+      return "suite";
+    if (t.includes("bateau") || t.includes("tintorera"))
+      return "bateau";
+    if (t.includes("reiki"))
+      return "reiki";
+    if (t.includes("piscine"))
+      return "piscine";
+    if (t.includes("petit"))
+      return "petitdej";
+    if (t.includes("escala") || t.includes("faire"))
+      return "escale";
 
-  if (text.includes("suite") || text.includes("chambre"))
-    return "suite";
-
-  if (text.includes("bateau") || text.includes("tintorera"))
-    return "bateau";
-
-  if (text.includes("reiki"))
-    return "reiki";
-
-  if (text.includes("piscine"))
-    return "piscine";
-
-  if (text.includes("petit"))
-    return "petitdej";
-
-  if (text.includes("escala") || text.includes("faire"))
-    return "escale";
-
-  return "default";
-}
+    return "default";
+  }
 
   /****************************************************
    * Router KB
@@ -253,25 +233,6 @@ function formatLongText(text) {
         isOpen = false;
       }
     });
-
-
-
-/****************************************************
- * Normalisation pour 7.6
- ****************************************************/
-
-function normalizeText(text) {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // accents
-    .replace(/[^a-z0-9\s]/g, "")     // ponctuation
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-
-
 
 
 /****************************************************
