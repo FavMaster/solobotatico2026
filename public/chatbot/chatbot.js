@@ -176,33 +176,66 @@
   /****************************************************
    * Short answers
    ****************************************************/
-  function getShortAnswer(topic, lang) {
-    const answers = {
-      fr: {
-        suite: "Voici les informations sur la suite que vous avez demandée ✨",
-        bateau: "La Tintorera vous promet un moment magique en mer 🌊",
-        reiki: "Un moment de détente et d’énergie positive 🌿",
-        piscine: "Notre piscine rooftop offre une vue à couper le souffle 🏖️",
-        petitdej: "Le petit-déjeuner est inclus et servi avec soin ☕",
-        escale: "L’Escala regorge de choses à découvrir 🌞",
-        default: "Voici ce que je peux vous dire à ce sujet 😊"
-      },
-      es: {
-        suite: "Aquí tiene la información sobre la suite ✨",
-        bateau: "La Tintorera le espera para un momento mágico en el mar 🌊",
-        reiki: "Un momento de relajación y bienestar 🌿",
-        piscine: "Nuestra piscina rooftop ofrece una vista increíble 🏖️",
-        petitdej: "El desayuno está incluido ☕",
-        escale: "L’Escala tiene mucho que ofrecer 🌞",
-        default: "Aquí está la información 😊"
-      },
-      en: {
-        default: "Here is what I can tell you 😊"
-      }
-    };
+  function getShortAnswer(topic, lang = "fr") {
+  const answers = {
+    fr: {
+      piscine: "Notre piscine rooftop offre une vue à couper le souffle 🏖️",
+      suite: "Voici les informations sur la suite que vous avez demandée ✨",
+      bateau: "La Tintorera vous promet un moment magique en mer 🌊",
+      reiki: "Un moment de détente et d’énergie positive 🌿",
+      petitdej: "Le petit-déjeuner est inclus et servi avec soin ☕",
+      escale: "L’Escala regorge de choses à découvrir 🌞",
+      default: "Voici ce que je peux vous dire à ce sujet 😊"
+    },
 
-    return answers[lang]?.[topic] || answers[lang]?.default || answers.fr.default;
-  }
+    nl: {
+      piscine: "Ons rooftopzwembad biedt een adembenemend uitzicht 🏖️",
+      suite: "Hier vindt u informatie over onze accommodaties ✨",
+      bateau: "De Tintorera belooft een magisch moment op zee 🌊",
+      reiki: "Een moment van ontspanning en hernieuwde energie 🌿",
+      petitdej: "Het ontbijt is inbegrepen en met zorg bereid ☕",
+      escale: "Er valt veel te ontdekken in L’Escala 🌞",
+      default: "Dit is wat ik u hierover kan vertellen 😊"
+    },
+
+    en: {
+      piscine: "Our rooftop pool offers a breathtaking view 🏖️",
+      suite: "Here is information about our accommodations ✨",
+      bateau: "Tintorera promises a magical moment at sea 🌊",
+      reiki: "A moment of relaxation and positive energy 🌿",
+      petitdej: "Breakfast is included and carefully prepared ☕",
+      escale: "There is so much to discover in L’Escala 🌞",
+      default: "Here is what I can tell you 😊"
+    },
+
+    es: {
+      piscine: "Nuestra piscina rooftop ofrece una vista impresionante 🏖️",
+      suite: "Aquí tiene la información sobre nuestros alojamientos ✨",
+      bateau: "La Tintorera le promete un momento mágico en el mar 🌊",
+      reiki: "Un momento de relajación y energía positiva 🌿",
+      petitdej: "El desayuno está incluido y servido con cuidado ☕",
+      escale: "Hay mucho que descubrir en L’Escala 🌞",
+      default: "Esto es lo que puedo decirle 😊"
+    },
+
+    cat: {
+      piscine: "La nostra piscina rooftop ofereix una vista espectacular 🏖️",
+      suite: "Aquí teniu informació sobre els nostres allotjaments ✨",
+      bateau: "La Tintorera promet un moment màgic al mar 🌊",
+      reiki: "Un moment de relaxació i energia positiva 🌿",
+      petitdej: "L’esmorzar està inclòs i preparat amb cura ☕",
+      escale: "Hi ha molt per descobrir a L’Escala 🌞",
+      default: "Això és el que et puc explicar 😊"
+    }
+  };
+
+  return (
+    answers[lang]?.[topic] ||
+    answers[lang]?.default ||
+    answers.fr.default
+  );
+}
+
 
   /****************************************************
    * Parser KB
