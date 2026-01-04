@@ -69,36 +69,109 @@
   /****************************************************
    * Topic
    ****************************************************/
-  function detectTopic(message) {
-    const t = message.toLowerCase();
+ function detectTopic(message) {
+  const t = message.toLowerCase();
 
-    if (t.includes("neus") || t.includes("bourlard") || t.includes("suite")) return "suite";
-    if (t.includes("bateau") || t.includes("tintorera")) return "bateau";
-    if (t.includes("reiki")) return "reiki";
-    if (t.includes("piscine")) return "piscine";
-    if (t.includes("petit")) return "petitdej";
-    if (t.includes("escala") || t.includes("faire")) return "escale";
+  // Suites
+  if (
+    t.includes("neus") ||
+    t.includes("bourlard") ||
+    t.includes("suite") ||
+    t.includes("room") ||
+    t.includes("kamer") ||
+    t.includes("habitacion")
+  ) return "suite";
 
-    return "default";
-  }
+  // Bateau
+  if (
+    t.includes("bateau") ||
+    t.includes("tintorera") ||
+    t.includes("boat") ||
+    t.includes("boot")
+  ) return "bateau";
+
+  // Reiki
+  if (
+    t.includes("reiki") ||
+    t.includes("massage")
+  ) return "reiki";
+
+  // Piscine ✅
+  if (
+    t.includes("piscine") ||
+    t.includes("pool") ||
+    t.includes("zwembad")
+  ) return "piscine";
+
+  // Petit-déjeuner
+  if (
+    t.includes("petit") ||
+    t.includes("breakfast") ||
+    t.includes("ontbijt")
+  ) return "petitdej";
+
+  // L’Escala / activités
+  if (
+    t.includes("escala") ||
+    t.includes("que faire") ||
+    t.includes("wat te doen") ||
+    t.includes("what to do")
+  ) return "escale";
+
+  return "default";
+}
+
 
   /****************************************************
    * Router KB
    ****************************************************/
-  function resolveKBPath(message, lang) {
-    const t = message.toLowerCase();
+ function resolveKBPath(message, lang) {
+  const t = message.toLowerCase();
 
-    if (t.includes("neus")) return `${KB_BASE_URL}/kb/${lang}/02_suites/suite-neus.txt`;
-    if (t.includes("bourlard")) return `${KB_BASE_URL}/kb/${lang}/02_suites/suite-bourlardes.txt`;
-    if (t.includes("blue")) return `${KB_BASE_URL}/kb/${lang}/02_suites/suite-blue-patio.txt`;
-    if (t.includes("bateau") || t.includes("tintorera")) return `${KB_BASE_URL}/kb/${lang}/03_services/tintorera-bateau.txt`;
-    if (t.includes("reiki")) return `${KB_BASE_URL}/kb/${lang}/03_services/reiki.txt`;
-    if (t.includes("piscine")) return `${KB_BASE_URL}/kb/${lang}/03_services/piscine-rooftop.txt`;
-    if (t.includes("petit")) return `${KB_BASE_URL}/kb/${lang}/03_services/petit-dejeuner.txt`;
-    if (t.includes("escala")) return `${KB_BASE_URL}/kb/${lang}/04_que-faire/que-faire-escala.txt`;
+  if (t.includes("neus"))
+    return `${KB_BASE_URL}/kb/${lang}/02_suites/suite-neus.txt`;
 
-    return null;
-  }
+  if (t.includes("bourlard"))
+    return `${KB_BASE_URL}/kb/${lang}/02_suites/suite-bourlardes.txt`;
+
+  if (t.includes("blue"))
+    return `${KB_BASE_URL}/kb/${lang}/02_suites/suite-blue-patio.txt`;
+
+  if (
+    t.includes("bateau") ||
+    t.includes("tintorera") ||
+    t.includes("boat") ||
+    t.includes("boot")
+  )
+    return `${KB_BASE_URL}/kb/${lang}/03_services/tintorera-bateau.txt`;
+
+  if (t.includes("reiki") || t.includes("massage"))
+    return `${KB_BASE_URL}/kb/${lang}/03_services/reiki.txt`;
+
+  if (
+    t.includes("piscine") ||
+    t.includes("pool") ||
+    t.includes("zwembad")
+  )
+    return `${KB_BASE_URL}/kb/${lang}/03_services/piscine-rooftop.txt`;
+
+  if (
+    t.includes("petit") ||
+    t.includes("breakfast") ||
+    t.includes("ontbijt")
+  )
+    return `${KB_BASE_URL}/kb/${lang}/03_services/petit-dejeuner.txt`;
+
+  if (
+    t.includes("escala") ||
+    t.includes("wat te doen") ||
+    t.includes("what to do")
+  )
+    return `${KB_BASE_URL}/kb/${lang}/04_que-faire/que-faire-escala.txt`;
+
+  return null;
+}
+
 
   /****************************************************
    * Short answers
