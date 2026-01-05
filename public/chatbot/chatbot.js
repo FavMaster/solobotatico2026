@@ -242,6 +242,19 @@ if (htmlLang && htmlLang.length >= 2) {
   );
 }
 
+ /****************************************************
+   * Bouton reserver
+   ****************************************************/
+
+function createBookingButton(label, url) {
+  const btn = document.createElement("a");
+  btn.href = url;
+  btn.target = "_blank";
+  btn.className = "kbBookBtn";
+  btn.textContent = label;
+  return btn;
+}
+
 
   /****************************************************
    * Parser KB
@@ -377,6 +390,23 @@ const i18n = {
 function t(lang, key) {
   return i18n[lang]?.[key] || i18n.fr[key];
 }
+
+/****************************************************
+ * LIENS DE RÉSERVATION — CENTRALISÉS
+ ****************************************************/
+const bookingLinks = {
+  tintorera: "https://koalendar.com/e/tintorera",
+  reiki: "https://koalendar.com/e/soloatico-reiki",
+
+  suites: {
+    fr: "https://soloatico.amenitiz.io/fr/booking/room#DatesGuests-BE",
+    es: "https://soloatico.amenitiz.io/es/booking/room",
+    en: "https://soloatico.amenitiz.io/en/booking/room#DatesGuests-BE",
+    nl: "https://soloatico.amenitiz.io/nl/booking/room#DatesGuests-BE",
+    cat: "https://soloatico.amenitiz.io/ca/booking/room#DatesGuests-BE"
+  }
+};
+
 
 /****************************************************
  * WhatsApp Buttons — Activation fiable
@@ -525,6 +555,42 @@ if (prices) {
   bodyEl.appendChild(bot);
   bodyEl.scrollTop = bodyEl.scrollHeight;
 }
+
+/* Bouton réservation contextuel */
+let bookingBtn = null;
+
+if (topic === "bateau") {
+  bookingBtn = createBookingButton(
+    "⛵ Réserver la Tintorera",
+    bookingLinks.tintorera
+  );
+}
+
+if (topic === "reiki") {
+  bookingBtn = createBookingButton(
+    "🧘‍♀️ Réserver une séance Reiki",
+    bookingLinks.reiki
+  );
+}
+
+if (topic === "suite") {
+  const suiteUrl =
+    bookingLinks.suites[lang] || bookingLinks.suites.fr;
+
+  bookingBtn = createBookingButton(
+    "🏨 Réserver votre séjour",
+    suiteUrl
+  );
+}
+
+if (bookingBtn) {
+  bot.appendChild(document.createElement("br"));
+  bot.appendChild(bookingBtn);
+}
+
+
+
+
   // Liaison du bouton
   sendBtn.addEventListener("click", sendMessage);
   input.addEventListener("keydown", e => {
