@@ -1,12 +1,14 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.6.7.5 — PISCINE + MULTILINGUE
+ * Version 1.6.7.6 — FIX CLICK + LANG SELECTOR
  ****************************************************/
 
 (function SoloIATico() {
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
-  console.log("Solo’IA’tico Chatbot v1.6.7.5 — Piscine OK");
+  const LANG_KEY = "soloia_lang";
+
+  console.log("Solo’IA’tico Chatbot v1.6.7.6");
 
   function ready(fn) {
     if (document.readyState !== "loading") fn();
@@ -56,21 +58,36 @@
       }
     });
 
-    /* ================= WHATSAPP ================= */
-    const waLaurent = document.getElementById("waLaurent");
-    const waSophia  = document.getElementById("waSophia");
-
-    if (waLaurent) waLaurent.onclick = () =>
-      window.open("https://wa.me/34621210642", "_blank");
-
-    if (waSophia) waSophia.onclick = () =>
-      window.open("https://wa.me/34621128303", "_blank");
-
     /* ================= LANG ================= */
-    function detectLang() {
-      const l = document.documentElement.lang?.slice(0,2);
-      return ["fr","es","en","ca","nl"].includes(l) ? l : "fr";
+    function getLang() {
+      return localStorage.getItem(LANG_KEY)
+        || document.documentElement.lang?.slice(0,2)
+        || "fr";
     }
+
+    function setLang(lang) {
+      localStorage.setItem(LANG_KEY, lang);
+    }
+
+    /* ================= LANG SELECTOR ================= */
+    const langBar = document.createElement("div");
+    langBar.className = "soloia-langbar";
+    langBar.innerHTML = `
+      <button data-lang="fr">FR</button>
+      <button data-lang="es">ES</button>
+      <button data-lang="en">EN</button>
+      <button data-lang="ca">CAT</button>
+      <button data-lang="nl">NL</button>
+    `;
+
+    langBar.querySelectorAll("button").forEach(btn => {
+      btn.onclick = e => {
+        e.stopPropagation();
+        setLang(btn.dataset.lang);
+      };
+    });
+
+    chatWin.querySelector(".chatHeader")?.appendChild(langBar);
 
     /* ================= UI TEXT ================= */
     const UI = {
@@ -131,7 +148,8 @@
       moreBtn.className = "kbMoreBtn";
       moreBtn.textContent = UI[lang].more;
 
-      moreBtn.onclick = () => {
+      moreBtn.onclick = e => {
+        e.stopPropagation();        // ✅ FIX CRITIQUE
         longDiv.style.display = "block";
         moreBtn.remove();
       };
@@ -151,7 +169,7 @@
 
       typing.style.display = "flex";
       const t = normalize(raw);
-      const lang = detectLang();
+      const lang = getLang();
 
       try {
         if (isPiscine(t)) {
@@ -172,7 +190,7 @@
     sendBtn.onclick = e => { e.preventDefault(); sendMessage(); };
     input.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); sendMessage(); } };
 
-    console.log("✅ Solo’IA’tico v1.6.7.5 — Piscine multilingue OK");
+    console.log("✅ Solo’IA’tico v1.6.7.6 — click & language fixed");
   });
 
 })();
