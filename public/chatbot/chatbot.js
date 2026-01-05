@@ -1,7 +1,8 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.5.4 STABLE
- * FULL KB (SHORT + LONG) + Mémoire conversationnelle
+ * Version 1.5.5 STABLE
+ * KB SHORT + LONG OK
+ * Boutons WhatsApp OK
  * Mobile Safe (iOS / Android)
  ****************************************************/
 
@@ -9,7 +10,7 @@
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
 
-  console.log("Solo’IA’tico Chatbot v1.5.4 — Loaded");
+  console.log("Solo’IA’tico Chatbot v1.5.5 — Loaded");
 
   /****************************************************
    * MÉMOIRE CONVERSATIONNELLE (SESSION)
@@ -20,7 +21,7 @@
   };
 
   /****************************************************
-   * I18N — TEXTES CENTRALISÉS
+   * I18N
    ****************************************************/
   const I18N = {
     fr: {
@@ -35,20 +36,6 @@
         suite: "Voici les informations sur nos hébergements ✨",
         default: "Voici ce que je peux vous dire 😊"
       }
-    },
-
-    en: {
-      help: "I can help you with our suites, the Tintorera boat, Reiki or the pool 😊",
-      clarify: "Could you please clarify your request? 😊",
-      more: "View full description",
-      bookBoat: "⛵ Book a boat trip",
-      short: {
-        bateau: "Tintorera offers unforgettable boat trips ⛵",
-        reiki: "Reiki sessions are available 🌿",
-        piscine: "Our rooftop pool is available 🏖️",
-        suite: "Here is information about our accommodations ✨",
-        default: "Here is what I can tell you 😊"
-      }
     }
   };
 
@@ -57,28 +44,23 @@
   }
 
   function shortAnswer(lang, topic) {
-    return (
-      I18N[lang]?.short?.[topic] ||
-      I18N.fr.short[topic] ||
-      I18N.fr.short.default
-    );
+    return I18N[lang]?.short?.[topic] || I18N.fr.short.default;
   }
 
   /****************************************************
-   * OUTILS LINGUISTIQUES
+   * OUTILS
    ****************************************************/
   function detectLanguage(text = "") {
     const t = text.toLowerCase();
     if (/zwembad|boot/.test(t)) return "nl";
     if (/boat|pool/.test(t)) return "en";
-    if (/piscina|hacer/.test(t)) return "es";
-    if (/fer|piscina/.test(t)) return "cat";
+    if (/piscina/.test(t)) return "es";
+    if (/fer/.test(t)) return "cat";
     return document.documentElement.lang?.split("-")[0] || "fr";
   }
 
   function detectIntent(text) {
-    const t = text.toLowerCase();
-    if (/help|aide|ayuda/.test(t)) return "help";
+    if (/help|aide|ayuda/.test(text.toLowerCase())) return "help";
     return "specific";
   }
 
@@ -94,7 +76,7 @@
   }
 
   /****************************************************
-   * ROUTEUR KB
+   * KB
    ****************************************************/
   function resolveKBPath(topic, lang) {
     const map = {
@@ -102,35 +84,40 @@
       reiki: "03_services/reiki.txt",
       piscine: "03_services/piscine-rooftop.txt"
     };
-
-    if (!map[topic]) return null;
-    return `${KB_BASE_URL}/kb/${lang}/${map[topic]}`;
+    return map[topic]
+      ? `${KB_BASE_URL}/kb/${lang}/${map[topic]}`
+      : null;
   }
 
   function parseKB(text) {
     const short = text.match(/SHORT:\s*([\s\S]*?)\nLONG:/i);
     const long = text.match(/LONG:\s*([\s\S]*)/i);
-
     return {
       short: short ? short[1].trim() : "",
       long: long ? long[1].trim() : ""
     };
   }
 
-  function formatLong(text) {
-    const lines = text
+  function buildLongList(text) {
+    const ul = document.createElement("ul");
+    ul.className = "kbLongList";
+
+    text
       .split(/\n|•|- /)
       .map(l => l.trim())
       .filter(l => l.length > 30)
-      .slice(0, 6);
+      .slice(0, 6)
+      .forEach(line => {
+        const li = document.createElement("li");
+        li.textContent = line;
+        ul.appendChild(li);
+      });
 
-    return `<ul class="kbLongList">
-      ${lines.map(l => `<li>${l}</li>`).join("")}
-    </ul>`;
+    return ul;
   }
 
   /****************************************************
-   * INIT DOM READY (MOBILE SAFE)
+   * INIT DOM READY
    ****************************************************/
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -151,9 +138,31 @@
     const bodyEl  = document.getElementById("chatBody");
     const typing  = document.getElementById("typing");
 
+    const waLaurent = document.getElementById("waLaurent");
+    const waSophia  = document.getElementById("waSophia");
+
     if (!chatWin || !openBtn || !sendBtn || !input) {
       console.error("❌ Chatbot HTML incomplet");
       return;
+    }
+
+    /****************************************************
+     * WHATSAPP — FIX DEFINITIF
+     ****************************************************/
+    if (waLaurent) {
+      waLaurent.addEventListener("click", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.open("https://wa.me/34621210642", "_blank");
+      });
+    }
+
+    if (waSophia) {
+      waSophia.addEventListener("click", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.open("https://wa.me/34621128303", "_blank");
+      });
     }
 
     chatWin.style.display = "none";
@@ -171,7 +180,11 @@
       const text = input.value.trim();
       input.value = "";
 
-      bodyEl.innerHTML += `<div class="msg userMsg">${text}</div>`;
+      bodyEl.insertAdjacentHTML(
+        "beforeend",
+        `<div class="msg userMsg">${text}</div>`
+      );
+
       typing.style.display = "flex";
 
       const lang = detectLanguage(text);
@@ -190,8 +203,9 @@
           bot.textContent = t(lang, "help");
         } else {
 
-          // Intro courte
-          bot.innerHTML = `<b>${shortAnswer(lang, topic)}</b><br><br>`;
+          const intro = document.createElement("div");
+          intro.innerHTML = `<b>${shortAnswer(lang, topic)}</b><br><br>`;
+          bot.appendChild(intro);
 
           const kbPath = resolveKBPath(topic, lang);
           if (kbPath) {
@@ -205,32 +219,38 @@
               const kb = parseKB(await res.text());
 
               if (kb.short) {
-                bot.innerHTML += `<div>${kb.short}</div>`;
+                const s = document.createElement("div");
+                s.textContent = kb.short;
+                bot.appendChild(s);
               }
 
               if (kb.long) {
-                const btn = document.createElement("button");
-                btn.className = "kbMoreBtn";
-                btn.textContent = t(lang, "more");
+                const moreBtn = document.createElement("button");
+                moreBtn.className = "kbMoreBtn";
+                moreBtn.textContent = t(lang, "more");
 
-                btn.onclick = () => {
-                  btn.remove();
-                  bot.innerHTML += formatLong(kb.long);
+                moreBtn.addEventListener("click", e => {
+                  e.stopPropagation();
+                  moreBtn.remove();
+                  bot.appendChild(buildLongList(kb.long));
                   bodyEl.scrollTop = bodyEl.scrollHeight;
-                };
+                });
 
                 bot.appendChild(document.createElement("br"));
-                bot.appendChild(btn);
+                bot.appendChild(moreBtn);
               }
             }
           }
 
           if (topic === "bateau") {
-            bot.innerHTML += `<br>
-              <a class="kbBookBtn" target="_blank"
-                 href="https://koalendar.com/e/tintorera">
-                ${t(lang, "bookBoat")}
-              </a>`;
+            const book = document.createElement("a");
+            book.className = "kbBookBtn";
+            book.href = "https://koalendar.com/e/tintorera";
+            book.target = "_blank";
+            book.textContent = t(lang, "bookBoat");
+
+            bot.appendChild(document.createElement("br"));
+            bot.appendChild(book);
           }
         }
 
@@ -256,7 +276,7 @@
       }
     });
 
-    console.log("✅ Chatbot Solo’IA’tico v1.5.4 prêt");
+    console.log("✅ Chatbot Solo’IA’tico v1.5.5 prêt");
   });
 
 })();
