@@ -239,6 +239,14 @@ html, body {
   border-color: rgba(0,0,0,0.25);
 }
 
+.kbPrice {
+  margin-top: 10px;
+  font-size: 14.5px;
+  color: #2c2c2c;
+}
+.kbPrice b {
+  color: #000;
+}
 
 
 /* Footer */
