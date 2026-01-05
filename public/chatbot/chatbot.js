@@ -1,7 +1,7 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.6.2 — CONCIERGE FLOW REIKI
- * Coexists with Flow Bateau
+ * Version 1.6.2.1 — NLP SMART
+ * Tolérance fautes & formulations naturelles
  ****************************************************/
 
 (function () {
@@ -9,10 +9,10 @@
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
   const STORAGE_KEY = "soloia_concierge_v16";
 
-  console.log("Solo’IA’tico Chatbot v1.6.2 — Flow Reiki");
+  console.log("Solo’IA’tico Chatbot v1.6.2.1 — NLP SMART");
 
   /****************************************************
-   * MEMORY ENGINE (PERSISTENT)
+   * MEMORY ENGINE
    ****************************************************/
   const memory = (() => {
     try {
@@ -53,11 +53,10 @@
   }
 
   /****************************************************
-   * I18N — FR / EN
+   * I18N
    ****************************************************/
   const I18N = {
     fr: {
-      // Reiki
       infoReiki:
         "Le Reiki est un soin énergétique japonais favorisant une détente profonde, l’apaisement mental et le relâchement des tensions 🌿",
       askReikiDate:
@@ -68,12 +67,20 @@
         `Voici le récapitulatif de votre demande :\n\n• Soin : Reiki\n• Date : ${d}\n• Personnes : ${p}`,
       bookReiki: "🧘‍♀️ Réserver une séance de Reiki",
 
-      // Generic
+      infoBateau:
+        "Oui ⛵ Nous proposons des sorties en bateau privé à bord de la Tintorera, idéales pour baignades, couchers de soleil et découvertes marines sur la Costa Brava.",
+      askBateauDate:
+        "Avec plaisir ⛵ Pour quelle date souhaitez-vous la sortie en mer ?",
+      askBateauPeople:
+        "Parfait 😊 Combien de personnes participeront à la sortie ?",
+      bateauSummary: (d, p) =>
+        `Parfait ! Voici le récapitulatif :\n\n• Activité : Sortie bateau Tintorera\n• Date : ${d}\n• Personnes : ${p}`,
+      bookBateau: "⛵ Réserver la sortie Tintorera",
+
       clarify: "Pouvez-vous préciser votre demande ? 😊"
     },
 
     en: {
-      // Reiki
       infoReiki:
         "Reiki is a Japanese energy healing treatment promoting deep relaxation and emotional balance 🌿",
       askReikiDate:
@@ -84,7 +91,16 @@
         `Here is the summary of your request:\n\n• Treatment: Reiki\n• Date: ${d}\n• People: ${p}`,
       bookReiki: "🧘‍♀️ Book a Reiki session",
 
-      // Generic
+      infoBateau:
+        "Yes ⛵ We offer private boat trips aboard Tintorera, perfect for swimming, sunset cruises and coastal discovery.",
+      askBateauDate:
+        "With pleasure ⛵ For which date would you like the boat trip?",
+      askBateauPeople:
+        "Great 😊 How many people will join the trip?",
+      bateauSummary: (d, p) =>
+        `Perfect! Here is the summary:\n\n• Activity: Tintorera boat trip\n• Date: ${d}\n• People: ${p}`,
+      bookBateau: "⛵ Book the Tintorera boat trip",
+
       clarify: "Could you please clarify your request? 😊"
     }
   };
@@ -101,35 +117,45 @@
     return document.documentElement.lang?.split("-")[0] || "fr";
   }
 
-  function detectLangFromText(text) {
-    if (/what|when|how many|reiki/.test(text.toLowerCase())) return "en";
-    return null;
-  }
-
   function resolveLang(text) {
     if (memory.lang) return memory.lang;
-    return getPageLang() || detectLangFromText(text) || "fr";
+    return getPageLang() || "fr";
   }
 
   /****************************************************
-   * INTENTS
+   * NLP — NORMALISATION
    ****************************************************/
-  function intentReikiInfo(text) {
-    return /parle|info|c[’']est quoi|tell me|about/.test(text.toLowerCase())
-           && /reiki/.test(text.toLowerCase());
+  function normalize(text) {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^\w\s?]/g, "")
+      .trim();
   }
 
-  function intentReikiBook(text) {
-    return /je veux|réserver|séance reiki|book|reiki session/.test(text.toLowerCase());
+  function hasQuestion(text) {
+    return text.includes("?");
   }
 
-  function intentBateauInfo(text) {
-    return /parle|info|about/.test(text.toLowerCase())
-           && /bateau|boat|tintorera/.test(text.toLowerCase());
+  /****************************************************
+   * INTENT DETECTION — SMART
+   ****************************************************/
+  function isInfoIntent(txt) {
+    return /quest ce que|qu est ce que|cest quoi|avez vous|y a t il|parle moi|parlez|info/.test(txt)
+           || hasQuestion(txt);
   }
 
-  function intentBateauBook(text) {
-    return /je veux|réserver|faire du bateau|boat trip|book/.test(text.toLowerCase());
+  function isReiki(txt) {
+    return /reiki|riki/.test(txt);
+  }
+
+  function isBateau(txt) {
+    return /bateau|boat|tintorera/.test(txt);
+  }
+
+  function isBooking(txt) {
+    return /je veux|reserver|reservation|book|faire/.test(txt);
   }
 
   /****************************************************
@@ -145,85 +171,94 @@
     const html = await fetch(`${KB_BASE_URL}/chatbot/chatbot.html`).then(r => r.text());
     document.body.insertAdjacentHTML("beforeend", html);
 
-    const chatWin = document.getElementById("chatWindow");
-    const openBtn = document.getElementById("openChatBtn");
     const sendBtn = document.getElementById("sendBtn");
     const input   = document.getElementById("userInput");
     const bodyEl  = document.getElementById("chatBody");
     const typing  = document.getElementById("typing");
 
-    chatWin.style.display = "none";
-    let isOpen = false;
-
-    openBtn.addEventListener("click", e => {
-      e.stopPropagation();
-      isOpen = !isOpen;
-      chatWin.style.display = isOpen ? "flex" : "none";
-    });
-
-    /****************************************************
-     * SEND MESSAGE — FLOW ENGINE
-     ****************************************************/
     async function sendMessage() {
       if (!input.value.trim()) return;
 
-      const text = input.value.trim();
+      const raw = input.value.trim();
       input.value = "";
 
-      bodyEl.insertAdjacentHTML(
-        "beforeend",
-        `<div class="msg userMsg">${text}</div>`
-      );
+      bodyEl.insertAdjacentHTML("beforeend", `<div class="msg userMsg">${raw}</div>`);
       typing.style.display = "flex";
 
-      const lang = resolveLang(text);
+      const lang = resolveLang(raw);
       memory.lang = lang;
 
+      const text = normalize(raw);
       const bot = document.createElement("div");
       bot.className = "msg botMsg";
 
       try {
 
         /* INFO REIKI */
-        if (intentReikiInfo(text)) {
-          memory.slots = {};
+        if (isInfoIntent(text) && isReiki(text)) {
           setState(STATES.INFO_MODE);
           bot.textContent = t(lang, "infoReiki");
         }
 
-        /* START REIKI BOOKING */
-        else if (memory.state === STATES.INFO_MODE && intentReikiBook(text)) {
-          memory.slots = {};
+        /* BOOK REIKI */
+        else if (isBooking(text) && isReiki(text) && memory.state === STATES.INFO_MODE) {
           setState(STATES.REIKI_DATE);
           bot.textContent = t(lang, "askReikiDate");
         }
 
-        /* REIKI DATE */
         else if (memory.state === STATES.REIKI_DATE) {
-          memory.slots.date = text;
+          memory.slots.date = raw;
           setState(STATES.REIKI_PEOPLE);
           bot.textContent = t(lang, "askReikiPeople");
         }
 
-        /* REIKI PEOPLE */
         else if (memory.state === STATES.REIKI_PEOPLE) {
-          memory.slots.people = text;
+          memory.slots.people = raw;
+          bot.textContent = t(lang, "reikiSummary", memory.slots.date, memory.slots.people);
 
-          bot.textContent = t(
-            lang,
-            "reikiSummary",
-            memory.slots.date,
-            memory.slots.people
-          );
-
-          const bookBtn = document.createElement("a");
-          bookBtn.className = "kbBookBtn";
-          bookBtn.href = "https://koalendar.com/e/soloatico-reiki";
-          bookBtn.target = "_blank";
-          bookBtn.textContent = t(lang, "bookReiki");
+          const btn = document.createElement("a");
+          btn.className = "kbBookBtn";
+          btn.href = "https://koalendar.com/e/soloatico-reiki";
+          btn.target = "_blank";
+          btn.textContent = t(lang, "bookReiki");
 
           bot.appendChild(document.createElement("br"));
-          bot.appendChild(bookBtn);
+          bot.appendChild(btn);
+
+          memory.slots = {};
+          setState(STATES.INFO_MODE);
+        }
+
+        /* INFO BATEAU */
+        else if (isInfoIntent(text) && isBateau(text)) {
+          setState(STATES.INFO_MODE);
+          bot.textContent = t(lang, "infoBateau");
+        }
+
+        /* BOOK BATEAU */
+        else if (isBooking(text) && isBateau(text) && memory.state === STATES.INFO_MODE) {
+          setState(STATES.BATEAU_DATE);
+          bot.textContent = t(lang, "askBateauDate");
+        }
+
+        else if (memory.state === STATES.BATEAU_DATE) {
+          memory.slots.date = raw;
+          setState(STATES.BATEAU_PEOPLE);
+          bot.textContent = t(lang, "askBateauPeople");
+        }
+
+        else if (memory.state === STATES.BATEAU_PEOPLE) {
+          memory.slots.people = raw;
+          bot.textContent = t(lang, "bateauSummary", memory.slots.date, memory.slots.people);
+
+          const btn = document.createElement("a");
+          btn.className = "kbBookBtn";
+          btn.href = "https://koalendar.com/e/tintorera";
+          btn.target = "_blank";
+          btn.textContent = t(lang, "bookBateau");
+
+          bot.appendChild(document.createElement("br"));
+          bot.appendChild(btn);
 
           memory.slots = {};
           setState(STATES.INFO_MODE);
@@ -259,7 +294,7 @@
       }
     });
 
-    console.log("✅ Concierge Flow Reiki v1.6.2 ready");
+    console.log("✅ NLP SMART active — v1.6.2.1");
   });
 
 })();
