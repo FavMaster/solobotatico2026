@@ -355,10 +355,6 @@ function t(lang, key) {
 
 
 
-
-
-
-
 /****************************************************
  * SEND MESSAGE — VERSION MULTILINGUE STABLE (v1.4+)
  ****************************************************/
@@ -470,3 +466,16 @@ async function sendMessage() {
   bodyEl.appendChild(bot);
   bodyEl.scrollTop = bodyEl.scrollHeight;
 }
+  // Liaison du bouton
+  sendBtn.addEventListener("click", sendMessage);
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") sendMessage();
+  });
+
+} // <-- FIN initChatbot()
+
+// Lancement du chatbot
+initChatbot();
+
+})(); // <-- FIN IIFE
+
