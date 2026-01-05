@@ -1,15 +1,14 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.6.7 — UI STABLE + KB ACTIVE
- * Flow Bateau (KB driven)
+ * Version 1.6.7.1 — KB OFFICIELLE SOLOÁTICO
+ * Respect strict de l’arborescence KB
  ****************************************************/
 
 (function SoloIATico() {
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
-  const KB_TINTO = `${KB_BASE_URL}/kb/fr/bateau/tintorera.txt`;
 
-  console.log("Solo’IA’tico Chatbot v1.6.7 — KB active");
+  console.log("Solo’IA’tico Chatbot v1.6.7.1 — KB real paths");
 
   function ready(fn) {
     if (document.readyState !== "loading") fn();
@@ -18,7 +17,7 @@
 
   ready(async function () {
 
-    /* ===== CSS ===== */
+    /* ================= CSS ================= */
     if (!document.getElementById("soloia-css")) {
       const css = document.createElement("link");
       css.id = "soloia-css";
@@ -27,12 +26,13 @@
       document.head.appendChild(css);
     }
 
-    /* ===== HTML ===== */
+    /* ================= HTML ================= */
     if (!document.getElementById("chatWindow")) {
       const html = await fetch(`${KB_BASE_URL}/chatbot/chatbot.html`).then(r => r.text());
       document.body.insertAdjacentHTML("beforeend", html);
     }
 
+    /* ================= DOM ================= */
     const chatWin = document.getElementById("chatWindow");
     const openBtn = document.getElementById("openChatBtn");
     const sendBtn = document.getElementById("sendBtn");
@@ -40,7 +40,7 @@
     const bodyEl  = document.getElementById("chatBody");
     const typing  = document.getElementById("typing");
 
-    /* ===== OPEN / CLOSE ===== */
+    /* ================= OPEN / CLOSE ================= */
     let isOpen = false;
     chatWin.style.display = "none";
 
@@ -58,7 +58,7 @@
       }
     });
 
-    /* ===== WHATSAPP ===== */
+    /* ================= WHATSAPP ================= */
     const waLaurent = document.getElementById("waLaurent");
     const waSophia  = document.getElementById("waSophia");
 
@@ -68,29 +68,23 @@
     if (waSophia) waSophia.onclick = () =>
       window.open("https://wa.me/34621128303", "_blank");
 
-    /* ===== KB PARSER ===== */
+    /* ================= LANG ================= */
+    function detectLang() {
+      return document.documentElement.lang?.slice(0,2) || "fr";
+    }
+
+    /* ================= KB PARSER ================= */
     function parseKB(text) {
-      const get = (label) => {
-        const r = new RegExp(`${label}:([\\s\\S]*?)(\\n[A-Z]+:|$)`, "i");
-        const m = text.match(r);
-        return m ? m[1].trim() : "";
-      };
+      const short = text.match(/SHORT:\s*([\s\S]*?)\n/i);
+      const long  = text.match(/LONG:\s*([\s\S]*)/i);
 
       return {
-        short:  get("SHORT"),
-        intro:  get("INTRO"),
-        long:   get("LONG"),
-        prices: get("PRICES")
+        short: short ? short[1].trim() : "",
+        long:  long  ? long[1].trim()  : ""
       };
     }
 
-    async function loadTintoreraKB() {
-      const res = await fetch(KB_TINTO);
-      if (!res.ok) throw new Error("KB Tintorera introuvable");
-      return parseKB(await res.text());
-    }
-
-    /* ===== NLP ===== */
+    /* ================= NLP ================= */
     function normalize(t) {
       return t.toLowerCase()
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -101,37 +95,35 @@
       return /bateau|tintorera|boat/.test(t);
     }
 
-    /* ===== RENDER ===== */
+    /* ================= RENDER TINTO ================= */
     async function renderTintorera() {
-      const kb = await loadTintoreraKB();
+      const lang = detectLang();
+
+      const kbPath =
+        `${KB_BASE_URL}/kb/${lang}/03_services/tintorera-bateau.txt`;
+
+      const res = await fetch(kbPath);
+      if (!res.ok) throw new Error("KB Tintorera introuvable");
+
+      const kb = parseKB(await res.text());
 
       const bot = document.createElement("div");
       bot.className = "msg botMsg";
 
+      /* SHORT */
       const shortDiv = document.createElement("div");
       shortDiv.className = "kbShort";
-      shortDiv.textContent = kb.short || "Oui ⛵ Nous proposons des sorties en mer privées.";
+      shortDiv.textContent = kb.short;
       bot.appendChild(shortDiv);
 
-      const introDiv = document.createElement("div");
-      introDiv.className = "kbIntro";
-      introDiv.innerHTML = `<strong>${kb.intro}</strong>`;
-      bot.appendChild(introDiv);
-
+      /* LONG (hidden) */
       const longDiv = document.createElement("div");
       longDiv.className = "kbLong";
       longDiv.style.display = "none";
-      longDiv.innerHTML = `<p>${kb.long.replace(/\n/g, "<br>")}</p>`;
+      longDiv.innerHTML = kb.long.replace(/\n/g, "<br>");
       bot.appendChild(longDiv);
 
-      if (kb.prices) {
-        const priceDiv = document.createElement("div");
-        priceDiv.className = "kbPrices";
-        priceDiv.style.display = "none";
-        priceDiv.innerHTML = `<p>${kb.prices.replace(/\n/g, "<br>")}</p>`;
-        bot.appendChild(priceDiv);
-      }
-
+      /* ACTIONS */
       const actions = document.createElement("div");
       actions.className = "kbActions";
 
@@ -142,7 +134,6 @@
       moreBtn.onclick = e => {
         e.stopPropagation();
         longDiv.style.display = "block";
-        if (kb.prices) bot.querySelector(".kbPrices").style.display = "block";
         moreBtn.remove();
       };
 
@@ -160,7 +151,7 @@
       bodyEl.scrollTop = bodyEl.scrollHeight;
     }
 
-    /* ===== SEND ===== */
+    /* ================= SEND ================= */
     async function sendMessage() {
       if (!input.value.trim()) return;
 
@@ -178,17 +169,15 @@
       if (isBateau(t)) {
         try {
           await renderTintorera();
-        } catch (e) {
-          const bot = document.createElement("div");
-          bot.className = "msg botMsg";
-          bot.textContent = "Désolé, les informations du bateau sont momentanément indisponibles.";
-          bodyEl.appendChild(bot);
+        } catch {
+          bodyEl.insertAdjacentHTML("beforeend",
+            `<div class="msg botMsg">Désolé, les informations du bateau sont momentanément indisponibles.</div>`
+          );
         }
       } else {
-        const bot = document.createElement("div");
-        bot.className = "msg botMsg";
-        bot.textContent = "Pouvez-vous préciser votre demande ? 😊";
-        bodyEl.appendChild(bot);
+        bodyEl.insertAdjacentHTML("beforeend",
+          `<div class="msg botMsg">Pouvez-vous préciser votre demande ? 😊</div>`
+        );
       }
 
       typing.style.display = "none";
@@ -206,7 +195,7 @@
       }
     };
 
-    console.log("✅ Solo’IA’tico v1.6.7 — KB connected");
+    console.log("✅ Solo’IA’tico v1.6.7.1 — KB Soloático OK");
   });
 
 })();
