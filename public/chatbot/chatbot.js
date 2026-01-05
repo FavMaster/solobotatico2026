@@ -556,41 +556,6 @@ if (prices) {
   bodyEl.scrollTop = bodyEl.scrollHeight;
 }
 
-/* Bouton réservation contextuel */
-let bookingBtn = null;
-
-if (topic === "bateau") {
-  bookingBtn = createBookingButton(
-    "⛵ Réserver la Tintorera",
-    bookingLinks.tintorera
-  );
-}
-
-if (topic === "reiki") {
-  bookingBtn = createBookingButton(
-    "🧘‍♀️ Réserver une séance Reiki",
-    bookingLinks.reiki
-  );
-}
-
-if (topic === "suite") {
-  const suiteUrl =
-    bookingLinks.suites[lang] || bookingLinks.suites.fr;
-
-  bookingBtn = createBookingButton(
-    "🏨 Réserver votre séjour",
-    suiteUrl
-  );
-}
-
-if (bookingBtn) {
-  bot.appendChild(document.createElement("br"));
-  bot.appendChild(bookingBtn);
-}
-
-
-
-
   // Liaison du bouton
   sendBtn.addEventListener("click", sendMessage);
   input.addEventListener("keydown", e => {
