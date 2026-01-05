@@ -1,12 +1,12 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.4.2 STABLE - Multilingue - Fonctionnelle
+ * Version 1.5 STABLE - Multilingue - Fonctionnelle
  * Multilingue + KB Short / Long + Intentions
  ****************************************************/
 
 (function () {
 
-  console.log("Solo’IA’tico Chatbot v1.4.1 — Initialisation");
+  console.log("Solo’IA’tico Chatbot v1.5 — Initialisation");
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
 
@@ -40,9 +40,11 @@
   if (/\b(el|la|los|las|qué|hacer|piscina)\b/.test(text)) return "es";
   if (/\b(què|fer|habitació|piscina)\b/.test(text)) return "cat";
 
-  // 2️⃣ Fallback : langue de la page
-  const htmlLang = document.documentElement.lang;
-  if (htmlLang) return htmlLang.split("-")[0];
+ // 2️⃣ Fallback : langue de la page
+const htmlLang = document.documentElement.lang;
+if (htmlLang && htmlLang.length >= 2) {
+  return htmlLang.split("-")[0];
+}
 
   // 3️⃣ Fallback final
   return "fr";
@@ -459,7 +461,7 @@ async function sendMessage() {
   } catch (err) {
     console.error(err);
     bot.textContent =
-      "Une erreur est survenue. Pouvez-vous reformuler votre demande ?";
+    bot.textContent = t(lang, "clarify");
   }
 
   typing.style.display = "none";
