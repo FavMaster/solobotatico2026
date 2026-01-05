@@ -1,17 +1,15 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.6.6.3 — UI CLEAN & STABLE
- * Flow Bateau — Short / Long / Booking OK
+ * Version 1.6.6.4 — UI DEFINITIVE
+ * Short / Long / Booking GARANTIS
  ****************************************************/
 
 (function () {
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
-  const STORAGE_KEY = "soloia_concierge_v1663";
 
-  console.log("Solo’IA’tico Chatbot v1.6.6.3");
+  console.log("Solo’IA’tico Chatbot v1.6.6.4");
 
-  /* ================= INIT ================= */
   document.addEventListener("DOMContentLoaded", async () => {
 
     /* CSS */
@@ -44,7 +42,7 @@
       }
     });
 
-    /* ================= CHAT CORE ================= */
+    /* CHAT CORE */
     const sendBtn = document.getElementById("sendBtn");
     const input   = document.getElementById("userInput");
     const bodyEl  = document.getElementById("chatBody");
@@ -72,18 +70,18 @@
       const bot = document.createElement("div");
       bot.className = "msg botMsg";
 
-      /* SHORT — TOUJOURS */
+      /* SHORT (TOUJOURS) */
       const shortDiv = document.createElement("div");
       shortDiv.innerHTML = `<b>${TEXT.short}</b>`;
       bot.appendChild(shortDiv);
 
-      /* LONG — OPTIONNEL */
+      /* LONG (MASQUÉ PAR DÉFAUT) */
       const longDiv = document.createElement("div");
       longDiv.style.display = "none";
       longDiv.innerHTML = `<p>${TEXT.long}</p>`;
       bot.appendChild(longDiv);
 
-      /* BTN MORE */
+      /* BOUTON DESCRIPTION (TOUJOURS PRÉSENT) */
       const moreBtn = document.createElement("button");
       moreBtn.className = "kbMoreBtn";
       moreBtn.textContent = TEXT.more;
@@ -97,7 +95,7 @@
 
       bot.appendChild(moreBtn);
 
-      /* SINGLE BOOK BUTTON */
+      /* BOUTON RÉSERVER (UNIQUE) */
       const bookBtn = document.createElement("a");
       bookBtn.href = "https://koalendar.com/e/tintorera";
       bookBtn.target = "_blank";
@@ -147,7 +145,7 @@
       }
     });
 
-    console.log("✅ v1.6.6.3 UI stable");
+    console.log("✅ v1.6.6.4 UI DEFINITIVE LOADED");
   });
 
 })();
