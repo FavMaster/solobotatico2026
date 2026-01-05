@@ -436,7 +436,7 @@ if (waSophia) {
 
 
 /****************************************************
- * SEND MESSAGE — VERSION MULTILINGUE STABLE (v1.5)
+ * SEND MESSAGE — VERSION MULTILINGUE STABLE (v1.4+)
  ****************************************************/
 async function sendMessage() {
   if (!input.value.trim()) return;
@@ -487,7 +487,6 @@ async function sendMessage() {
        INTENTION : SUJET PRÉCIS (KB)
     ================================= */
     else {
-
       /* Intro courte */
       const intro = document.createElement("div");
       intro.innerHTML = `<b>${getShortAnswer(topic, lang)}</b><br><br>`;
@@ -496,80 +495,34 @@ async function sendMessage() {
       if (!kbPath) {
         bot.appendChild(document.createTextNode(t(lang, "clarify")));
       } else {
-
-        /* Chargement KB avec fallback FR */
         let res = await fetch(kbPath);
+
+        /* Fallback FR si fichier manquant */
         if (!res.ok && lang !== "fr") {
           res = await fetch(kbPath.replace(`/kb/${lang}/`, `/kb/fr/`));
         }
+
         if (!res.ok) throw new Error("KB introuvable");
 
         const kb = parseKB(await res.text());
 
-        /* Résumé court */
-        if (kb.short) {
-          const shortDiv = document.createElement("div");
-          shortDiv.textContent = kb.short;
-          bot.appendChild(shortDiv);
-        }
+ /* Résumé */
+if (kb.short) {
+  const shortDiv = document.createElement("div");
+  shortDiv.textContent = kb.short;
+  bot.appendChild(shortDiv);
+}
 
-        /* ================================
-           TARIFS / PRIX MIS EN AVANT
-        ================================= */
-        if (kb.long) {
-          const prices = extractPrices(kb.long);
-          if (prices) {
-            const priceDiv = document.createElement("div");
-            priceDiv.className = "kbPrice";
-            priceDiv.innerHTML = `<br><b>💰 ${t(lang, "prices")} :</b> ${prices}`;
-            bot.appendChild(priceDiv);
-          }
-        }
+/* Tarifs / prix mis en avant si présents */
+const prices = extractPrices(kb.long);
+if (prices) {
+  const priceDiv = document.createElement("div");
+  priceDiv.className = "kbPrice";
+  priceDiv.innerHTML = `<br><b>💰 Tarifs :</b> ${prices}`;
+  bot.appendChild(priceDiv);
+ }
 
-        /* ================================
-           BOUTON DE RÉSERVATION CONTEXTUEL
-        ================================= */
-        let bookingBtn = null;
-
-        if (topic === "bateau") {
-          bookingBtn = document.createElement("a");
-          bookingBtn.href = "https://koalendar.com/e/tintorera";
-          bookingBtn.target = "_blank";
-          bookingBtn.className = "kbBookBtn";
-          bookingBtn.textContent = "⛵ " + t(lang, "bookBoat");
-        }
-
-        if (topic === "reiki") {
-          bookingBtn = document.createElement("a");
-          bookingBtn.href = "https://koalendar.com/e/soloatico-reiki";
-          bookingBtn.target = "_blank";
-          bookingBtn.className = "kbBookBtn";
-          bookingBtn.textContent = "🧘‍♀️ " + t(lang, "bookReiki");
-        }
-
-        if (topic === "suite") {
-          const suiteLinks = {
-            fr: "https://soloatico.amenitiz.io/fr/booking/room#DatesGuests-BE",
-            es: "https://soloatico.amenitiz.io/es/booking/room",
-            en: "https://soloatico.amenitiz.io/en/booking/room#DatesGuests-BE",
-            nl: "https://soloatico.amenitiz.io/nl/booking/room#DatesGuests-BE",
-            cat: "https://soloatico.amenitiz.io/ca/booking/room#DatesGuests-BE"
-          };
-          bookingBtn = document.createElement("a");
-          bookingBtn.href = suiteLinks[lang] || suiteLinks.fr;
-          bookingBtn.target = "_blank";
-          bookingBtn.className = "kbBookBtn";
-          bookingBtn.textContent = "🏨 " + t(lang, "bookSuite");
-        }
-
-        if (bookingBtn) {
-          bot.appendChild(document.createElement("br"));
-          bot.appendChild(bookingBtn);
-        }
-
-        /* ================================
-           BOUTON DESCRIPTION COMPLÈTE
-        ================================= */
+        /* Bouton LONG */
         if (kb.long) {
           const btn = document.createElement("button");
           btn.className = "kbMoreBtn";
@@ -594,6 +547,7 @@ async function sendMessage() {
 
   } catch (err) {
     console.error(err);
+    bot.textContent =
     bot.textContent = t(lang, "clarify");
   }
 
@@ -601,6 +555,16 @@ async function sendMessage() {
   bodyEl.appendChild(bot);
   bodyEl.scrollTop = bodyEl.scrollHeight;
 }
+
+  // Liaison du bouton
+  sendBtn.addEventListener("click", sendMessage);
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") sendMessage();
+  });
+
+
+
+
 
 } // <-- FIN initChatbot()
 
