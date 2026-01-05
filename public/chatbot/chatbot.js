@@ -1,25 +1,34 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.5.6 STABLE
- * FULL I18N — TOPIC & SUITES FIXED
- * Mobile Safe (iOS / Android)
+ * Version 1.5.7 STABLE
+ * DOM SAFE — KB SHORT + LONG
+ * Mémoire persistante + Langue page / override user
  ****************************************************/
 
 (function () {
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
+  const STORAGE_KEY = "soloia_state_v1";
 
-  console.log("Solo’IA’tico Chatbot v1.5.6 — Loaded");
+  console.log("Solo’IA’tico Chatbot v1.5.7 — Loaded");
 
   /****************************************************
-   * MÉMOIRE CONVERSATIONNELLE (SESSION)
+   * MÉMOIRE PERSISTANTE
    ****************************************************/
-  const memory = {
-    lastTopic: null
-  };
+  const memory = (() => {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch {
+      return {};
+    }
+  })();
+
+  function saveMemory() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(memory));
+  }
 
   /****************************************************
-   * I18N COMPLET
+   * I18N
    ****************************************************/
   const I18N = {
     fr: {
@@ -28,11 +37,7 @@
       more: "Voir la description complète",
       bookBoat: "⛵ Réserver une sortie en mer",
       listSuitesTitle: "Voici nos hébergements ✨",
-      listSuites: [
-        "Suite Neus",
-        "Suite Bourlardes",
-        "Chambre Blue Patio"
-      ],
+      listSuites: ["Suite Neus","Suite Bourlardes","Chambre Blue Patio"],
       short: {
         bateau: "La Tintorera vous propose des sorties en mer inoubliables ⛵",
         reiki: "Le Reiki est un soin énergétique favorisant détente et bien-être 🌿",
@@ -48,77 +53,13 @@
       more: "View full description",
       bookBoat: "⛵ Book a boat trip",
       listSuitesTitle: "Here are our accommodations ✨",
-      listSuites: [
-        "Suite Neus",
-        "Suite Bourlardes",
-        "Blue Patio Room"
-      ],
+      listSuites: ["Suite Neus","Suite Bourlardes","Blue Patio Room"],
       short: {
         bateau: "Tintorera offers unforgettable boat trips ⛵",
         reiki: "Reiki is an energy healing treatment promoting deep relaxation 🌿",
-        piscine: "Our rooftop pool is available to guests 🏖️",
+        piscine: "Our rooftop pool is available 🏖️",
         suite: "Here is information about our accommodations ✨",
         default: "Here is what I can tell you 😊"
-      }
-    },
-
-    es: {
-      help: "Puedo informarle sobre nuestras suites, el barco Tintorera, Reiki o la piscina 😊",
-      clarify: "¿Podría precisar su solicitud? 😊",
-      more: "Ver la descripción completa",
-      bookBoat: "⛵ Reservar una salida en barco",
-      listSuitesTitle: "Nuestros alojamientos ✨",
-      listSuites: [
-        "Suite Neus",
-        "Suite Bourlardes",
-        "Habitación Blue Patio"
-      ],
-      short: {
-        bateau: "Tintorera ofrece salidas en barco inolvidables ⛵",
-        reiki: "El Reiki es un tratamiento energético que favorece la relajación 🌿",
-        piscine: "Nuestra piscina rooftop está disponible 🏖️",
-        suite: "Aquí tiene información sobre nuestros alojamientos ✨",
-        default: "Esto es lo que puedo decirle 😊"
-      }
-    },
-
-    nl: {
-      help: "Ik kan u helpen met onze suites, de Tintorera-boot, Reiki of het zwembad 😊",
-      clarify: "Kunt u uw vraag verduidelijken? 😊",
-      more: "Volledige beschrijving bekijken",
-      bookBoat: "⛵ Boottocht reserveren",
-      listSuitesTitle: "Onze accommodaties ✨",
-      listSuites: [
-        "Suite Neus",
-        "Suite Bourlardes",
-        "Blue Patio Kamer"
-      ],
-      short: {
-        bateau: "Tintorera biedt onvergetelijke boottochten ⛵",
-        reiki: "Reiki is een energetische behandeling voor diepe ontspanning 🌿",
-        piscine: "Ons rooftopzwembad is toegankelijk 🏖️",
-        suite: "Hier is informatie over onze accommodaties ✨",
-        default: "Dit is wat ik u kan vertellen 😊"
-      }
-    },
-
-    cat: {
-      help: "Puc informar-vos sobre les nostres suites, el vaixell Tintorera, Reiki o la piscina 😊",
-      clarify: "Podeu precisar la vostra sol·licitud? 😊",
-      more: "Veure la descripció completa",
-      bookBoat: "⛵ Reservar una sortida en vaixell",
-      listSuitesTitle: "Els nostres allotjaments ✨",
-      listSuites: [
-        "Suite Neus",
-        "Suite Bourlardes",
-        "Habitació Blue Patio"
-      ],
-      short: {
-        bateau: "La Tintorera ofereix sortides en vaixell inoblidables ⛵",
-        reiki: "El Reiki és un tractament energètic per a la relaxació 🌿",
-        piscine: "La nostra piscina rooftop és accessible 🏖️",
-        suite: "Aquí teniu informació sobre els allotjaments ✨",
-        default: "Això és el que us puc explicar 😊"
       }
     }
   };
@@ -132,46 +73,47 @@
   }
 
   /****************************************************
-   * DÉTECTION LANGUE
+   * LANGUE — PAGE + OVERRIDE USER
    ****************************************************/
-  function detectLanguage(text = "") {
-    const t = text.toLowerCase();
-    if (/what|is|are|reiki|pool|boat/.test(t)) return "en";
-    if (/piscina|hacer|reiki/.test(t)) return "es";
-    if (/zwembad|boot/.test(t)) return "nl";
-    if (/fer|piscina/.test(t)) return "cat";
+  function getPageLang() {
     return document.documentElement.lang?.split("-")[0] || "fr";
   }
 
+  function detectLanguageFromText(text) {
+    const t = text.toLowerCase();
+    if (/what|is|are|boat|reiki|pool/.test(t)) return "en";
+    return "fr";
+  }
+
+  function resolveLang(text) {
+    if (memory.lang) return memory.lang;
+    return detectLanguageFromText(text) || getPageLang();
+  }
+
   /****************************************************
-   * INTENTIONS
+   * INTENT / TOPIC
    ****************************************************/
   function detectIntent(text) {
-    const t = text.toLowerCase();
-    if (/help|aide|ayuda/.test(t)) return "help";
-    if (/suite|suites|rooms|kamers|hébergements/.test(t)) return "list_suites";
+    if (/suite|suites|rooms|hébergements/.test(text.toLowerCase()))
+      return "list_suites";
+    if (/help|aide/.test(text.toLowerCase()))
+      return "help";
     return "specific";
   }
 
-  /****************************************************
-   * TOPICS
-   ****************************************************/
   function detectTopic(text) {
     const t = text.toLowerCase();
-
     if (/neus/.test(t)) return "suite_neus";
     if (/bourlard/.test(t)) return "suite_bourlardes";
     if (/blue/.test(t)) return "suite_blue";
-
-    if (/tintorera|bateau|boat|boot/.test(t)) return "bateau";
-    if (/reiki|massage/.test(t)) return "reiki";
-    if (/piscine|pool|zwembad/.test(t)) return "piscine";
-
-    return "default";
+    if (/tintorera|bateau|boat/.test(t)) return "bateau";
+    if (/reiki/.test(t)) return "reiki";
+    if (/piscine|pool/.test(t)) return "piscine";
+    return memory.lastTopic || "default";
   }
 
   /****************************************************
-   * ROUTEUR KB
+   * KB
    ****************************************************/
   function resolveKBPath(topic, lang) {
     const map = {
@@ -182,27 +124,21 @@
       suite_bourlardes: "02_suites/suite-bourlardes.txt",
       suite_blue: "02_suites/suite-blue-patio.txt"
     };
-
     return map[topic]
       ? `${KB_BASE_URL}/kb/${lang}/${map[topic]}`
       : null;
   }
 
   function parseKB(text) {
-    const short = text.match(/SHORT:\s*([\s\S]*?)\nLONG:/i);
-    const long = text.match(/LONG:\s*([\s\S]*)/i);
-    return {
-      short: short ? short[1].trim() : "",
-      long: long ? long[1].trim() : ""
-    };
+    const s = text.match(/SHORT:\s*([\s\S]*?)\nLONG:/i);
+    const l = text.match(/LONG:\s*([\s\S]*)/i);
+    return { short: s?.[1]?.trim(), long: l?.[1]?.trim() };
   }
 
   function buildLongList(text) {
     const ul = document.createElement("ul");
     ul.className = "kbLongList";
-
-    text
-      .split(/\n|•|- /)
+    text.split(/\n|•|- /)
       .map(l => l.trim())
       .filter(l => l.length > 30)
       .slice(0, 6)
@@ -211,7 +147,6 @@
         li.textContent = line;
         ul.appendChild(li);
       });
-
     return ul;
   }
 
@@ -253,28 +188,40 @@
       bodyEl.insertAdjacentHTML("beforeend", `<div class="msg userMsg">${text}</div>`);
       typing.style.display = "flex";
 
-      const lang   = detectLanguage(text);
+      const lang   = resolveLang(text);
       const intent = detectIntent(text);
       const topic  = detectTopic(text);
+
+      memory.lastTopic = topic;
+      memory.lang = lang;
+      saveMemory();
 
       const bot = document.createElement("div");
       bot.className = "msg botMsg";
 
       try {
-
         if (intent === "help") {
           bot.textContent = t(lang, "help");
         }
 
         else if (intent === "list_suites") {
-          bot.innerHTML = `<b>${t(lang, "listSuitesTitle")}</b><br><br>`;
+          const title = document.createElement("b");
+          title.textContent = t(lang, "listSuitesTitle");
+          bot.appendChild(title);
+          bot.appendChild(document.createElement("br"));
+          bot.appendChild(document.createElement("br"));
+
           I18N[lang].listSuites.forEach(s => {
-            bot.innerHTML += `• ${s}<br>`;
+            const line = document.createElement("div");
+            line.textContent = `• ${s}`;
+            bot.appendChild(line);
           });
         }
 
         else {
-          bot.innerHTML = `<b>${shortAnswer(lang, topic)}</b><br><br>`;
+          const intro = document.createElement("div");
+          intro.innerHTML = `<b>${shortAnswer(lang, topic)}</b><br><br>`;
+          bot.appendChild(intro);
 
           const kbPath = resolveKBPath(topic, lang);
           if (kbPath) {
@@ -282,12 +229,13 @@
             if (!res.ok && lang !== "fr") {
               res = await fetch(kbPath.replace(`/kb/${lang}/`, `/kb/fr/`));
             }
-
             if (res.ok) {
               const kb = parseKB(await res.text());
 
               if (kb.short) {
-                bot.innerHTML += `<div>${kb.short}</div>`;
+                const s = document.createElement("div");
+                s.textContent = kb.short;
+                bot.appendChild(s);
               }
 
               if (kb.long) {
@@ -295,11 +243,11 @@
                 moreBtn.className = "kbMoreBtn";
                 moreBtn.textContent = t(lang, "more");
 
-                moreBtn.onclick = () => {
+                moreBtn.addEventListener("click", () => {
                   moreBtn.remove();
                   bot.appendChild(buildLongList(kb.long));
                   bodyEl.scrollTop = bodyEl.scrollHeight;
-                };
+                });
 
                 bot.appendChild(document.createElement("br"));
                 bot.appendChild(moreBtn);
@@ -308,11 +256,13 @@
           }
 
           if (topic === "bateau") {
-            bot.innerHTML += `<br>
-              <a class="kbBookBtn" target="_blank"
-                 href="https://koalendar.com/e/tintorera">
-                ${t(lang, "bookBoat")}
-              </a>`;
+            const book = document.createElement("a");
+            book.className = "kbBookBtn";
+            book.href = "https://koalendar.com/e/tintorera";
+            book.target = "_blank";
+            book.textContent = t(lang, "bookBoat");
+            bot.appendChild(document.createElement("br"));
+            bot.appendChild(book);
           }
         }
 
@@ -338,7 +288,7 @@
       }
     });
 
-    console.log("✅ Chatbot Solo’IA’tico v1.5.6 prêt");
+    console.log("✅ Chatbot Solo’IA’tico v1.5.7 prêt");
   });
 
 })();
