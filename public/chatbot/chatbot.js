@@ -1,7 +1,7 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.6.1 — CONCIERGE FLOW BATEAU
- * Memory + State Machine + Guided Flow
+ * Version 1.6.1.1 — FLOW BATEAU FIXED
+ * Distinction INFO vs BOOK
  ****************************************************/
 
 (function () {
@@ -9,7 +9,7 @@
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
   const STORAGE_KEY = "soloia_concierge_v16";
 
-  console.log("Solo’IA’tico Chatbot v1.6.1 — Concierge Flow Bateau");
+  console.log("Solo’IA’tico Chatbot v1.6.1.1 — Flow Bateau Fixed");
 
   /****************************************************
    * MEMORY ENGINE (PERSISTENT)
@@ -27,7 +27,7 @@
   }
 
   memory.lang = memory.lang || null;
-  memory.state = memory.state || "IDLE";
+  memory.state = memory.state || "INFO_MODE";
   memory.slots = memory.slots || {};
   saveMemory();
 
@@ -35,11 +35,9 @@
    * STATES
    ****************************************************/
   const STATES = {
-    IDLE: "IDLE",
     INFO_MODE: "INFO_MODE",
     BATEAU_DATE: "BATEAU_DATE",
-    BATEAU_PEOPLE: "BATEAU_PEOPLE",
-    BATEAU_SUMMARY: "BATEAU_SUMMARY"
+    BATEAU_PEOPLE: "BATEAU_PEOPLE"
   };
 
   function setState(s) {
@@ -55,6 +53,8 @@
     fr: {
       askDate: "Avec plaisir ⛵ Pour quelle date souhaitez-vous la sortie en mer ?",
       askPeople: "Parfait 😊 Combien de personnes participeront à la sortie ?",
+      infoBateau:
+        "La Tintorera est une sortie en bateau privée à bord d’un llaut catalan traditionnel, idéale pour baignades, couchers de soleil et découvertes marines sur la Costa Brava ⛵",
       summary: (d, p) =>
         `Parfait ! Voici le récapitulatif :\n\n• Activité : Sortie bateau Tintorera\n• Date : ${d}\n• Personnes : ${p}`,
       book: "⛵ Réserver la sortie Tintorera",
@@ -64,6 +64,8 @@
     en: {
       askDate: "With pleasure ⛵ For which date would you like the boat trip?",
       askPeople: "Great 😊 How many people will join the trip?",
+      infoBateau:
+        "Tintorera is a private boat experience aboard a traditional Catalan llaut, perfect for swimming, sunset cruises and coastal discovery ⛵",
       summary: (d, p) =>
         `Perfect! Here is the summary:\n\n• Activity: Tintorera boat trip\n• Date: ${d}\n• People: ${p}`,
       book: "⛵ Book the Tintorera boat trip",
@@ -94,10 +96,15 @@
   }
 
   /****************************************************
-   * INTENT
+   * INTENTS
    ****************************************************/
-  function isBateauIntent(text) {
-    return /bateau|boat|tintorera/.test(text.toLowerCase());
+  function intentBateauBook(text) {
+    return /je veux|réserver|faire du bateau|boat trip|book/.test(text.toLowerCase());
+  }
+
+  function intentBateauInfo(text) {
+    return /parle|info|c[’']est quoi|tell me|about/.test(text.toLowerCase())
+           && /bateau|boat|tintorera/.test(text.toLowerCase());
   }
 
   /****************************************************
@@ -130,7 +137,7 @@
     });
 
     /****************************************************
-     * SEND MESSAGE — FLOW ENGINE
+     * SEND MESSAGE — FIXED FLOW
      ****************************************************/
     async function sendMessage() {
       if (!input.value.trim()) return;
@@ -149,8 +156,15 @@
 
       try {
 
-        /* START FLOW */
-        if (memory.state === "IDLE" && isBateauIntent(text)) {
+        /* INFO BATEAU */
+        if (intentBateauInfo(text)) {
+          setState(STATES.INFO_MODE);
+          memory.slots = {};
+          bot.textContent = t(lang, "infoBateau");
+        }
+
+        /* START BOOKING */
+        else if (memory.state === STATES.INFO_MODE && intentBateauBook(text)) {
           memory.slots = {};
           setState(STATES.BATEAU_DATE);
           bot.textContent = t(lang, "askDate");
@@ -166,7 +180,6 @@
         /* PEOPLE */
         else if (memory.state === STATES.BATEAU_PEOPLE) {
           memory.slots.people = text;
-          setState(STATES.BATEAU_SUMMARY);
 
           bot.textContent = t(
             lang,
@@ -184,7 +197,9 @@
           bot.appendChild(document.createElement("br"));
           bot.appendChild(bookBtn);
 
-          setState("IDLE");
+          // Reset propre
+          memory.slots = {};
+          setState(STATES.INFO_MODE);
         }
 
         /* FALLBACK */
@@ -197,7 +212,7 @@
       } catch (e) {
         console.error(e);
         bot.textContent = t(lang, "clarify");
-        setState("IDLE");
+        setState(STATES.INFO_MODE);
       }
 
       typing.style.display = "none";
@@ -217,7 +232,7 @@
       }
     });
 
-    console.log("✅ Concierge Flow Bateau v1.6.1 ready");
+    console.log("✅ Concierge Flow Bateau v1.6.1.1 ready");
   });
 
 })();
