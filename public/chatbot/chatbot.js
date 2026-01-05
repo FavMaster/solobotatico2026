@@ -255,6 +255,25 @@ if (htmlLang && htmlLang.length >= 2) {
     };
   }
 
+/****************************************************
+ * Extraction des informations de prix / tarifs
+ ****************************************************/
+function extractPrices(text) {
+  if (!text) return "";
+
+  const lines = text
+    .split("\n")
+    .map(l => l.trim())
+    .filter(l =>
+      /€|eur|prix|tarif|à partir de|desde|from/i.test(l)
+    );
+
+  if (!lines.length) return "";
+
+  return lines.slice(0, 2).join(" • ");
+}
+
+
   /****************************************************
    * Format LONG
    ****************************************************/
