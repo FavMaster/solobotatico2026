@@ -1,28 +1,28 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.6.6.4 — UI DEFINITIVE
- * Short / Long / Booking GARANTIS
+ * Version 1.6.6.5 — UI CLEAN FINAL
+ * Flow Bateau — Short / Long / Booking / WhatsApp OK
  ****************************************************/
 
 (function () {
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
 
-  console.log("Solo’IA’tico Chatbot v1.6.6.4");
+  console.log("Solo’IA’tico Chatbot v1.6.6.5");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
-    /* CSS */
+    /* ================= CSS ================= */
     const css = document.createElement("link");
     css.rel = "stylesheet";
     css.href = `${KB_BASE_URL}/chatbot/chatbot.css`;
     document.head.appendChild(css);
 
-    /* HTML */
+    /* ================= HTML ================= */
     const html = await fetch(`${KB_BASE_URL}/chatbot/chatbot.html`).then(r => r.text());
     document.body.insertAdjacentHTML("beforeend", html);
 
-    /* OPEN / CLOSE */
+    /* ================= OPEN / CLOSE ================= */
     const chatWin = document.getElementById("chatWindow");
     const openBtn = document.getElementById("openChatBtn");
 
@@ -42,7 +42,25 @@
       }
     });
 
-    /* CHAT CORE */
+    /* ================= WHATSAPP ================= */
+    const waLaurent = document.getElementById("waLaurent");
+    const waSophia  = document.getElementById("waSophia");
+
+    if (waLaurent) {
+      waLaurent.addEventListener("click", e => {
+        e.preventDefault();
+        window.open("https://wa.me/34621210642", "_blank");
+      });
+    }
+
+    if (waSophia) {
+      waSophia.addEventListener("click", e => {
+        e.preventDefault();
+        window.open("https://wa.me/34621128303", "_blank");
+      });
+    }
+
+    /* ================= CHAT CORE ================= */
     const sendBtn = document.getElementById("sendBtn");
     const input   = document.getElementById("userInput");
     const bodyEl  = document.getElementById("chatBody");
@@ -70,18 +88,23 @@
       const bot = document.createElement("div");
       bot.className = "msg botMsg";
 
-      /* SHORT (TOUJOURS) */
+      /* SHORT */
       const shortDiv = document.createElement("div");
-      shortDiv.innerHTML = `<b>${TEXT.short}</b>`;
+      shortDiv.className = "kbShort";
+      shortDiv.innerHTML = `<strong>${TEXT.short}</strong>`;
       bot.appendChild(shortDiv);
 
-      /* LONG (MASQUÉ PAR DÉFAUT) */
+      /* LONG (hidden) */
       const longDiv = document.createElement("div");
+      longDiv.className = "kbLong";
       longDiv.style.display = "none";
       longDiv.innerHTML = `<p>${TEXT.long}</p>`;
       bot.appendChild(longDiv);
 
-      /* BOUTON DESCRIPTION (TOUJOURS PRÉSENT) */
+      /* ACTIONS */
+      const actions = document.createElement("div");
+      actions.className = "kbActions";
+
       const moreBtn = document.createElement("button");
       moreBtn.className = "kbMoreBtn";
       moreBtn.textContent = TEXT.more;
@@ -93,17 +116,16 @@
         bodyEl.scrollTop = bodyEl.scrollHeight;
       });
 
-      bot.appendChild(moreBtn);
-
-      /* BOUTON RÉSERVER (UNIQUE) */
       const bookBtn = document.createElement("a");
       bookBtn.href = "https://koalendar.com/e/tintorera";
       bookBtn.target = "_blank";
       bookBtn.className = "kbBookBtn";
       bookBtn.textContent = TEXT.book;
-      bookBtn.addEventListener("click", e => e.stopPropagation());
 
-      bot.appendChild(bookBtn);
+      actions.appendChild(moreBtn);
+      actions.appendChild(bookBtn);
+
+      bot.appendChild(actions);
 
       bodyEl.appendChild(bot);
       bodyEl.scrollTop = bodyEl.scrollHeight;
@@ -134,7 +156,6 @@
 
     sendBtn.addEventListener("click", e => {
       e.preventDefault();
-      e.stopPropagation();
       sendMessage();
     });
 
@@ -145,7 +166,7 @@
       }
     });
 
-    console.log("✅ v1.6.6.4 UI DEFINITIVE LOADED");
+    console.log("✅ v1.6.6.5 READY — UI & ACTIONS OK");
   });
 
 })();
