@@ -256,7 +256,7 @@ if (htmlLang && htmlLang.length >= 2) {
   }
 
 /****************************************************
- * Extraction des informations de prix / tarifs
+ * Extraction fiable des informations de prix / tarifs
  ****************************************************/
 function extractPrices(text) {
   if (!text) return "";
@@ -265,12 +265,16 @@ function extractPrices(text) {
     .split("\n")
     .map(l => l.trim())
     .filter(l =>
-      /€|eur|prix|tarif|à partir de|desde|from/i.test(l)
+      // contient un montant ou une structure de prix claire
+      /(\d+\s?€|€\s?\d+|prix\s*:|tarif\s*:|desde\s+\d+|from\s+\d+)/i.test(l)
     );
 
   if (!lines.length) return "";
 
-  return lines.slice(0, 2).join(" • ");
+  // Nettoyage : on enlève les phrases trop longues (marketing)
+  const clean = lines.filter(l => l.length < 120);
+
+  return clean.slice(0, 3).join(" • ");
 }
 
 
