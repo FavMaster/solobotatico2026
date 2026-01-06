@@ -191,11 +191,14 @@
             const more = document.createElement("button");
             more.className = "kbMoreBtn";
             more.textContent = UI[lang].more;
-            more.onclick = () => {
-              more.remove();
-              bot.innerHTML += `<br><br>${kb.long}`;
-              bodyEl.scrollTop = bodyEl.scrollHeight;
-            };
+            more.onclick = (e) => {
+  e.preventDefault();
+  e.stopPropagation();   // ⭐ LIGNE CLÉ
+  more.remove();
+  bot.innerHTML += `<br><br>${kb.long}`;
+  bodyEl.scrollTop = bodyEl.scrollHeight;
+};
+
             bot.appendChild(document.createElement("br"));
             bot.appendChild(more);
           }
