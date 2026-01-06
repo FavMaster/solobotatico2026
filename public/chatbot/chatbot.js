@@ -1,15 +1,13 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.6.8.4 — WELCOME = PAGE LANG
+ * Version 1.6.9.0 — AUTO LANGUAGE ONLY (FINAL)
  ****************************************************/
 
 (function SoloIATico() {
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
-  const LANG_KEY = "soloia_lang_manual";
-  const CAT_FLAG = "https://impro.usercontent.one/appid/oneComWsb/domain/soloatico.es/media/soloatico.es/onewebmedia/Flag_of_Catalonia.svg.png?etag=%221f1-650def4e%22&sourceContentType=image%2Fpng&ignoreAspectRatio&resize=54%2B36";
 
-  console.log("Solo’IA’tico Chatbot v1.6.8.4");
+  console.log("Solo’IA’tico Chatbot v1.6.9.0 — AUTO LANG");
 
   function ready(fn) {
     if (document.readyState !== "loading") fn();
@@ -45,7 +43,7 @@
       return document.documentElement.lang?.slice(0,2) || "fr";
     }
 
-    function resolveLangFromMessage(t) {
+    function detectLangFromMessage(t) {
       if (/\b(is er|zwembad|boot)\b/.test(t)) return "nl";
       if (/\b(what|how|is|are|pool|boat)\b/.test(t)) return "en";
       if (/\b(piscina|barco)\b/.test(t)) return "es";
@@ -53,13 +51,8 @@
       return null;
     }
 
-    function resolveLang(t="") {
-      return (
-        resolveLangFromMessage(t) ||
-        localStorage.getItem(LANG_KEY) ||
-        pageLang() ||
-        "fr"
-      );
+    function resolveLang(t = "") {
+      return detectLangFromMessage(t) || pageLang() || "fr";
     }
 
     /* ================= WELCOME ================= */
@@ -110,15 +103,7 @@
           <b>Waarmee kan ik je helpen?</b>`
     };
 
-    function showWelcome(lang) {
-      chatWin.querySelectorAll(".welcomeMsg").forEach(el => el.remove());
-      const w = document.createElement("div");
-      w.className = "msg botMsg welcomeMsg";
-      w.innerHTML = WELCOME[lang] || WELCOME.fr;
-      bodyEl.prepend(w);
-    }
-
-    /* ================= OPEN ================= */
+    /* ================= OPEN / CLOSE ================= */
     let isOpen = false;
     chatWin.style.display = "none";
 
@@ -129,66 +114,45 @@
       chatWin.style.display = isOpen ? "flex" : "none";
 
       if (isOpen && !chatWin.dataset.welcomed) {
-        showWelcome(resolveLang());
+        const lang = resolveLang();
+        const w = document.createElement("div");
+        w.className = "msg botMsg welcomeMsg";
+        w.innerHTML = WELCOME[lang] || WELCOME.fr;
+        bodyEl.prepend(w);
         chatWin.dataset.welcomed = "1";
       }
     };
 
-    /* ================= LANG SELECTOR ================= */
-    const langBar = document.createElement("div");
-    langBar.className = "soloia-langbar";
-    langBar.style.cssText = `
-      display:flex;
-      justify-content:center;
-      gap:12px;
-      padding:6px 0;
-      border-bottom:1px solid rgba(255,255,255,.12);
-    `;
+    /* ================= BASIC SEND (flows inchangés ailleurs) ================= */
+    function norm(t) {
+      return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    }
 
-    langBar.innerHTML = `
-      <button data-lang="fr">🇫🇷</button>
-      <button data-lang="es">🇪🇸</button>
-      <button data-lang="en">🇬🇧</button>
-      <button data-lang="ca"><img src="${CAT_FLAG}" style="height:16px"></button>
-      <button data-lang="nl">🇳🇱</button>
-    `;
-
-    langBar.querySelectorAll("button").forEach(btn => {
-      btn.onclick = e => {
-        e.stopPropagation();
-        const lang = btn.dataset.lang;
-        localStorage.setItem(LANG_KEY, lang);
-        showWelcome(lang);
-      };
-    });
-
-    chatWin.prepend(langBar);
-
-    /* ================= SEND (inchangé) ================= */
-    function norm(t){ return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
-
-    function route(t){
+    function route(t) {
       if(/bateau|tintorera|boat/.test(t)) return "tintorera";
       if(/reiki|riki/.test(t)) return "reiki";
       if(/piscine|pool|zwembad/.test(t)) return "piscine";
       return null;
     }
 
-    async function sendMessage(){
-      if(!input.value.trim()) return;
-      const raw=input.value; input.value="";
-      bodyEl.insertAdjacentHTML("beforeend",`<div class="msg userMsg">${raw}</div>`);
+    async function sendMessage() {
+      if (!input.value.trim()) return;
+      const raw = input.value;
+      input.value = "";
+
+      bodyEl.insertAdjacentHTML("beforeend", `<div class="msg userMsg">${raw}</div>`);
 
       const lang = resolveLang(norm(raw));
-      const r = route(norm(raw));
+      const intent = route(norm(raw));
 
-      if(!r){
-        bodyEl.insertAdjacentHTML("beforeend",`<div class="msg botMsg">${WELCOME[lang] ? "" : ""}</div>`);
+      if (!intent) {
+        bodyEl.insertAdjacentHTML("beforeend",
+          `<div class="msg botMsg">${WELCOME[lang]}</div>`);
       }
     }
 
     sendBtn.onclick = e => { e.preventDefault(); sendMessage(); };
-    input.onkeydown = e => { if (e.key==="Enter"){ e.preventDefault(); sendMessage(); } };
+    input.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); sendMessage(); } };
 
   });
 
