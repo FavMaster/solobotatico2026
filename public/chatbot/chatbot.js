@@ -1,13 +1,13 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.6.9.0 — AUTO LANGUAGE ONLY (FINAL)
+ * Version 1.6.9.1 — AUTO LANG / WELCOME FIX
  ****************************************************/
 
 (function SoloIATico() {
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
 
-  console.log("Solo’IA’tico Chatbot v1.6.9.0 — AUTO LANG");
+  console.log("Solo’IA’tico Chatbot v1.6.9.1 — AUTO LANG FIX");
 
   function ready(fn) {
     if (document.readyState !== "loading") fn();
@@ -103,7 +103,15 @@
           <b>Waarmee kan ik je helpen?</b>`
     };
 
-    /* ================= OPEN / CLOSE ================= */
+    const CLARIFY = {
+      fr: "Pouvez-vous préciser votre demande ? 😊",
+      en: "Could you please clarify your request? 😊",
+      es: "¿Podría precisar su solicitud? 😊",
+      ca: "Podeu precisar la vostra sol·licitud? 😊",
+      nl: "Kunt u uw vraag verduidelijken? 😊"
+    };
+
+    /* ================= OPEN ================= */
     let isOpen = false;
     chatWin.style.display = "none";
 
@@ -123,7 +131,7 @@
       }
     };
 
-    /* ================= BASIC SEND (flows inchangés ailleurs) ================= */
+    /* ================= SEND ================= */
     function norm(t) {
       return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
     }
@@ -140,14 +148,15 @@
       const raw = input.value;
       input.value = "";
 
-      bodyEl.insertAdjacentHTML("beforeend", `<div class="msg userMsg">${raw}</div>`);
+      bodyEl.insertAdjacentHTML("beforeend",
+        `<div class="msg userMsg">${raw}</div>`);
 
       const lang = resolveLang(norm(raw));
       const intent = route(norm(raw));
 
       if (!intent) {
         bodyEl.insertAdjacentHTML("beforeend",
-          `<div class="msg botMsg">${WELCOME[lang]}</div>`);
+          `<div class="msg botMsg">${CLARIFY[lang] || CLARIFY.fr}</div>`);
       }
     }
 
