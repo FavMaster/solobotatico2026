@@ -1,13 +1,13 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.6.9.5 — STABLE RESET
+ * Version 1.6.9.6 — STABLE + SHORT/LONG + BOOKING
  ****************************************************/
 
 (function () {
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
 
-  console.log("Solo’IA’tico Chatbot v1.6.9.5 — STABLE RESET");
+  console.log("Solo’IA’tico Chatbot v1.6.9.6 — STABLE FULL");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -104,10 +104,44 @@
 
     function parseKB(txt) {
       return {
-        short: (txt.match(/SHORT:\s*([\s\S]*?)\n/i) || [,""])[1],
-        long:  (txt.match(/LONG:\s*([\s\S]*)/i) || [,""])[1]
+        short: (txt.match(/SHORT:\s*([\s\S]*?)\n/i) || [,""])[1].trim(),
+        long:  (txt.match(/LONG:\s*([\s\S]*)/i) || [,""])[1].trim()
       };
     }
+
+    /* ===== UI TEXT ===== */
+    const UI = {
+      fr: {
+        more: "Voir la description complète",
+        bookBoat: "⛵ Réserver la sortie Tintorera",
+        bookReiki: "🧘‍♀️ Réserver une séance Reiki",
+        bookSuite: "🏨 Réserver"
+      },
+      en: {
+        more: "View full description",
+        bookBoat: "⛵ Book the Tintorera boat trip",
+        bookReiki: "🧘‍♀️ Book a Reiki session",
+        bookSuite: "🏨 Book now"
+      },
+      es: {
+        more: "Ver la descripción completa",
+        bookBoat: "⛵ Reservar salida Tintorera",
+        bookReiki: "🧘‍♀️ Reservar sesión de Reiki",
+        bookSuite: "🏨 Reservar"
+      },
+      ca: {
+        more: "Veure la descripció completa",
+        bookBoat: "⛵ Reservar sortida Tintorera",
+        bookReiki: "🧘‍♀️ Reservar sessió de Reiki",
+        bookSuite: "🏨 Reservar"
+      },
+      nl: {
+        more: "Volledige beschrijving bekijken",
+        bookBoat: "⛵ Tintorera boottocht boeken",
+        bookReiki: "🧘‍♀️ Reiki-sessie boeken",
+        bookSuite: "🏨 Reserveren"
+      }
+    };
 
     /* ===== SEND ===== */
     async function sendMessage() {
@@ -137,18 +171,59 @@
 
         const kb = parseKB(await loadKB(lang, file));
 
-        bodyEl.insertAdjacentHTML("beforeend",
-          `<div class="msg botMsg">
-            <b>${kb.short}</b><br><br>${kb.long}
-          </div>`);
+        const bot = document.createElement("div");
+        bot.className = "msg botMsg";
+
+        /* SHORT */
+        const shortDiv = document.createElement("div");
+        shortDiv.innerHTML = `<b>${kb.short}</b>`;
+        bot.appendChild(shortDiv);
+
+        /* LONG (hidden) */
+        if (kb.long) {
+          const moreBtn = document.createElement("button");
+          moreBtn.className = "kbMoreBtn";
+          moreBtn.textContent = UI[lang].more;
+
+          moreBtn.onclick = () => {
+            moreBtn.remove();
+            const longDiv = document.createElement("div");
+            longDiv.className = "kbLong";
+            longDiv.innerHTML = `<br>${kb.long}`;
+            bot.appendChild(longDiv);
+            bodyEl.scrollTop = bodyEl.scrollHeight;
+          };
+
+          bot.appendChild(document.createElement("br"));
+          bot.appendChild(moreBtn);
+        }
+
+        /* BOOKING */
+        let bookingUrl = null;
+        if (i === "tintorera") bookingUrl = "https://koalendar.com/e/tintorera";
+        if (i === "reiki") bookingUrl = "https://koalendar.com/e/soloatico-reiki";
+
+        if (bookingUrl) {
+          const bookBtn = document.createElement("a");
+          bookBtn.href = bookingUrl;
+          bookBtn.target = "_blank";
+          bookBtn.className = "kbBookBtn";
+          bookBtn.textContent = i === "tintorera"
+            ? UI[lang].bookBoat
+            : UI[lang].bookReiki;
+
+          bot.appendChild(document.createElement("br"));
+          bot.appendChild(bookBtn);
+        }
+
+        bodyEl.appendChild(bot);
+        bodyEl.scrollTop = bodyEl.scrollHeight;
 
       } catch (e) {
         console.error(e);
         bodyEl.insertAdjacentHTML("beforeend",
           `<div class="msg botMsg">❌ Une erreur est survenue.</div>`);
       }
-
-      bodyEl.scrollTop = bodyEl.scrollHeight;
     }
 
     sendBtn.addEventListener("click", sendMessage);
