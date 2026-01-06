@@ -1,13 +1,13 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.6.9.6 — STABLE + SHORT/LONG + BOOKING
+ * Version 1.7.0 — FLOW SUITES
  ****************************************************/
 
 (function () {
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
 
-  console.log("Solo’IA’tico Chatbot v1.6.9.6 — STABLE FULL");
+  console.log("Solo’IA’tico Chatbot v1.7.0 — FLOW SUITES");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -33,21 +33,16 @@
     const input   = document.getElementById("userInput");
     const bodyEl  = document.getElementById("chatBody");
 
-    if (!chatWin || !openBtn || !sendBtn || !input || !bodyEl) {
-      console.error("❌ Chatbot DOM incomplet");
-      return;
-    }
-
     /* ===== OPEN / CLOSE ===== */
     let isOpen = false;
     chatWin.style.display = "none";
 
-    openBtn.addEventListener("click", e => {
+    openBtn.onclick = e => {
       e.preventDefault();
       e.stopPropagation();
       isOpen = !isOpen;
       chatWin.style.display = isOpen ? "flex" : "none";
-    });
+    };
 
     document.addEventListener("click", e => {
       if (isOpen && !chatWin.contains(e.target) && !openBtn.contains(e.target)) {
@@ -57,15 +52,14 @@
     });
 
     /* ===== WHATSAPP ===== */
-    document.getElementById("waLaurent")?.addEventListener("click", e => {
+    document.getElementById("waLaurent")?.onclick = e => {
       e.preventDefault(); e.stopPropagation();
       window.open("https://wa.me/34621210642", "_blank");
-    });
-
-    document.getElementById("waSophia")?.addEventListener("click", e => {
+    };
+    document.getElementById("waSophia")?.onclick = e => {
       e.preventDefault(); e.stopPropagation();
       window.open("https://wa.me/34621128303", "_blank");
-    });
+    };
 
     /* ===== LANG ===== */
     function pageLang() {
@@ -73,19 +67,29 @@
     }
 
     function detectLang(t) {
-      if (/is er|zwembad|boot/.test(t)) return "nl";
-      if (/what|how|pool|boat/.test(t)) return "en";
-      if (/piscina|barco/.test(t)) return "es";
-      if (/piscina|vaixell/.test(t)) return "ca";
+      if (/is er|kamer|kamers/.test(t)) return "nl";
+      if (/room|rooms/.test(t)) return "en";
+      if (/habitacion|habitaciones/.test(t)) return "es";
+      if (/habitacio|habitacions/.test(t)) return "ca";
       return pageLang();
     }
 
     /* ===== NLP ===== */
     function norm(t) {
-      return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    }
+
+    function suiteSlug(t) {
+      if (/neus/.test(t)) return "suite-neus.txt";
+      if (/bourlard/.test(t)) return "suite-bourlardes.txt";
+      if (/blue/.test(t)) return "suite-blue-patio.txt";
+      return null;
     }
 
     function intent(t) {
+      if (/suite|suites|chambre|chambres|room|rooms|kamer|kamers|habitacion/.test(t)) {
+        return suiteSlug(t) ? "suite_detail" : "suite_list";
+      }
       if (/tintorera|bateau|boat/.test(t)) return "tintorera";
       if (/reiki|riki/.test(t)) return "reiki";
       if (/piscine|pool|zwembad/.test(t)) return "piscine";
@@ -93,10 +97,10 @@
     }
 
     /* ===== KB ===== */
-    async function loadKB(lang, file) {
-      let r = await fetch(`${KB_BASE_URL}/kb/${lang}/${file}`);
+    async function loadKB(lang, path) {
+      let r = await fetch(`${KB_BASE_URL}/kb/${lang}/02_suites/${path}`);
       if (!r.ok && lang !== "fr") {
-        r = await fetch(`${KB_BASE_URL}/kb/fr/${file}`);
+        r = await fetch(`${KB_BASE_URL}/kb/fr/02_suites/${path}`);
       }
       if (!r.ok) throw "KB introuvable";
       return r.text();
@@ -112,34 +116,29 @@
     /* ===== UI TEXT ===== */
     const UI = {
       fr: {
+        list: "Nous proposons trois hébergements au Solo Ático :<br>• Suite Neus<br>• Suite Bourlardes<br>• Chambre Blue Patio",
         more: "Voir la description complète",
-        bookBoat: "⛵ Réserver la sortie Tintorera",
-        bookReiki: "🧘‍♀️ Réserver une séance Reiki",
-        bookSuite: "🏨 Réserver"
+        book: "🏨 Réserver cette suite"
       },
       en: {
+        list: "We offer three accommodations at Solo Ático:<br>• Suite Neus<br>• Suite Bourlardes<br>• Blue Patio Room",
         more: "View full description",
-        bookBoat: "⛵ Book the Tintorera boat trip",
-        bookReiki: "🧘‍♀️ Book a Reiki session",
-        bookSuite: "🏨 Book now"
+        book: "🏨 Book this suite"
       },
       es: {
+        list: "Ofrecemos tres alojamientos en Solo Ático:<br>• Suite Neus<br>• Suite Bourlardes<br>• Habitación Blue Patio",
         more: "Ver la descripción completa",
-        bookBoat: "⛵ Reservar salida Tintorera",
-        bookReiki: "🧘‍♀️ Reservar sesión de Reiki",
-        bookSuite: "🏨 Reservar"
+        book: "🏨 Reservar esta suite"
       },
       ca: {
+        list: "Oferim tres allotjaments a Solo Ático:<br>• Suite Neus<br>• Suite Bourlardes<br>• Habitació Blue Patio",
         more: "Veure la descripció completa",
-        bookBoat: "⛵ Reservar sortida Tintorera",
-        bookReiki: "🧘‍♀️ Reservar sessió de Reiki",
-        bookSuite: "🏨 Reservar"
+        book: "🏨 Reservar aquesta suite"
       },
       nl: {
+        list: "Wij bieden drie accommodaties bij Solo Ático:<br>• Suite Neus<br>• Suite Bourlardes<br>• Blue Patio Kamer",
         more: "Volledige beschrijving bekijken",
-        bookBoat: "⛵ Tintorera boottocht boeken",
-        bookReiki: "🧘‍♀️ Reiki-sessie boeken",
-        bookSuite: "🏨 Reserveren"
+        book: "🏨 Deze suite reserveren"
       }
     };
 
@@ -158,66 +157,54 @@
       const i = intent(t);
 
       try {
-        if (!i) {
+
+        /* LIST SUITES */
+        if (i === "suite_list") {
           bodyEl.insertAdjacentHTML("beforeend",
-            `<div class="msg botMsg">🤔 Pouvez-vous préciser votre demande ?</div>`);
+            `<div class="msg botMsg">${UI[lang].list}</div>`);
+          bodyEl.scrollTop = bodyEl.scrollHeight;
           return;
         }
 
-        const file =
-          i === "tintorera" ? "03_services/tintorera-bateau.txt" :
-          i === "reiki"     ? "03_services/reiki.txt" :
-          "03_services/piscine-rooftop.txt";
+        /* SUITE DETAIL */
+        if (i === "suite_detail") {
+          const file = suiteSlug(t);
+          const kb = parseKB(await loadKB(lang, file));
 
-        const kb = parseKB(await loadKB(lang, file));
+          const bot = document.createElement("div");
+          bot.className = "msg botMsg";
+          bot.innerHTML = `<b>${kb.short}</b>`;
 
-        const bot = document.createElement("div");
-        bot.className = "msg botMsg";
+          if (kb.long) {
+            const more = document.createElement("button");
+            more.className = "kbMoreBtn";
+            more.textContent = UI[lang].more;
+            more.onclick = () => {
+              more.remove();
+              bot.innerHTML += `<br><br>${kb.long}`;
+              bodyEl.scrollTop = bodyEl.scrollHeight;
+            };
+            bot.appendChild(document.createElement("br"));
+            bot.appendChild(more);
+          }
 
-        /* SHORT */
-        const shortDiv = document.createElement("div");
-        shortDiv.innerHTML = `<b>${kb.short}</b>`;
-        bot.appendChild(shortDiv);
-
-        /* LONG (hidden) */
-        if (kb.long) {
-          const moreBtn = document.createElement("button");
-          moreBtn.className = "kbMoreBtn";
-          moreBtn.textContent = UI[lang].more;
-
-          moreBtn.onclick = () => {
-            moreBtn.remove();
-            const longDiv = document.createElement("div");
-            longDiv.className = "kbLong";
-            longDiv.innerHTML = `<br>${kb.long}`;
-            bot.appendChild(longDiv);
-            bodyEl.scrollTop = bodyEl.scrollHeight;
-          };
+          const book = document.createElement("a");
+          book.href = "https://soloatico.amenitiz.io";
+          book.target = "_blank";
+          book.className = "kbBookBtn";
+          book.textContent = UI[lang].book;
 
           bot.appendChild(document.createElement("br"));
-          bot.appendChild(moreBtn);
+          bot.appendChild(book);
+
+          bodyEl.appendChild(bot);
+          bodyEl.scrollTop = bodyEl.scrollHeight;
+          return;
         }
 
-        /* BOOKING */
-        let bookingUrl = null;
-        if (i === "tintorera") bookingUrl = "https://koalendar.com/e/tintorera";
-        if (i === "reiki") bookingUrl = "https://koalendar.com/e/soloatico-reiki";
-
-        if (bookingUrl) {
-          const bookBtn = document.createElement("a");
-          bookBtn.href = bookingUrl;
-          bookBtn.target = "_blank";
-          bookBtn.className = "kbBookBtn";
-          bookBtn.textContent = i === "tintorera"
-            ? UI[lang].bookBoat
-            : UI[lang].bookReiki;
-
-          bot.appendChild(document.createElement("br"));
-          bot.appendChild(bookBtn);
-        }
-
-        bodyEl.appendChild(bot);
-        bodyEl.scrollTop = bodyEl.scrollHeight;
+        /* FALLBACK OTHER FLOWS (déjà existants) */
+        bodyEl.insertAdjacentHTML("beforeend",
+          `<div class="msg botMsg">🤔 Pouvez-vous préciser votre demande ?</div>`);
 
       } catch (e) {
         console.error(e);
@@ -226,13 +213,8 @@
       }
     }
 
-    sendBtn.addEventListener("click", sendMessage);
-    input.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
+    sendBtn.onclick = sendMessage;
+    input.onkeydown = e => { if (e.key === "Enter") sendMessage(); };
 
   });
 
