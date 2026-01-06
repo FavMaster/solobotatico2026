@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.6.8.2 — FREEZE FINAL UX
+ * Version 1.6.8.3 — FREEZE FINAL PRO
  ****************************************************/
 
 (function SoloIATico() {
@@ -9,7 +9,7 @@
   const LANG_KEY = "soloia_lang_manual";
   const CAT_FLAG = "https://impro.usercontent.one/appid/oneComWsb/domain/soloatico.es/media/soloatico.es/onewebmedia/Flag_of_Catalonia.svg.png?etag=%221f1-650def4e%22&sourceContentType=image%2Fpng&ignoreAspectRatio&resize=54%2B36";
 
-  console.log("Solo’IA’tico Chatbot v1.6.8.2 — FINAL UX");
+  console.log("Solo’IA’tico Chatbot v1.6.8.3 — FREEZE FINAL PRO");
 
   function ready(fn) {
     if (document.readyState !== "loading") fn();
@@ -45,10 +45,12 @@
     let isOpen = false;
     chatWin.style.display = "none";
 
-    function injectWelcome(lang) {
-      const old = chatWin.querySelector(".welcomeMsg");
-      if (old) old.remove();
+    function removeWelcome() {
+      chatWin.querySelectorAll(".welcomeMsg").forEach(el => el.remove());
+    }
 
+    function injectWelcome(lang) {
+      removeWelcome();
       const welcome = document.createElement("div");
       welcome.className = "msg botMsg welcomeMsg";
       welcome.innerHTML = WELCOME[lang] || WELCOME.fr;
@@ -62,7 +64,7 @@
       chatWin.style.display = isOpen ? "flex" : "none";
 
       if (isOpen && !chatWin.dataset.welcomed) {
-        injectWelcome("fr"); // 👈 toujours FR au départ
+        injectWelcome("fr"); // toujours FR au départ
         chatWin.dataset.welcomed = "1";
       }
     };
@@ -100,23 +102,25 @@
              "fr";
     }
 
-    /* ================= LANG SELECTOR ================= */
+    /* ================= LANG SELECTOR (FLAGS UNIFORMES) ================= */
     const langBar = document.createElement("div");
     langBar.className = "soloia-langbar";
     langBar.style.cssText = `
       display:flex;
       justify-content:center;
-      gap:10px;
+      gap:12px;
       padding:6px 0;
       border-bottom:1px solid rgba(255,255,255,.12);
     `;
 
     langBar.innerHTML = `
-      <button data-lang="fr">🇫🇷</button>
-      <button data-lang="es">🇪🇸</button>
-      <button data-lang="en">🇬🇧</button>
-      <button data-lang="ca"><img src="${CAT_FLAG}" style="height:18px"></button>
-      <button data-lang="nl">🇳🇱</button>
+      <button data-lang="fr" title="Français" style="font-size:16px">🇫🇷</button>
+      <button data-lang="es" title="Español" style="font-size:16px">🇪🇸</button>
+      <button data-lang="en" title="English" style="font-size:16px">🇬🇧</button>
+      <button data-lang="ca" title="Català">
+        <img src="${CAT_FLAG}" style="height:16px; vertical-align:middle">
+      </button>
+      <button data-lang="nl" title="Nederlands" style="font-size:16px">🇳🇱</button>
     `;
 
     langBar.querySelectorAll("button").forEach(btn => {
@@ -124,7 +128,7 @@
         e.stopPropagation();
         const lang = btn.dataset.lang;
         localStorage.setItem(LANG_KEY, lang);
-        injectWelcome(lang); // 👈 update accueil immédiatement
+        injectWelcome(lang); // 👉 remplacement propre
       };
     });
 
@@ -193,7 +197,7 @@
           <b>Waarmee kan ik je helpen?</b>`
     };
 
-    /* ================= SEND (inchangé) ================= */
+    /* ================= SEND (flows inchangés) ================= */
     function norm(t){ return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
 
     function route(t){
@@ -228,12 +232,13 @@
       }
       if(btn) b.appendChild(btn);
       bodyEl.appendChild(b);
+      bodyEl.scrollTop=bodyEl.scrollHeight;
     }
 
     async function sendMessage(){
-      if(!input.value) return;
+      if(!input.value.trim()) return;
       const raw=input.value; input.value="";
-      bodyEl.innerHTML+=`<div class="msg userMsg">${raw}</div>`;
+      bodyEl.insertAdjacentHTML("beforeend",`<div class="msg userMsg">${raw}</div>`);
       const t=norm(raw);
       const lang=resolveLang(t);
       const r=route(t);
@@ -245,7 +250,7 @@
         render(lang,await loadKB(lang,"03_services/reiki.txt"),
           (()=>{const a=document.createElement("a");a.href="https://koalendar.com/e/soloatico-reiki";a.target="_blank";a.className="kbBookBtn";a.textContent=UI[lang].bookReiki;return a;})());
       } else {
-        bodyEl.innerHTML+=`<div class="msg botMsg">${UI[lang].clarify}</div>`;
+        bodyEl.insertAdjacentHTML("beforeend",`<div class="msg botMsg">${UI[lang].clarify}</div>`);
       }
     }
 
