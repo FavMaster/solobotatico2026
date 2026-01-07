@@ -1,17 +1,17 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.2 — FLOW INFOS PRATIQUES (KB 06)
+ * Version 1.7.3 — INFOS PRATIQUES SMART & PREMIUM
  ****************************************************/
 
 (function () {
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
 
-  console.log("Solo’IA’tico Chatbot v1.7.2 — INFOS PRATIQUES");
+  console.log("Solo’IA’tico Chatbot v1.7.3 — INFOS SMART");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
-    /* ===== CSS ===== */
+    /* ================= CSS ================= */
     if (!document.getElementById("soloia-css")) {
       const css = document.createElement("link");
       css.id = "soloia-css";
@@ -20,13 +20,13 @@
       document.head.appendChild(css);
     }
 
-    /* ===== HTML ===== */
+    /* ================= HTML ================= */
     if (!document.getElementById("chatWindow")) {
       const html = await fetch(`${KB_BASE_URL}/chatbot/chatbot.html`).then(r => r.text());
       document.body.insertAdjacentHTML("beforeend", html);
     }
 
-    /* ===== DOM ===== */
+    /* ================= DOM ================= */
     const chatWin = document.getElementById("chatWindow");
     const openBtn = document.getElementById("openChatBtn");
     const sendBtn = document.getElementById("sendBtn");
@@ -38,7 +38,7 @@
       return;
     }
 
-    /* ===== OPEN / CLOSE ===== */
+    /* ================= OPEN / CLOSE ================= */
     let isOpen = false;
     chatWin.style.display = "none";
 
@@ -56,57 +56,57 @@
       }
     });
 
-    /* ===== WHATSAPP ===== */
-    document.getElementById("waLaurent")?.addEventListener("click", e => {
-      e.preventDefault();
-      e.stopPropagation();
-      window.open("https://wa.me/34621210642", "_blank");
-    });
+    /* ================= WHATSAPP ================= */
+    const waLaurent = document.getElementById("waLaurent");
+    if (waLaurent) {
+      waLaurent.addEventListener("click", e => {
+        e.preventDefault(); e.stopPropagation();
+        window.open("https://wa.me/34621210642", "_blank");
+      });
+    }
 
-    document.getElementById("waSophia")?.addEventListener("click", e => {
-      e.preventDefault();
-      e.stopPropagation();
-      window.open("https://wa.me/34621128303", "_blank");
-    });
+    const waSophia = document.getElementById("waSophia");
+    if (waSophia) {
+      waSophia.addEventListener("click", e => {
+        e.preventDefault(); e.stopPropagation();
+        window.open("https://wa.me/34621128303", "_blank");
+      });
+    }
 
-    /* ===== LANG ===== */
+    /* ================= LANG ================= */
     function pageLang() {
       return document.documentElement.lang?.slice(0,2) || "fr";
     }
 
     function detectLang(t) {
-      if (/is er|kamer|kamers|ontbijt|informatie/.test(t)) return "nl";
-      if (/room|rooms|breakfast|practical|information/.test(t)) return "en";
-      if (/habitacion|habitaciones|desayuno|informacion/.test(t)) return "es";
-      if (/habitacio|habitacions|esmorzar|informacions/.test(t)) return "ca";
+      if (/is er|ontbijt|informatie|wifi|parking/.test(t)) return "nl";
+      if (/check|arrival|wifi|parking|information/.test(t)) return "en";
+      if (/informacion|wifi|aparcamiento|check/.test(t)) return "es";
+      if (/informacions|wifi|aparcament|check/.test(t)) return "ca";
       return pageLang();
     }
 
-    /* ===== NLP ===== */
+    /* ================= NLP ================= */
     function norm(t) {
       return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
-    function suiteSlug(t) {
-      if (/neus/.test(t)) return "suite-neus.txt";
-      if (/bourlard/.test(t)) return "suite-bourlardes.txt";
-      if (/blue/.test(t)) return "suite-blue-patio.txt";
-      return null;
-    }
-
     function intent(t) {
 
-      if (/suite|suites|chambre|chambres|room|rooms|kamer|kamers|habitacion/.test(t)) {
-        return suiteSlug(t) ? "suite_detail" : "suite_list";
-      }
-
-      if (/petit dejeuner|petit-dejeuner|breakfast|ontbijt|esmorzar|desayuno/.test(t)) {
-        return "breakfast";
-      }
-
-      if (/infos pratiques|information|practical|useful|informatie|informacions/.test(t)) {
+      if (/infos pratiques|information|practical|useful|informatie|informacions/.test(t))
         return "infos_pratiques";
-      }
+
+      if (/check in|arrivee|arrival/.test(t)) return "checkin";
+      if (/check out|depart|departure/.test(t)) return "checkout";
+      if (/parking|garer|aparcamiento|aparcament/.test(t)) return "parking";
+      if (/wifi|internet/.test(t)) return "wifi";
+      if (/chien|animal|dog|pet/.test(t)) return "animaux";
+
+      if (/suite|chambre|room|kamer|habitacion/.test(t))
+        return "suite_list";
+
+      if (/petit dejeuner|breakfast|ontbijt|esmorzar|desayuno/.test(t))
+        return "breakfast";
 
       if (/tintorera|bateau|boat/.test(t)) return "tintorera";
       if (/reiki|riki/.test(t)) return "reiki";
@@ -115,7 +115,7 @@
       return null;
     }
 
-    /* ===== KB PARSER ===== */
+    /* ================= KB ================= */
     function parseKB(txt) {
       return {
         short: (txt.match(/SHORT:\s*([\s\S]*?)\n/i) || [,""])[1].trim(),
@@ -123,36 +123,44 @@
       };
     }
 
-    /* ===== UI ===== */
+    async function loadInfosKB(lang) {
+      let r = await fetch(`${KB_BASE_URL}/kb/${lang}/06_infos-pratiques/infos-pratiques.txt`);
+      if (!r.ok && lang !== "fr") {
+        r = await fetch(`${KB_BASE_URL}/kb/fr/06_infos-pratiques/infos-pratiques.txt`);
+      }
+      if (!r.ok) throw "KB infos pratiques introuvable";
+      return parseKB(await r.text());
+    }
+
+    /* ================= UI ================= */
     const UI = {
       fr: {
-        list: "Nous proposons trois hébergements au Solo Ático :<br>• Suite Neus<br>• Suite Bourlardes<br>• Chambre Blue Patio",
-        more: "Voir la description complète",
-        book: "🏨 Réserver cette suite"
+        more: "Voir toutes les infos pratiques"
       },
       en: {
-        list: "We offer three accommodations at Solo Ático:<br>• Suite Neus<br>• Suite Bourlardes<br>• Blue Patio Room",
-        more: "View full description",
-        book: "🏨 Book this suite"
+        more: "View all practical information"
       },
       es: {
-        list: "Ofrecemos tres alojamientos en Solo Ático:<br>• Suite Neus<br>• Suite Bourlardes<br>• Habitación Blue Patio",
-        more: "Ver la descripción completa",
-        book: "🏨 Reservar esta suite"
+        more: "Ver toda la información práctica"
       },
       ca: {
-        list: "Oferim tres allotjaments a Solo Ático:<br>• Suite Neus<br>• Suite Bourlardes<br>• Habitació Blue Patio",
-        more: "Veure la descripció completa",
-        book: "🏨 Reservar aquesta suite"
+        more: "Veure tota la informació pràctica"
       },
       nl: {
-        list: "Wij bieden drie accommodaties bij Solo Ático:<br>• Suite Neus<br>• Suite Bourlardes<br>• Blue Patio Kamer",
-        more: "Volledige beschrijving bekijken",
-        book: "🏨 Deze suite reserveren"
+        more: "Alle praktische informatie bekijken"
       }
     };
 
-    /* ===== SEND MESSAGE ===== */
+    /* ================= FORMAT LONG ================= */
+    function formatLong(txt) {
+      return txt
+        .split("\n")
+        .filter(l => l.trim())
+        .map(l => `• ${l}`)
+        .join("<br>");
+    }
+
+    /* ================= SEND ================= */
     async function sendMessage() {
       if (!input.value.trim()) return;
 
@@ -168,114 +176,37 @@
 
       try {
 
-        /* LIST SUITES */
-        if (i === "suite_list") {
-          bodyEl.insertAdjacentHTML("beforeend",
-            `<div class="msg botMsg">${UI[lang].list}</div>`);
-          bodyEl.scrollTop = bodyEl.scrollHeight;
-          return;
-        }
+        /* ===== INFOS PRATIQUES SMART ===== */
+        if (["infos_pratiques","checkin","checkout","parking","wifi","animaux"].includes(i)) {
 
-        /* SUITE DETAIL */
-        if (i === "suite_detail") {
-          const file = suiteSlug(t);
-          let r = await fetch(`${KB_BASE_URL}/kb/${lang}/02_suites/${file}`);
-          if (!r.ok && lang !== "fr") {
-            r = await fetch(`${KB_BASE_URL}/kb/fr/02_suites/${file}`);
-          }
-          const kb = parseKB(await r.text());
-
+          const kb = await loadInfosKB(lang);
           const bot = document.createElement("div");
           bot.className = "msg botMsg";
-          bot.innerHTML = `<b>${kb.short}</b>`;
 
-          if (kb.long) {
-            const more = document.createElement("button");
-            more.className = "kbMoreBtn";
-            more.textContent = UI[lang].more;
-            more.onclick = e => {
-              e.preventDefault();
-              e.stopPropagation();
-              more.remove();
-              bot.innerHTML += `<br><br>${kb.long}`;
-              bodyEl.scrollTop = bodyEl.scrollHeight;
-            };
-            bot.appendChild(document.createElement("br"));
-            bot.appendChild(more);
-          }
+          let intro = kb.short;
 
-          const book = document.createElement("a");
-          book.href = "https://soloatico.amenitiz.io";
-          book.target = "_blank";
-          book.className = "kbBookBtn";
-          book.textContent = UI[lang].book;
+          if (i === "checkin") intro = "⏰ " + kb.short;
+          if (i === "checkout") intro = "🕘 " + kb.short;
+          if (i === "parking") intro = "🅿️ " + kb.short;
+          if (i === "wifi") intro = "📶 " + kb.short;
+          if (i === "animaux") intro = "🐶 " + kb.short;
+
+          bot.innerHTML = `<b>${intro}</b>`;
+
+          const more = document.createElement("button");
+          more.className = "kbMoreBtn";
+          more.textContent = UI[lang].more;
+
+          more.onclick = e => {
+            e.preventDefault();
+            e.stopPropagation();
+            more.remove();
+            bot.innerHTML += `<br><br>${formatLong(kb.long)}`;
+            bodyEl.scrollTop = bodyEl.scrollHeight;
+          };
 
           bot.appendChild(document.createElement("br"));
-          bot.appendChild(book);
-
-          bodyEl.appendChild(bot);
-          bodyEl.scrollTop = bodyEl.scrollHeight;
-          return;
-        }
-
-        /* PETIT-DEJEUNER */
-        if (i === "breakfast") {
-          let r = await fetch(`${KB_BASE_URL}/kb/${lang}/03_services/petit-dejeuner.txt`);
-          if (!r.ok && lang !== "fr") {
-            r = await fetch(`${KB_BASE_URL}/kb/fr/03_services/petit-dejeuner.txt`);
-          }
-          const kb = parseKB(await r.text());
-
-          const bot = document.createElement("div");
-          bot.className = "msg botMsg";
-          bot.innerHTML = `<b>${kb.short}</b>`;
-
-          if (kb.long) {
-            const more = document.createElement("button");
-            more.className = "kbMoreBtn";
-            more.textContent = UI[lang].more;
-            more.onclick = e => {
-              e.preventDefault();
-              e.stopPropagation();
-              more.remove();
-              bot.innerHTML += `<br><br>${kb.long}`;
-              bodyEl.scrollTop = bodyEl.scrollHeight;
-            };
-            bot.appendChild(document.createElement("br"));
-            bot.appendChild(more);
-          }
-
-          bodyEl.appendChild(bot);
-          bodyEl.scrollTop = bodyEl.scrollHeight;
-          return;
-        }
-
-        /* INFOS PRATIQUES */
-        if (i === "infos_pratiques") {
-          let r = await fetch(`${KB_BASE_URL}/kb/${lang}/06_infos-pratiques/infos-pratiques.txt`);
-          if (!r.ok && lang !== "fr") {
-            r = await fetch(`${KB_BASE_URL}/kb/fr/06_infos-pratiques/infos-pratiques.txt`);
-          }
-          const kb = parseKB(await r.text());
-
-          const bot = document.createElement("div");
-          bot.className = "msg botMsg";
-          bot.innerHTML = `<b>${kb.short}</b>`;
-
-          if (kb.long) {
-            const more = document.createElement("button");
-            more.className = "kbMoreBtn";
-            more.textContent = UI[lang].more;
-            more.onclick = e => {
-              e.preventDefault();
-              e.stopPropagation();
-              more.remove();
-              bot.innerHTML += `<br><br>${kb.long}`;
-              bodyEl.scrollTop = bodyEl.scrollHeight;
-            };
-            bot.appendChild(document.createElement("br"));
-            bot.appendChild(more);
-          }
+          bot.appendChild(more);
 
           bodyEl.appendChild(bot);
           bodyEl.scrollTop = bodyEl.scrollHeight;
