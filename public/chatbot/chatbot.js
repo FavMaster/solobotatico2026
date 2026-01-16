@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.5 — FIX WHATSAPP SAFE
+ * Version 1.7.5b — MULTILINGUE STABLE (PRODUCTION)
  ****************************************************/
 
 (function () {
@@ -8,7 +8,7 @@
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
   const BOOKING_URL = "https://www.amenitiz.io/soloatico";
 
-  console.log("Solo’IA’tico Chatbot v1.7.5 — WHATSAPP OK");
+  console.log("Solo’IA’tico Chatbot v1.7.5b — READY");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -54,17 +54,14 @@
       }
     });
 
-    /* ===== WHATSAPP (FIX SAFE) ===== */
-    const waLaurent = document.getElementById("waLaurent");
-    const waSophia  = document.getElementById("waSophia");
-
-    waLaurent?.addEventListener("click", e => {
+    /* ===== WHATSAPP ===== */
+    document.getElementById("waLaurent")?.addEventListener("click", e => {
       e.preventDefault();
       e.stopPropagation();
       window.open("https://wa.me/34621210642", "_blank");
     });
 
-    waSophia?.addEventListener("click", e => {
+    document.getElementById("waSophia")?.addEventListener("click", e => {
       e.preventDefault();
       e.stopPropagation();
       window.open("https://wa.me/34621128303", "_blank");
@@ -78,13 +75,32 @@
 
     function detectLang(text) {
       const t = text.toLowerCase();
-      if (/\b(what|how|book|available|price)\b/.test(t)) return "en";
-      if (/\b(habitacion|reservar|piscina|barco)\b/.test(t)) return "es";
-      if (/\b(habitacio|reservar|piscina|vaixell)\b/.test(t)) return "ca";
-      if (/\b(kamer|reserveren|zwembad|boot)\b/.test(t)) return "nl";
+
+      // 🇬🇧 English (strong markers only)
+      if (/\b(what|how|book|available|price|have you|do you|is there|are there)\b/.test(t)) {
+        return "en";
+      }
+
+      // 🇪🇸 Español
+      if (/\b(habitacion|reservar|piscina|barco)\b/.test(t)) {
+        return "es";
+      }
+
+      // 🇨🇦 Català (KB = cat)
+      if (/\b(habitacio|reservar|piscina|vaixell)\b/.test(t)) {
+        return "ca";
+      }
+
+      // 🇳🇱 Nederlands
+      if (/\b(kamer|reserveren|zwembad|boot)\b/.test(t)) {
+        return "nl";
+      }
+
+      // 🇫🇷 Français (fallback)
       return pageLang();
     }
 
+    // map langue → dossier KB
     function kbLang(lang) {
       return lang === "ca" ? "cat" : lang;
     }
@@ -111,8 +127,8 @@
 
     function parseKB(txt) {
       return {
-        short: (txt.match(/SHORT:\s*([\s\S]*?)\n/i) || [,""])[1].trim(),
-        long:  (txt.match(/LONG:\s*([\s\S]*)/i) || [,""])[1].trim()
+        short: (txt.match(/SHORT:\s*([\s\S]*?)\n/i) || ["",""])[1].trim(),
+        long:  (txt.match(/LONG:\s*([\s\S]*)/i) || ["",""])[1].trim()
       };
     }
 
