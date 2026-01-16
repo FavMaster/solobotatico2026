@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.10 — BOOKING MULTILINGUE
+ * Version 1.7.11 — AFFICHAGE PROGRESSIF
  ****************************************************/
 
 (function () {
@@ -15,7 +15,7 @@
     en: "https://soloatico.amenitiz.io/en/booking/room#DatesGuests-BE"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.10 — BOOKING LANG");
+  console.log("Solo’IA’tico Chatbot v1.7.11 — Progressive UX");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -60,18 +60,9 @@
       }
     });
 
-    /* ===== WHATSAPP ===== */
-    document.getElementById("waLaurent")?.addEventListener("click", e => {
-      e.preventDefault(); e.stopPropagation();
-      window.open("https://wa.me/34621210642", "_blank");
-    });
+    /* ===== UTILS ===== */
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-    document.getElementById("waSophia")?.addEventListener("click", e => {
-      e.preventDefault(); e.stopPropagation();
-      window.open("https://wa.me/34621128303", "_blank");
-    });
-
-    /* ===== NORMALISATION ===== */
     function normalize(text) {
       return text.toLowerCase()
         .normalize("NFD")
@@ -79,7 +70,6 @@
         .replace(/[^a-z\s]/g, "");
     }
 
-    /* ===== LANG ===== */
     function pageLang() {
       const l = document.documentElement.lang?.slice(0,2);
       return ["fr","en","es","ca","nl"].includes(l) ? l : "fr";
@@ -87,10 +77,10 @@
 
     function detectLang(text) {
       const t = normalize(text);
-      if (/\b(hello|hi|what|where|how|have you|do you|is there|are there)\b/.test(t)) return "en";
-      if (/\b(hola|habitacion|reservar|barco|piscina)\b/.test(t)) return "es";
-      if (/\b(bon dia|habitacio|reservar|vaixell|piscina)\b/.test(t)) return "ca";
-      if (/\b(hallo|kamer|reserveren|boot|zwembad)\b/.test(t)) return "nl";
+      if (/\b(hello|hi|what|where|how)\b/.test(t)) return "en";
+      if (/\b(hola|habitacion|reservar)\b/.test(t)) return "es";
+      if (/\b(bon dia|habitacio)\b/.test(t)) return "ca";
+      if (/\b(hallo|kamer)\b/.test(t)) return "nl";
       return pageLang();
     }
 
@@ -99,12 +89,16 @@
     }
 
     /* ===== INTENTS ===== */
-    const GREETINGS = ["bonjour","bonsoir","salut","hello","hi","hola","bon dia","good morning"];
+    const GREETINGS = ["bonjour","salut","hello","hi","hola","bon dia"];
     const FUZZY = {
-      rooms: ["suite","suites","chambre","room","kamers"],
-      boat: ["tintorera","bateau","batea","bato","boat","boot","vaixell"],
-      reiki: ["reiki","reiky","riki"],
-      pool: ["piscine","piscina","pool","swimming","zwembad"]
+      rooms: [
+        "suite","suites","chambre","room","kamers",
+        "logement","logements","hebergement","hebergements",
+        "accommodation","accommodations","stay","where to stay"
+      ],
+      boat: ["tintorera","bateau","batea","boat","boot","vaixell"],
+      pool: ["piscine","piscina","pool","swimming","zwembad"],
+      reiki: ["reiki","reiky","riki"]
     };
 
     function intent(text) {
@@ -134,32 +128,6 @@
       };
     }
 
-    /* ===== GREETING & FALLBACK ===== */
-    const GREETING_MSG = {
-      fr: "👋 **Bonjour !**<br>Que puis-je faire pour vous aujourd’hui ?",
-      en: "👋 **Hello!**<br>How can I help you today?",
-      es: "👋 **¡Hola!**<br>¿En qué puedo ayudarte hoy?",
-      ca: "👋 **Hola!**<br>En què et puc ajudar avui?",
-      nl: "👋 **Hallo!**<br>Hoe kan ik je vandaag helpen?"
-    };
-
-    const FALLBACK = {
-      fr: "✨ **Excellente question !**<br>Contactez **Sophia** ou **Laurent** via WhatsApp afin d’avoir votre réponse 🙂",
-      en: "✨ **Great question!**<br>Please contact **Sophia** or **Laurent** on WhatsApp to get your answer 🙂",
-      es: "✨ **¡Excelente pregunta!**<br>Contacta con **Sophia** o **Laurent** por WhatsApp para obtener tu respuesta 🙂",
-      ca: "✨ **Excel·lent pregunta!**<br>Contacta amb **Sophia** o **Laurent** via WhatsApp per obtenir la teva resposta 🙂",
-      nl: "✨ **Goede vraag!**<br>Neem contact op met **Sophia** of **Laurent** via WhatsApp voor je antwoord 🙂"
-    };
-
-    /* ===== STYLE ===== */
-    const STYLE = {
-      fr:{ rooms:"🏨 **Nos hébergements**" },
-      en:{ rooms:"🏨 **Our accommodations**" },
-      es:{ rooms:"🏨 **Nuestros alojamientos**" },
-      ca:{ rooms:"🏨 **Els nostres allotjaments**" },
-      nl:{ rooms:"🏨 **Onze accommodaties**" }
-    };
-
     /* ===== KB LONG PRO ===== */
     function renderLongPro(bot, text) {
       const wrapper = document.createElement("div");
@@ -169,17 +137,12 @@
         const l = line.trim();
         if (!l) return;
 
-        if (l.startsWith("-") || l.startsWith("•")) {
-          const bullet = document.createElement("div");
-          bullet.className = "kbLongBullet";
-          bullet.textContent = l.replace(/^[-•]\s*/, "");
-          wrapper.appendChild(bullet);
-        } else {
-          const p = document.createElement("div");
-          p.className = "kbLongParagraph";
-          p.textContent = l;
-          wrapper.appendChild(p);
-        }
+        const el = document.createElement("div");
+        el.className = l.startsWith("-") || l.startsWith("•")
+          ? "kbLongBullet"
+          : "kbLongParagraph";
+        el.textContent = l.replace(/^[-•]\s*/, "");
+        wrapper.appendChild(el);
       });
 
       bot.appendChild(wrapper);
@@ -198,12 +161,6 @@
       const lang = detectLang(raw);
       const i = intent(raw);
 
-      if (i === "greeting") {
-        bodyEl.insertAdjacentHTML("beforeend",
-          `<div class="msg botMsg">${GREETING_MSG[lang]}</div>`);
-        return;
-      }
-
       let files = [];
       if (i === "rooms") files = [
         "02_suites/suite-neus.txt",
@@ -211,29 +168,20 @@
         "02_suites/room-blue-patio.txt"
       ];
 
-      if (files.length === 0) {
-        bodyEl.insertAdjacentHTML("beforeend",
-          `<div class="msg botMsg">${FALLBACK[lang]}</div>`);
-        return;
-      }
+      if (files.length === 0) return;
 
       for (const f of files) {
         const kb = parseKB(await loadKB(lang, f));
         const bot = document.createElement("div");
         bot.className = "msg botMsg";
 
-        bot.innerHTML = `<div class="kbLongTitle">${STYLE[lang].rooms}</div><div>${kb.short}</div>`;
+        bot.innerHTML = `<div class="kbLongTitle">${kb.short}</div>`;
+        bodyEl.appendChild(bot);
+        bodyEl.scrollTop = bodyEl.scrollHeight;
 
         if (kb.long) {
-          const moreBtn = document.createElement("button");
-          moreBtn.className = "kbMoreBtn";
-          moreBtn.textContent = "Voir plus";
-          moreBtn.onclick = e => {
-            e.preventDefault(); e.stopPropagation();
-            moreBtn.remove();
-            renderLongPro(bot, kb.long);
-          };
-          bot.appendChild(moreBtn);
+          await sleep(400); // 🌙 douceur
+          renderLongPro(bot, kb.long);
         }
 
         const bookBtn = document.createElement("a");
@@ -243,10 +191,9 @@
         bookBtn.textContent = "🏨 Réserver";
         bot.appendChild(bookBtn);
 
-        bodyEl.appendChild(bot);
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+        await sleep(500); // 🌙 respiration entre les bulles
       }
-
-      bodyEl.scrollTop = bodyEl.scrollHeight;
     }
 
     sendBtn.addEventListener("click", sendMessage);
