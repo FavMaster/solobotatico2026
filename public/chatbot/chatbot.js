@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.8 — GREETING INTELLIGENT
+ * Version 1.7.9 — KB LONG PRO LAYOUT
  ****************************************************/
 
 (function () {
@@ -8,7 +8,7 @@
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
   const BOOKING_URL = "https://www.amenitiz.io/soloatico";
 
-  console.log("Solo’IA’tico Chatbot v1.7.8");
+  console.log("Solo’IA’tico Chatbot v1.7.9 — KB PRO");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -41,7 +41,8 @@
     chatWin.style.display = "none";
 
     openBtn.addEventListener("click", e => {
-      e.preventDefault(); e.stopPropagation();
+      e.preventDefault();
+      e.stopPropagation();
       isOpen = !isOpen;
       chatWin.style.display = isOpen ? "flex" : "none";
     });
@@ -54,19 +55,14 @@
     });
 
     /* ===== WHATSAPP ===== */
-    const WA = {
-      laurent: "https://wa.me/34621210642",
-      sophia:  "https://wa.me/34621128303"
-    };
-
     document.getElementById("waLaurent")?.addEventListener("click", e => {
       e.preventDefault(); e.stopPropagation();
-      window.open(WA.laurent, "_blank");
+      window.open("https://wa.me/34621210642", "_blank");
     });
 
     document.getElementById("waSophia")?.addEventListener("click", e => {
       e.preventDefault(); e.stopPropagation();
-      window.open(WA.sophia, "_blank");
+      window.open("https://wa.me/34621128303", "_blank");
     });
 
     /* ===== NORMALISATION ===== */
@@ -86,12 +82,10 @@
 
     function detectLang(text) {
       const t = normalize(text);
-
-      if (/\b(hello|hi|good morning|good evening|what|where|how|have you|do you|is there|are there)\b/.test(t)) return "en";
+      if (/\b(hello|hi|what|where|how|have you|do you|is there|are there)\b/.test(t)) return "en";
       if (/\b(hola|habitacion|reservar|barco|piscina)\b/.test(t)) return "es";
       if (/\b(bon dia|habitacio|reservar|vaixell|piscina)\b/.test(t)) return "ca";
-      if (/\b(goedemorgen|hallo|kamer|reserveren|boot|zwembad)\b/.test(t)) return "nl";
-
+      if (/\b(hallo|kamer|reserveren|boot|zwembad)\b/.test(t)) return "nl";
       return pageLang();
     }
 
@@ -100,10 +94,7 @@
     }
 
     /* ===== INTENTS ===== */
-    const GREETINGS = [
-      "bonjour","bonsoir","salut","hello","hi","hola","bon dia","good morning","good evening"
-    ];
-
+    const GREETINGS = ["bonjour","bonsoir","salut","hello","hi","hola","bon dia","good morning"];
     const FUZZY = {
       rooms: ["suite","suites","chambre","room","kamers"],
       boat: ["tintorera","bateau","batea","bato","boat","boot","vaixell"],
@@ -113,13 +104,10 @@
 
     function intent(text) {
       const t = normalize(text);
-
       if (GREETINGS.some(g => t.includes(g))) return "greeting";
-
       for (const key in FUZZY) {
         if (FUZZY[key].some(k => t.includes(k))) return key;
       }
-
       return "unknown";
     }
 
@@ -141,13 +129,13 @@
       };
     }
 
-    /* ===== MESSAGES ===== */
+    /* ===== GREETING & FALLBACK ===== */
     const GREETING_MSG = {
-      fr: "👋 **Bonjour !**<br>Je suis là pour vous renseigner sur nos suites, la piscine rooftop, la sortie en mer Tintorera ou toute autre question concernant Solo’IA’tico.",
-      en: "👋 **Hello!**<br>I can help you with our suites, the rooftop pool, the Tintorera boat experience or any question about Solo’IA’tico.",
-      es: "👋 **¡Hola!**<br>Puedo ayudarte con nuestras suites, la piscina rooftop, la salida en barco Tintorera o cualquier otra pregunta sobre Solo’IA’tico.",
-      ca: "👋 **Hola!**<br>Puc ajudar-te amb els nostres allotjaments, la piscina rooftop, la sortida en vaixell Tintorera o qualsevol pregunta sobre Solo’IA’tico.",
-      nl: "👋 **Hallo!**<br>Ik help je graag met onze suites, het rooftopzwembad, de Tintorera-boottocht of andere vragen over Solo’IA’tico."
+      fr: "👋 **Bonjour !**<br>Que puis-je faire pour vous aujourd’hui ?",
+      en: "👋 **Hello!**<br>How can I help you today?",
+      es: "👋 **¡Hola!**<br>¿En qué puedo ayudarte hoy?",
+      ca: "👋 **Hola!**<br>En què et puc ajudar avui?",
+      nl: "👋 **Hallo!**<br>Hoe kan ik je vandaag helpen?"
     };
 
     const FALLBACK = {
@@ -158,33 +146,63 @@
       nl: "✨ **Goede vraag!**<br>Neem contact op met **Sophia** of **Laurent** via WhatsApp voor je antwoord 🙂"
     };
 
-    /* ===== STYLE ===== */
+    /* ===== STYLE PREFIX ===== */
     const STYLE = {
-      fr: { boat:"⛵ **Tintorera**<br>Une expérience exclusive :" },
-      en: { boat:"⛵ **Tintorera**<br>An exclusive experience :" },
-      es: { boat:"⛵ **Tintorera**<br>Una experiencia exclusiva :" },
-      ca: { boat:"⛵ **Tintorera**<br>Una experiència exclusiva :" },
-      nl: { boat:"⛵ **Tintorera**<br>Een exclusieve ervaring :" }
+      fr: {
+        rooms: "🏨 **Nos hébergements**",
+        boat: "⛵ **Tintorera**",
+        reiki: "🧘‍♀️ **Reiki**",
+        pool: "🏊‍♀️ **Piscine rooftop**"
+      },
+      en: {
+        rooms: "🏨 **Our accommodations**",
+        boat: "⛵ **Tintorera**",
+        reiki: "🧘‍♀️ **Reiki**",
+        pool: "🏊‍♀️ **Rooftop pool**"
+      },
+      es: {
+        rooms: "🏨 **Nuestros alojamientos**",
+        boat: "⛵ **Tintorera**",
+        reiki: "🧘‍♀️ **Reiki**",
+        pool: "🏊‍♀️ **Piscina rooftop**"
+      },
+      ca: {
+        rooms: "🏨 **Els nostres allotjaments**",
+        boat: "⛵ **Tintorera**",
+        reiki: "🧘‍♀️ **Reiki**",
+        pool: "🏊‍♀️ **Piscina rooftop**"
+      },
+      nl: {
+        rooms: "🏨 **Onze accommodaties**",
+        boat: "⛵ **Tintorera**",
+        reiki: "🧘‍♀️ **Reiki**",
+        pool: "🏊‍♀️ **Rooftop zwembad**"
+      }
     };
 
-    /* ===== UI ===== */
-    const UI = {
-      fr:{ more:"Voir la description complète" },
-      en:{ more:"View full description" },
-      es:{ more:"Ver la descripción completa" },
-      ca:{ more:"Veure la descripció completa" },
-      nl:{ more:"Volledige beschrijving bekijken" }
-    };
+    /* ===== KB LONG PRO RENDER ===== */
+    function renderLongPro(bot, text) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "kbLongWrapper";
 
-    function renderLong(bot, text) {
-      const wrap = document.createElement("div");
-      wrap.className = "kbLong";
-      text.split("\n\n").forEach(p => {
-        const el = document.createElement("p");
-        el.innerHTML = p;
-        wrap.appendChild(el);
+      text.split("\n").forEach(line => {
+        const l = line.trim();
+        if (!l) return;
+
+        if (l.startsWith("-") || l.startsWith("•")) {
+          const bullet = document.createElement("div");
+          bullet.className = "kbLongBullet";
+          bullet.textContent = l.replace(/^[-•]\s*/, "");
+          wrapper.appendChild(bullet);
+        } else {
+          const p = document.createElement("div");
+          p.className = "kbLongParagraph";
+          p.textContent = l;
+          wrapper.appendChild(p);
+        }
       });
-      bot.appendChild(wrap);
+
+      bot.appendChild(wrapper);
     }
 
     /* ===== SEND ===== */
@@ -207,14 +225,14 @@
       }
 
       let files = [];
-      if (i === "boat") files = ["03_services/tintorera-bateau.txt"];
-      if (i === "pool") files = ["03_services/piscine-rooftop.txt"];
-      if (i === "reiki") files = ["03_services/reiki.txt"];
       if (i === "rooms") files = [
         "02_suites/suite-neus.txt",
         "02_suites/suite-bourlardes.txt",
         "02_suites/room-blue-patio.txt"
       ];
+      if (i === "boat")  files = ["03_services/tintorera-bateau.txt"];
+      if (i === "reiki") files = ["03_services/reiki.txt"];
+      if (i === "pool")  files = ["03_services/piscine-rooftop.txt"];
 
       if (files.length === 0) {
         bodyEl.insertAdjacentHTML("beforeend",
@@ -227,20 +245,28 @@
         const bot = document.createElement("div");
         bot.className = "msg botMsg";
 
-        const prefix = STYLE[lang]?.[i] || "";
-        bot.innerHTML = `${prefix}<br>${kb.short}`;
+        const title = STYLE[lang]?.[i] || "";
+        bot.innerHTML = `<div class="kbLongTitle">${title}</div><div>${kb.short}</div>`;
 
         if (kb.long) {
           const moreBtn = document.createElement("button");
           moreBtn.className = "kbMoreBtn";
-          moreBtn.textContent = UI[lang].more;
+          moreBtn.textContent = "Voir plus";
           moreBtn.onclick = e => {
             e.preventDefault(); e.stopPropagation();
             moreBtn.remove();
-            renderLong(bot, kb.long);
+            renderLongPro(bot, kb.long);
           };
-          bot.appendChild(document.createElement("br"));
           bot.appendChild(moreBtn);
+        }
+
+        if (i === "rooms") {
+          const bookBtn = document.createElement("a");
+          bookBtn.href = BOOKING_URL;
+          bookBtn.target = "_blank";
+          bookBtn.className = "kbBookBtn";
+          bookBtn.textContent = "🏨 Réserver";
+          bot.appendChild(bookBtn);
         }
 
         bodyEl.appendChild(bot);
