@@ -1,6 +1,9 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.5b — MULTILINGUE STABLE (PRODUCTION)
+ * Version 1.7.6 — INTELLIGENCE DISCRÈTE (OPTION A)
+ * - Tolérance aux fautes (fuzzy)
+ * - Reformulation élégante (esprit Solo’IA’tico)
+ * - KB = source de vérité
  ****************************************************/
 
 (function () {
@@ -8,7 +11,7 @@
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
   const BOOKING_URL = "https://www.amenitiz.io/soloatico";
 
-  console.log("Solo’IA’tico Chatbot v1.7.5b — READY");
+  console.log("Solo’IA’tico Chatbot v1.7.6 — OPTION A");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -56,14 +59,12 @@
 
     /* ===== WHATSAPP ===== */
     document.getElementById("waLaurent")?.addEventListener("click", e => {
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       window.open("https://wa.me/34621210642", "_blank");
     });
 
     document.getElementById("waSophia")?.addEventListener("click", e => {
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       window.open("https://wa.me/34621128303", "_blank");
     });
 
@@ -76,42 +77,45 @@
     function detectLang(text) {
       const t = text.toLowerCase();
 
-      // 🇬🇧 English (strong markers only)
-      if (/\b(what|how|book|available|price|have you|do you|is there|are there)\b/.test(t)) {
-        return "en";
-      }
+      if (/\b(what|how|book|available|price|have you|do you|is there|are there)\b/.test(t)) return "en";
+      if (/\b(habitacion|reservar|piscina|barco)\b/.test(t)) return "es";
+      if (/\b(habitacio|reservar|piscina|vaixell)\b/.test(t)) return "ca";
+      if (/\b(kamer|reserveren|zwembad|boot)\b/.test(t)) return "nl";
 
-      // 🇪🇸 Español
-      if (/\b(habitacion|reservar|piscina|barco)\b/.test(t)) {
-        return "es";
-      }
-
-      // 🇨🇦 Català (KB = cat)
-      if (/\b(habitacio|reservar|piscina|vaixell)\b/.test(t)) {
-        return "ca";
-      }
-
-      // 🇳🇱 Nederlands
-      if (/\b(kamer|reserveren|zwembad|boot)\b/.test(t)) {
-        return "nl";
-      }
-
-      // 🇫🇷 Français (fallback)
       return pageLang();
     }
 
-    // map langue → dossier KB
     function kbLang(lang) {
       return lang === "ca" ? "cat" : lang;
     }
 
-    /* ===== INTENT ===== */
-    function intent(t) {
-      if (/suite|room|chambre|hotel/.test(t)) return "rooms";
-      if (/reiki/.test(t)) return "reiki";
-      if (/bateau|boat|boot|vaixell/.test(t)) return "boat";
-      if (/piscine|pool|zwembad|piscina/.test(t)) return "pool";
+    /* ===== NORMALISATION + FUZZY ===== */
+    function normalize(text) {
+      return text
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z\s]/g, "");
+    }
+
+    const FUZZY = {
+      rooms: ["suite", "suites", "chambre", "room", "kamer"],
+      boat: ["bateau", "batea", "bato", "boat", "boot", "vaixell"],
+      reiki: ["reiki", "reiky", "riki"],
+      pool: ["piscine", "piscina", "pool", "zwembad"]
+    };
+
+    function fuzzyIntent(text) {
+      for (const key in FUZZY) {
+        if (FUZZY[key].some(k => text.includes(k))) return key;
+      }
       return "generic";
+    }
+
+    /* ===== INTENT ===== */
+    function intent(text) {
+      const t = normalize(text);
+      return fuzzyIntent(t);
     }
 
     /* ===== KB ===== */
@@ -131,6 +135,40 @@
         long:  (txt.match(/LONG:\s*([\s\S]*)/i) || ["",""])[1].trim()
       };
     }
+
+    /* ===== STYLE SOLO'IA'TICO ===== */
+    const STYLE = {
+      fr: {
+        rooms: "🏨 **Nos hébergements**\nUn art de vivre à Solo’IA’tico :",
+        boat: "⛵ **Tintorera**\nUne expérience exclusive :",
+        reiki: "🧘‍♀️ **Reiki**\nUn moment pour soi :",
+        pool: "🏊‍♀️ **Piscine rooftop**\nUn véritable atout de la maison :"
+      },
+      en: {
+        rooms: "🏨 **Our accommodations**\nThe Solo’IA’tico way of living:",
+        boat: "⛵ **Tintorera**\nAn exclusive experience:",
+        reiki: "🧘‍♀️ **Reiki**\nA moment just for you:",
+        pool: "🏊‍♀️ **Rooftop pool**\nOne of our highlights:"
+      },
+      es: {
+        rooms: "🏨 **Nuestros alojamientos**\nEl arte de vivir en Solo’IA’tico:",
+        boat: "⛵ **Tintorera**\nUna experiencia exclusiva:",
+        reiki: "🧘‍♀️ **Reiki**\nUn momento para ti:",
+        pool: "🏊‍♀️ **Piscina rooftop**\nUn gran atractivo de la casa:"
+      },
+      ca: {
+        rooms: "🏨 **Els nostres allotjaments**\nL’art de viure a Solo’IA’tico:",
+        boat: "⛵ **Tintorera**\nUna experiència exclusiva:",
+        reiki: "🧘‍♀️ **Reiki**\nUn moment per a tu:",
+        pool: "🏊‍♀️ **Piscina rooftop**\nUn gran atractiu de la casa:"
+      },
+      nl: {
+        rooms: "🏨 **Onze accommodaties**\nDe Solo’IA’tico levensstijl:",
+        boat: "⛵ **Tintorera**\nEen exclusieve ervaring:",
+        reiki: "🧘‍♀️ **Reiki**\nEen moment voor jezelf:",
+        pool: "🏊‍♀️ **Rooftop zwembad**\nEen van onze troeven:"
+      }
+    };
 
     /* ===== UI ===== */
     const UI = {
@@ -163,7 +201,7 @@
         `<div class="msg userMsg">${raw}</div>`);
 
       const lang = detectLang(raw);
-      const i = intent(raw.toLowerCase());
+      const i = intent(raw);
 
       let files = [];
       if (i === "rooms") files = [
@@ -171,23 +209,24 @@
         "02_suites/suite-bourlardes.txt",
         "02_suites/room-blue-patio.txt"
       ];
-      if (i === "reiki") files = ["03_services/reiki.txt"];
       if (i === "boat")  files = ["03_services/tintorera-bateau.txt"];
+      if (i === "reiki") files = ["03_services/reiki.txt"];
       if (i === "pool")  files = ["03_services/piscine-rooftop.txt"];
 
       for (const f of files) {
         const kb = parseKB(await loadKB(lang, f));
         const bot = document.createElement("div");
         bot.className = "msg botMsg";
-        bot.innerHTML = `<b>${kb.short}</b>`;
+
+        const prefix = STYLE[lang]?.[i] || "";
+        bot.innerHTML = `${prefix}<br>${kb.short}`;
 
         if (kb.long) {
           const moreBtn = document.createElement("button");
           moreBtn.className = "kbMoreBtn";
           moreBtn.textContent = UI[lang].more;
           moreBtn.onclick = e => {
-            e.preventDefault();
-            e.stopPropagation();
+            e.preventDefault(); e.stopPropagation();
             moreBtn.remove();
             renderLong(bot, kb.long);
           };
