@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.2 — SUITES & CHAMBRE (KB RÉELLE)
+ * Version 1.7.4 — MULTI-SUJETS / 5 LANGUES / UX AMÉLIORÉE
  ****************************************************/
 
 (function () {
@@ -8,7 +8,7 @@
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
   const BOOKING_URL = "https://www.amenitiz.io/soloatico";
 
-  console.log("Solo’IA’tico Chatbot v1.7.2 — SUITES FIRST");
+  console.log("Solo’IA’tico Chatbot v1.7.4");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -41,8 +41,7 @@
     chatWin.style.display = "none";
 
     openBtn.addEventListener("click", e => {
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       isOpen = !isOpen;
       chatWin.style.display = isOpen ? "flex" : "none";
     });
@@ -56,26 +55,33 @@
 
     /* ===== LANG ===== */
     function pageLang() {
-      return document.documentElement.lang?.slice(0,2) || "fr";
+      const l = document.documentElement.lang?.slice(0,2);
+      return ["fr","en","es","ca","nl"].includes(l) ? l : "fr";
     }
 
-    function detectLang(t) {
-      if (/kamer|suite/.test(t)) return "nl";
-      if (/room|suite/.test(t)) return "en";
-      if (/habitacion|suite/.test(t)) return "es";
-      if (/habitacio|suite/.test(t)) return "cat";
+    function detectLang(text) {
+      const t = text.toLowerCase();
+      if (/what|room|suite|boat|pool|reiki/.test(t)) return "en";
+      if (/habitacion|barco|piscina|reiki/.test(t)) return "es";
+      if (/habitacio|vaixell|piscina|reiki/.test(t)) return "ca";
+      if (/kamer|boot|zwembad|reiki/.test(t)) return "nl";
       return pageLang();
     }
 
-    function norm(t) {
-      return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    /* ===== INTENT ===== */
+    function intent(t) {
+      if (/suite|room|chambre|hotel/.test(t)) return "rooms";
+      if (/reiki/.test(t)) return "reiki";
+      if (/bateau|boat|boot|vaixell/.test(t)) return "boat";
+      if (/piscine|pool|zwembad/.test(t)) return "pool";
+      return "generic";
     }
 
     /* ===== KB ===== */
-    async function loadKB(lang, file) {
-      let r = await fetch(`${KB_BASE_URL}/kb/${lang}/02_suites/${file}`);
+    async function loadKB(lang, path) {
+      let r = await fetch(`${KB_BASE_URL}/kb/${lang}/${path}`);
       if (!r.ok && lang !== "fr") {
-        r = await fetch(`${KB_BASE_URL}/kb/fr/02_suites/${file}`);
+        r = await fetch(`${KB_BASE_URL}/kb/fr/${path}`);
       }
       if (!r.ok) throw "KB introuvable";
       return r.text();
@@ -90,12 +96,28 @@
 
     /* ===== UI ===== */
     const UI = {
-      fr: { more: "Voir la description complète", book: "🏨 Réserver" },
-      en: { more: "View full description", book: "🏨 Book now" },
-      es: { more: "Ver la descripción completa", book: "🏨 Reservar" },
-      cat:{ more: "Veure la descripció completa", book: "🏨 Reservar" },
-      nl: { more: "Volledige beschrijving bekijken", book: "🏨 Reserveren" }
+      fr:{ more:"Voir la description complète", book:"🏨 Réserver" },
+      en:{ more:"View full description", book:"🏨 Book now" },
+      es:{ more:"Ver la descripción completa", book:"🏨 Reservar" },
+      ca:{ more:"Veure la descripció completa", book:"🏨 Reservar" },
+      nl:{ more:"Volledige beschrijving bekijken", book:"🏨 Reserveren" }
     };
+
+    /* ===== RENDER LONG (SEXY) ===== */
+    function renderLong(bot, text) {
+      const blocks = text.split("\n\n").filter(b => b.trim());
+      const wrap = document.createElement("div");
+      wrap.className = "kbLong";
+
+      blocks.forEach(p => {
+        const el = document.createElement("p");
+        el.style.marginBottom = "10px";
+        el.innerHTML = p;
+        wrap.appendChild(el);
+      });
+
+      bot.appendChild(wrap);
+    }
 
     /* ===== SEND ===== */
     async function sendMessage() {
@@ -107,37 +129,42 @@
       bodyEl.insertAdjacentHTML("beforeend",
         `<div class="msg userMsg">${raw}</div>`);
 
-      const lang = detectLang(norm(raw));
+      const lang = detectLang(raw);
+      const i = intent(raw.toLowerCase());
 
       try {
-        const rooms = [
-          { title: "🛏 Suite Neus", file: "suite-neus.txt" },
-          { title: "🛏 Suite Bourlardes", file: "suite-bourlardes.txt" },
-          { title: "🛏 Chambre Blue Patio", file: "room-blue-patio.txt" }
-        ];
+        let files = [];
 
-        for (const room of rooms) {
-          const kb = parseKB(await loadKB(lang, room.file));
+        if (i === "rooms") {
+          files = [
+            "02_suites/suite-neus.txt",
+            "02_suites/suite-bourlardes.txt",
+            "02_suites/room-blue-patio.txt"
+          ];
+        }
 
+        if (i === "reiki") files = ["03_services/reiki.txt"];
+        if (i === "boat")  files = ["03_services/tintorera-bateau.txt"];
+        if (i === "pool")  files = ["03_services/piscine-rooftop.txt"];
+
+        if (files.length === 0) return;
+
+        for (const f of files) {
+          const kb = parseKB(await loadKB(lang, f));
           const bot = document.createElement("div");
           bot.className = "msg botMsg";
 
-          bot.innerHTML = `<b>${room.title}</b><br>${kb.short}`;
+          bot.innerHTML = `<b>${kb.short}</b>`;
 
           if (kb.long) {
             const moreBtn = document.createElement("button");
             moreBtn.className = "kbMoreBtn";
             moreBtn.textContent = UI[lang].more;
 
-            moreBtn.addEventListener("click", (e) => {
-              e.preventDefault();
-              e.stopPropagation();
+            moreBtn.addEventListener("click", e => {
+              e.preventDefault(); e.stopPropagation();
               moreBtn.remove();
-
-              const longDiv = document.createElement("div");
-              longDiv.className = "kbLong";
-              longDiv.innerHTML = `<br>${kb.long}`;
-              bot.appendChild(longDiv);
+              renderLong(bot, kb.long);
               bodyEl.scrollTop = bodyEl.scrollHeight;
             });
 
@@ -145,17 +172,19 @@
             bot.appendChild(moreBtn);
           }
 
+          if (i === "rooms") {
+            const bookBtn = document.createElement("a");
+            bookBtn.href = BOOKING_URL;
+            bookBtn.target = "_blank";
+            bookBtn.className = "kbBookBtn";
+            bookBtn.textContent = UI[lang].book;
+            bot.appendChild(document.createElement("br"));
+            bot.appendChild(bookBtn);
+          }
+
           bodyEl.appendChild(bot);
         }
 
-        // 🔘 BOUTON GLOBAL RÉSERVATION
-        const bookBtn = document.createElement("a");
-        bookBtn.href = BOOKING_URL;
-        bookBtn.target = "_blank";
-        bookBtn.className = "kbBookBtn";
-        bookBtn.textContent = UI[lang].book;
-
-        bodyEl.appendChild(bookBtn);
         bodyEl.scrollTop = bodyEl.scrollHeight;
 
       } catch (e) {
