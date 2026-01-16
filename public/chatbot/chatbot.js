@@ -1,14 +1,21 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.9 — KB LONG PRO LAYOUT
+ * Version 1.7.10 — BOOKING MULTILINGUE
  ****************************************************/
 
 (function () {
 
   const KB_BASE_URL = "https://solobotatico2026.vercel.app";
-  const BOOKING_URL = "https://www.amenitiz.io/soloatico";
 
-  console.log("Solo’IA’tico Chatbot v1.7.9 — KB PRO");
+  const BOOKING_URLS = {
+    fr: "https://soloatico.amenitiz.io/fr/booking/room#DatesGuests-BE",
+    es: "https://soloatico.amenitiz.io/es/booking/room#DatesGuests-BE",
+    nl: "https://soloatico.amenitiz.io/nl/booking/room#DatesGuests-BE",
+    ca: "https://soloatico.amenitiz.io/ca/booking/room#DatesGuests-BE",
+    en: "https://soloatico.amenitiz.io/en/booking/room#DatesGuests-BE"
+  };
+
+  console.log("Solo’IA’tico Chatbot v1.7.10 — BOOKING LANG");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -41,8 +48,7 @@
     chatWin.style.display = "none";
 
     openBtn.addEventListener("click", e => {
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       isOpen = !isOpen;
       chatWin.style.display = isOpen ? "flex" : "none";
     });
@@ -67,8 +73,7 @@
 
     /* ===== NORMALISATION ===== */
     function normalize(text) {
-      return text
-        .toLowerCase()
+      return text.toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .replace(/[^a-z\s]/g, "");
@@ -146,41 +151,16 @@
       nl: "✨ **Goede vraag!**<br>Neem contact op met **Sophia** of **Laurent** via WhatsApp voor je antwoord 🙂"
     };
 
-    /* ===== STYLE PREFIX ===== */
+    /* ===== STYLE ===== */
     const STYLE = {
-      fr: {
-        rooms: "🏨 **Nos hébergements**",
-        boat: "⛵ **Tintorera**",
-        reiki: "🧘‍♀️ **Reiki**",
-        pool: "🏊‍♀️ **Piscine rooftop**"
-      },
-      en: {
-        rooms: "🏨 **Our accommodations**",
-        boat: "⛵ **Tintorera**",
-        reiki: "🧘‍♀️ **Reiki**",
-        pool: "🏊‍♀️ **Rooftop pool**"
-      },
-      es: {
-        rooms: "🏨 **Nuestros alojamientos**",
-        boat: "⛵ **Tintorera**",
-        reiki: "🧘‍♀️ **Reiki**",
-        pool: "🏊‍♀️ **Piscina rooftop**"
-      },
-      ca: {
-        rooms: "🏨 **Els nostres allotjaments**",
-        boat: "⛵ **Tintorera**",
-        reiki: "🧘‍♀️ **Reiki**",
-        pool: "🏊‍♀️ **Piscina rooftop**"
-      },
-      nl: {
-        rooms: "🏨 **Onze accommodaties**",
-        boat: "⛵ **Tintorera**",
-        reiki: "🧘‍♀️ **Reiki**",
-        pool: "🏊‍♀️ **Rooftop zwembad**"
-      }
+      fr:{ rooms:"🏨 **Nos hébergements**" },
+      en:{ rooms:"🏨 **Our accommodations**" },
+      es:{ rooms:"🏨 **Nuestros alojamientos**" },
+      ca:{ rooms:"🏨 **Els nostres allotjaments**" },
+      nl:{ rooms:"🏨 **Onze accommodaties**" }
     };
 
-    /* ===== KB LONG PRO RENDER ===== */
+    /* ===== KB LONG PRO ===== */
     function renderLongPro(bot, text) {
       const wrapper = document.createElement("div");
       wrapper.className = "kbLongWrapper";
@@ -230,9 +210,6 @@
         "02_suites/suite-bourlardes.txt",
         "02_suites/room-blue-patio.txt"
       ];
-      if (i === "boat")  files = ["03_services/tintorera-bateau.txt"];
-      if (i === "reiki") files = ["03_services/reiki.txt"];
-      if (i === "pool")  files = ["03_services/piscine-rooftop.txt"];
 
       if (files.length === 0) {
         bodyEl.insertAdjacentHTML("beforeend",
@@ -245,8 +222,7 @@
         const bot = document.createElement("div");
         bot.className = "msg botMsg";
 
-        const title = STYLE[lang]?.[i] || "";
-        bot.innerHTML = `<div class="kbLongTitle">${title}</div><div>${kb.short}</div>`;
+        bot.innerHTML = `<div class="kbLongTitle">${STYLE[lang].rooms}</div><div>${kb.short}</div>`;
 
         if (kb.long) {
           const moreBtn = document.createElement("button");
@@ -260,14 +236,12 @@
           bot.appendChild(moreBtn);
         }
 
-        if (i === "rooms") {
-          const bookBtn = document.createElement("a");
-          bookBtn.href = BOOKING_URL;
-          bookBtn.target = "_blank";
-          bookBtn.className = "kbBookBtn";
-          bookBtn.textContent = "🏨 Réserver";
-          bot.appendChild(bookBtn);
-        }
+        const bookBtn = document.createElement("a");
+        bookBtn.href = BOOKING_URLS[lang] || BOOKING_URLS.fr;
+        bookBtn.target = "_blank";
+        bookBtn.className = "kbBookBtn";
+        bookBtn.textContent = "🏨 Réserver";
+        bot.appendChild(bookBtn);
 
         bodyEl.appendChild(bot);
       }
