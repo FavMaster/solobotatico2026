@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.15 — ACTIVITÉS (TEST DOUX)
+ * Version 1.7.16-A — FALLBACK SYSTÉMATIQUE
  ****************************************************/
 
 (function () {
@@ -20,7 +20,7 @@
     reiki: "https://koalendar.com/e/soloatico-reiki"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.15 — ACTIVITIES TEST");
+  console.log("Solo’IA’tico Chatbot v1.7.16-A — Fallback ON");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -128,6 +128,15 @@
       return "unknown";
     }
 
+    /* ===== FALLBACK ===== */
+    const FALLBACK = {
+      fr: "✨ **Excellente question !**<br>Contactez **Sophia** ou **Laurent** via WhatsApp afin d’avoir votre réponse 🙂",
+      en: "✨ **Great question!**<br>Please contact **Sophia** or **Laurent** on WhatsApp 🙂",
+      es: "✨ **¡Excelente pregunta!**<br>Contacta con **Sophia** o **Laurent** por WhatsApp 🙂",
+      ca: "✨ **Excel·lent pregunta!**<br>Contacta amb **Sophia** o **Laurent** via WhatsApp 🙂",
+      nl: "✨ **Goede vraag!**<br>Neem contact op met **Sophia** of **Laurent** via WhatsApp 🙂"
+    };
+
     /* ===== KB ===== */
     async function loadKB(lang, path) {
       const dir = kbLang(lang);
@@ -201,7 +210,11 @@
       if (i === "pool")  files = ["03_services/piscine-rooftop.txt"];
       if (i === "activities") files = ["04_que-faire/que-faire-escala.txt"];
 
-      if (files.length === 0) return;
+      if (files.length === 0) {
+        bodyEl.insertAdjacentHTML("beforeend",
+          `<div class="msg botMsg">${FALLBACK[lang]}</div>`);
+        return;
+      }
 
       for (const f of files) {
         const kb = parseKB(await loadKB(lang, f));
