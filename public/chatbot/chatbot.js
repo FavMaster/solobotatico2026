@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.19-G — GREETING VOCABULARY SAFE
+ * Version 1.7.20 — ACTIVITIES UI ENHANCED (SAFE)
  ****************************************************/
 
 (function () {
@@ -28,7 +28,15 @@
     nl: "✅ **Ja, natuurlijk 🙂 Je kunt nu reserveren.**"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.19-G — Greeting vocabulary");
+  const ACTIVITIES_INTRO = {
+    fr: "✨ **L’Escala regorge d’expériences à découvrir :**",
+    en: "✨ **L’Escala offers many experiences to enjoy:**",
+    es: "✨ **L’Escala ofrece muchas experiencias para descubrir:**",
+    ca: "✨ **L’Escala ofereix moltes experiències per descobrir:**",
+    nl: "✨ **L’Escala biedt tal van ervaringen om te ontdekken:**"
+  };
+
+  console.log("Solo’IA’tico Chatbot v1.7.20 — Activities enhanced");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -92,34 +100,8 @@
         .replace(/[^a-z\s]/g, "");
     }
 
-    /* ===== SOFT FUZZY PATCH ===== */
-    function softCorrect(text) {
-      let t = normalize(text);
-
-      const MAP = {
-        "uites": "suites",
-        "uite": "suite",
-        "suit": "suite",
-        "neuse": "neus",
-        "neuss": "neus",
-        "reky": "reiki",
-        "riki": "reiki",
-        "piscin": "piscine",
-        "pisine": "piscine",
-        "bat eau": "bateau",
-        "bato": "bateau",
-        "vaissel": "vaixell"
-      };
-
-      for (const k in MAP) {
-        t = t.replace(new RegExp(`\\b${k}\\b`, "g"), MAP[k]);
-      }
-
-      return t;
-    }
-
     function wantsToBook(text) {
-      const t = softCorrect(text);
+      const t = normalize(text);
       return /(reserv|book|boeke|pued|puis[-\s]?je|kan ik|can i)/.test(t);
     }
 
@@ -144,19 +126,10 @@
 
     /* ===== INTENTS ===== */
     const GREETINGS = [
-      // FR
       "bonjour","bonsoir","salut","coucou","bjr",
-
-      // EN
       "hello","hi","hey","good morning","good evening",
-
-      // ES
       "hola","buenos dias","buenas",
-
-      // CA
       "bon dia","bones",
-
-      // NL
       "hallo","goeiedag","goedemorgen"
     ];
 
@@ -182,7 +155,7 @@
     };
 
     function intent(text) {
-      const t = softCorrect(text);
+      const t = normalize(text);
       if (GREETINGS.some(g => t.includes(g))) return "greeting";
 
       for (const name in SUITES_BY_NAME) {
@@ -212,7 +185,7 @@
     };
 
     function extractRoomCriteria(text) {
-      const t = softCorrect(text);
+      const t = normalize(text);
       return {
         vue_mer: /(vue mer|sea view|vista mar)/.test(t),
         vue_patio: /(patio)/.test(t),
@@ -239,7 +212,7 @@
       };
     }
 
-    function renderLongPro(bot, text) {
+    function renderLongPro(bot, text, isActivities=false) {
       const wrapper = document.createElement("div");
       wrapper.className = "kbLongWrapper";
 
@@ -247,17 +220,18 @@
         const l = line.trim();
         if (!l) return;
 
-        if (l.startsWith("-") || l.startsWith("•")) {
-          const bullet = document.createElement("div");
-          bullet.className = "kbLongBullet";
-          bullet.textContent = l.replace(/^[-•]\s*/, "");
-          wrapper.appendChild(bullet);
-        } else {
-          const p = document.createElement("div");
-          p.className = "kbLongParagraph";
-          p.textContent = l;
-          wrapper.appendChild(p);
+        const p = document.createElement("div");
+        p.className = "kbLongParagraph";
+        p.textContent = l;
+
+        if (isActivities) {
+          if (/plage|beach|platja|strand/i.test(l)) p.prepend("🏖️ ");
+          else if (/mus[eé]e|museum/i.test(l)) p.prepend("🏛️ ");
+          else if (/randonn|hike|walk|cami/i.test(l)) p.prepend("🥾 ");
+          else if (/restaurant|gastronom/i.test(l)) p.prepend("🍽️ ");
         }
+
+        wrapper.appendChild(p);
       });
 
       bot.appendChild(wrapper);
@@ -273,9 +247,8 @@
       bodyEl.insertAdjacentHTML("beforeend",
         `<div class="msg userMsg">${raw}</div>`);
 
-      const corrected = softCorrect(raw);
-      const lang = detectLang(corrected);
-      const i = intent(corrected);
+      const lang = detectLang(raw);
+      const i = intent(raw);
 
       if (i === "greeting") {
         bodyEl.insertAdjacentHTML("beforeend",
@@ -286,21 +259,16 @@
       let files = [];
 
       if (i === "suite_named") {
+        const t = normalize(raw);
         for (const key in SUITES_BY_NAME) {
-          if (corrected.includes(key)) files = [SUITES_BY_NAME[key]];
+          if (t.includes(key)) files = [SUITES_BY_NAME[key]];
         }
       }
 
       if (i === "rooms") {
-        files = [
-          "02_suites/suite-neus.txt",
-          "02_suites/suite-bourlardes.txt",
-          "02_suites/room-blue-patio.txt"
-        ];
-
-        const criteria = extractRoomCriteria(corrected);
+        files = Object.keys(ROOM_META);
+        const criteria = extractRoomCriteria(raw);
         const hasCriteria = Object.values(criteria).some(v => v);
-
         if (hasCriteria) {
           files = files.filter(f =>
             Object.keys(criteria).every(k => !criteria[k] || ROOM_META[f][k])
@@ -324,14 +292,17 @@
         const bot = document.createElement("div");
         bot.className = "msg botMsg";
 
-        if (wantsToBook(corrected) && BOOKING_INTRO[lang]) {
-          bot.insertAdjacentHTML(
-            "beforeend",
-            `<div class="kbLongParagraph">${BOOKING_INTRO[lang]}</div>`
-          );
+        if (wantsToBook(raw) && BOOKING_INTRO[lang]) {
+          bot.insertAdjacentHTML("beforeend",
+            `<div class="kbLongParagraph">${BOOKING_INTRO[lang]}</div>`);
         }
 
-        bot.innerHTML += `<div>${kb.short}</div>`;
+        if (i === "activities" && ACTIVITIES_INTRO[lang]) {
+          bot.insertAdjacentHTML("beforeend",
+            `<div class="kbLongParagraph">${ACTIVITIES_INTRO[lang]}</div>`);
+        }
+
+        bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
 
         if (kb.long) {
           const moreBtn = document.createElement("button");
@@ -340,7 +311,7 @@
           moreBtn.onclick = e => {
             e.preventDefault(); e.stopPropagation();
             moreBtn.remove();
-            renderLongPro(bot, kb.long);
+            renderLongPro(bot, kb.long, i === "activities");
           };
           bot.appendChild(moreBtn);
         }
