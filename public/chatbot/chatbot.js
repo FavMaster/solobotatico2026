@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.18-R — ROOMS ENRICHED (SAFE)
+ * Version 1.7.19 — BOOKING LOGIC SAFE (NO REGRESSION)
  ****************************************************/
 
 (function () {
@@ -20,7 +20,15 @@
     reiki: "https://koalendar.com/e/soloatico-reiki"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.18-R — Rooms enriched");
+  const BOOKING_INTRO = {
+    fr: "✅ **Oui, bien sûr 🙂 Vous pouvez réserver dès maintenant.**",
+    en: "✅ **Yes, of course 🙂 You can book right now.**",
+    es: "✅ **Sí, por supuesto 🙂 Puedes reservar ahora mismo.**",
+    ca: "✅ **Sí, és clar 🙂 Pots reservar ara mateix.**",
+    nl: "✅ **Ja, natuurlijk 🙂 Je kunt nu reserveren.**"
+  };
+
+  console.log("Solo’IA’tico Chatbot v1.7.19 — Booking logic safe");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -82,6 +90,12 @@
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .replace(/[^a-z\s]/g, "");
+    }
+
+    /* ===== BOOKING INTENT ===== */
+    function wantsToBook(text) {
+      const t = normalize(text);
+      return /(reserv|book|boeke|pued|puis[-\s]?je|kan ik|can i)/.test(t);
     }
 
     /* ===== LANG ===== */
@@ -150,7 +164,7 @@
       nl: "✨ **Goede vraag!**<br>Neem contact op met **Sophia** of **Laurent** via WhatsApp 🙂"
     };
 
-    /* ===== ROOM ATTRIBUTES (LOCAL ONLY) ===== */
+    /* ===== ROOM ATTRIBUTES ===== */
     const ROOM_META = {
       "02_suites/suite-neus.txt":       { vue_mer:true,  lumineuse:true,  intimiste:false, vue_patio:false },
       "02_suites/suite-bourlardes.txt": { vue_mer:true,  lumineuse:false, intimiste:true,  vue_patio:false },
@@ -185,7 +199,6 @@
       };
     }
 
-    /* ===== KB LONG PRO ===== */
     function renderLongPro(bot, text) {
       const wrapper = document.createElement("div");
       wrapper.className = "kbLongWrapper";
@@ -271,7 +284,14 @@
         const bot = document.createElement("div");
         bot.className = "msg botMsg";
 
-        bot.innerHTML = `<div>${kb.short}</div>`;
+        if (wantsToBook(raw) && BOOKING_INTRO[lang]) {
+          bot.insertAdjacentHTML(
+            "beforeend",
+            `<div class="kbLongParagraph">${BOOKING_INTRO[lang]}</div>`
+          );
+        }
+
+        bot.innerHTML += `<div>${kb.short}</div>`;
 
         if (kb.long) {
           const moreBtn = document.createElement("button");
