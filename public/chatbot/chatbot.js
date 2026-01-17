@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.20 — ACTIVITIES UI ENHANCED (SAFE)
+ * Version 1.7.21 — PRESENTATION GENERALE (SAFE)
  ****************************************************/
 
 (function () {
@@ -36,7 +36,7 @@
     nl: "✨ **L’Escala biedt tal van ervaringen om te ontdekken:**"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.20 — Activities enhanced");
+  console.log("Solo’IA’tico Chatbot v1.7.21 — Presentation added");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -141,6 +141,13 @@
     };
 
     const FUZZY = {
+      presentation: [
+        "presentation","hotel","etablissement","concept",
+        "about","place","our hotel",
+        "presentacion","establecimiento",
+        "presentacio","establiment",
+        "accommodatie","hotel concept"
+      ],
       rooms: ["suite","suites","chambre","room","kamers"],
       boat: ["tintorera","bateau","batea","bato","boat","boot","vaixell"],
       reiki: ["reiki","reiky","riki"],
@@ -258,6 +265,10 @@
 
       let files = [];
 
+      if (i === "presentation") {
+        files = ["01_presentation/presentation-generale.txt"];
+      }
+
       if (i === "suite_named") {
         const t = normalize(raw);
         for (const key in SUITES_BY_NAME) {
@@ -316,15 +327,17 @@
           bot.appendChild(moreBtn);
         }
 
-        const bookBtn = document.createElement("a");
-        bookBtn.href =
-          (i === "boat") ? SERVICE_BOOKING.boat :
-          (i === "reiki") ? SERVICE_BOOKING.reiki :
-          (BOOKING_URLS[lang] || BOOKING_URLS.fr);
-        bookBtn.target = "_blank";
-        bookBtn.className = "kbBookBtn";
-        bookBtn.textContent = "🛎️";
-        bot.appendChild(bookBtn);
+        if (i === "presentation" || i === "rooms" || i === "boat" || i === "reiki") {
+          const bookBtn = document.createElement("a");
+          bookBtn.href =
+            (i === "boat") ? SERVICE_BOOKING.boat :
+            (i === "reiki") ? SERVICE_BOOKING.reiki :
+            (BOOKING_URLS[lang] || BOOKING_URLS.fr);
+          bookBtn.target = "_blank";
+          bookBtn.className = "kbBookBtn";
+          bookBtn.textContent = "🛎️";
+          bot.appendChild(bookBtn);
+        }
 
         bodyEl.appendChild(bot);
       }
