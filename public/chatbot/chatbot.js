@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.10 — BOOKING MULTILINGUE
+ * Version 1.7.11 — SERVICES RÉTABLIS
  ****************************************************/
 
 (function () {
@@ -15,7 +15,7 @@
     en: "https://soloatico.amenitiz.io/en/booking/room#DatesGuests-BE"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.10 — BOOKING LANG");
+  console.log("Solo’IA’tico Chatbot v1.7.11 — SERVICES OK");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -210,6 +210,9 @@
         "02_suites/suite-bourlardes.txt",
         "02_suites/room-blue-patio.txt"
       ];
+      if (i === "boat")  files = ["03_services/tintorera-bateau.txt"];
+      if (i === "reiki") files = ["03_services/reiki.txt"];
+      if (i === "pool")  files = ["03_services/piscine-rooftop.txt"];
 
       if (files.length === 0) {
         bodyEl.insertAdjacentHTML("beforeend",
@@ -222,7 +225,8 @@
         const bot = document.createElement("div");
         bot.className = "msg botMsg";
 
-        bot.innerHTML = `<div class="kbLongTitle">${STYLE[lang].rooms}</div><div>${kb.short}</div>`;
+        const title = i === "rooms" ? STYLE[lang].rooms : "";
+        bot.innerHTML = title ? `<div class="kbLongTitle">${title}</div><div>${kb.short}</div>` : `<div>${kb.short}</div>`;
 
         if (kb.long) {
           const moreBtn = document.createElement("button");
@@ -236,12 +240,14 @@
           bot.appendChild(moreBtn);
         }
 
-        const bookBtn = document.createElement("a");
-        bookBtn.href = BOOKING_URLS[lang] || BOOKING_URLS.fr;
-        bookBtn.target = "_blank";
-        bookBtn.className = "kbBookBtn";
-        bookBtn.textContent = "🏨 Réserver";
-        bot.appendChild(bookBtn);
+        if (i === "rooms") {
+          const bookBtn = document.createElement("a");
+          bookBtn.href = BOOKING_URLS[lang] || BOOKING_URLS.fr;
+          bookBtn.target = "_blank";
+          bookBtn.className = "kbBookBtn";
+          bookBtn.textContent = "🏨 Réserver";
+          bot.appendChild(bookBtn);
+        }
 
         bodyEl.appendChild(bot);
       }
