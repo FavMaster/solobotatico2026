@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.16-A — FALLBACK SYSTÉMATIQUE
+ * Version 1.7.17-B — SUITES PAR NOM PROPRE
  ****************************************************/
 
 (function () {
@@ -20,7 +20,7 @@
     reiki: "https://koalendar.com/e/soloatico-reiki"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.16-A — Fallback ON");
+  console.log("Solo’IA’tico Chatbot v1.7.17-B — Suites par nom");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -105,6 +105,14 @@
 
     /* ===== INTENTS ===== */
     const GREETINGS = ["bonjour","bonsoir","salut","hello","hi","hola","bon dia","good morning"];
+
+    const SUITES_BY_NAME = {
+      neus: "02_suites/suite-neus.txt",
+      bourlardes: "02_suites/suite-bourlardes.txt",
+      blue: "02_suites/room-blue-patio.txt",
+      patio: "02_suites/room-blue-patio.txt"
+    };
+
     const FUZZY = {
       rooms: ["suite","suites","chambre","room","kamers"],
       boat: ["tintorera","bateau","batea","bato","boat","boot","vaixell"],
@@ -122,6 +130,11 @@
     function intent(text) {
       const t = normalize(text);
       if (GREETINGS.some(g => t.includes(g))) return "greeting";
+
+      for (const name in SUITES_BY_NAME) {
+        if (t.includes(name)) return "suite_named";
+      }
+
       for (const key in FUZZY) {
         if (FUZZY[key].some(k => t.includes(k))) return key;
       }
@@ -200,6 +213,14 @@
       }
 
       let files = [];
+
+      if (i === "suite_named") {
+        const t = normalize(raw);
+        for (const key in SUITES_BY_NAME) {
+          if (t.includes(key)) files = [SUITES_BY_NAME[key]];
+        }
+      }
+
       if (i === "rooms") files = [
         "02_suites/suite-neus.txt",
         "02_suites/suite-bourlardes.txt",
@@ -235,17 +256,15 @@
           bot.appendChild(moreBtn);
         }
 
-        if (i === "rooms" || i === "boat" || i === "reiki") {
-          const bookBtn = document.createElement("a");
-          bookBtn.href =
-            i === "rooms"
-              ? (BOOKING_URLS[lang] || BOOKING_URLS.fr)
-              : SERVICE_BOOKING[i];
-          bookBtn.target = "_blank";
-          bookBtn.className = "kbBookBtn";
-          bookBtn.textContent = "🛎️";
-          bot.appendChild(bookBtn);
-        }
+        const bookBtn = document.createElement("a");
+        bookBtn.href =
+          (i === "boat") ? SERVICE_BOOKING.boat :
+          (i === "reiki") ? SERVICE_BOOKING.reiki :
+          (BOOKING_URLS[lang] || BOOKING_URLS.fr);
+        bookBtn.target = "_blank";
+        bookBtn.className = "kbBookBtn";
+        bookBtn.textContent = "🛎️";
+        bot.appendChild(bookBtn);
 
         bodyEl.appendChild(bot);
       }
