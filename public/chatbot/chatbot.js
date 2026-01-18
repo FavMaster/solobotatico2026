@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.27 — zh-cn ENABLED (NO REGRESSION)
+ * Version 1.7.28 — zh-Hans COMPATIBLE (NO REGRESSION)
  ****************************************************/
 
 (function () {
@@ -42,7 +42,6 @@
     "zh-cn": "🌤️ **以下是 L’Escala 的天气预报：**"
   };
 
-  /* ===== FALLBACK SÉCURISÉ ===== */
   const FALLBACK = {
     fr: "✨ Excellente question 🙂 Vous pouvez contacter Sophia ou Laurent via WhatsApp.",
     en: "✨ Great question 🙂 You can contact Sophia or Laurent via WhatsApp.",
@@ -52,7 +51,7 @@
     "zh-cn": "✨ 很好的问题 🙂 您可以通过 WhatsApp 联系 Sophia 或 Laurent。"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.27 — zh-cn enabled");
+  console.log("Solo’IA’tico Chatbot v1.7.28 — zh-Hans compatible");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -121,6 +120,7 @@
     /* ===== LANG ===== */
     function pageLang() {
       const l = document.documentElement.lang;
+      if (l === "zh-Hans") return "zh-cn";
       return ["fr","en","es","ca","nl","zh-cn"].includes(l) ? l : "fr";
     }
 
@@ -134,7 +134,9 @@
     }
 
     function kbLang(lang) {
-      return lang === "ca" ? "cat" : lang;
+      if (lang === "ca") return "cat";
+      if (lang === "zh-Hans") return "zh-cn";
+      return lang;
     }
 
     /* ===== INTENTS ===== */
