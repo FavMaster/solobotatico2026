@@ -1,113 +1,116 @@
 INTENT: que_faire_escala
 CATEGORY: activites
-LANG: FR
+LANG: zh-cn
 ---
 
 SHORT:
-Autour de L’Escala, découvrez plages, villages médiévaux, sites culturels,
-randonnées, activités nautiques et gastronomie locale,
-le tout dans un rayon d’environ 40 km.
+在 L’Escala 周边约 40 公里的范围内，
+您可以探索海滩、中世纪村庄、文化遗址、
+自然公园、户外活动以及当地美食，
+体验真实而多样的 Costa Brava。
 
 LONG:
-Autour de L’Escala, les possibilités d’activités sont nombreuses et variées.
-Dans un rayon d’environ 40 km, vous pourrez découvrir culture, nature,
-plages, sports, gastronomie et villages typiques de la Costa Brava.
+L’Escala 周边地区提供丰富而多样的体验选择。
+在约 40 公里的范围内，文化、自然、海洋、运动、
+美食与传统村庄相互交织，
+让每一次停留都可以根据您的节奏与兴趣而不同。
 
-1. Découvertes culturelles et historiques
+1. 文化与历史探索
 
-– Ruines d’Empúries (≤ 2 km)  
-Site archéologique majeur regroupant vestiges grecs et romains,
-avec musée et accès direct à la mer.
+– Empúries 遗址（≤ 2 公里）  
+重要的考古遗址，融合古希腊与古罗马遗迹，
+设有博物馆，并可直接通往海岸线。
 
-– Sant Martí d’Empúries (≤ 3 km)  
-Charmant village médiéval aux ruelles étroites,
-offrant une vue magnifique sur la Méditerranée.
+– Sant Martí d’Empúries（≤ 3 公里）  
+迷人的中世纪村庄，狭窄的石板街道、
+宁静的氛围以及面向地中海的优美景色。
 
-– Musée Dalí de Figueres (≈ 25 km)  
-Le célèbre théâtre-musée dédié à Salvador Dalí,
-incontournable pour les amateurs d’art et de surréalisme.
+– 菲格雷斯达利博物馆（≈ 25 公里）  
+著名的达利剧院博物馆，
+是了解超现实主义艺术的重要文化地标。
 
-– Castell de Montgrí (≈ 15 km)  
-Château médiéval perché sur une colline,
-offrant une vue panoramique spectaculaire sur le Baix Empordà.
+– Montgrí 城堡（≈ 15 公里）  
+位于山丘之上的中世纪城堡，
+可俯瞰整个 Baix Empordà 地区的壮丽全景。
 
-– Girona (≈ 45 km)  
-Ville historique remarquable avec sa cathédrale,
-son quartier juif et ses maisons colorées le long de la rivière Onyar.
+– 赫罗纳（≈ 45 公里）  
+历史悠久的城市，
+以大教堂、犹太区以及 Onyar 河畔彩色房屋闻名。
 
-2. Plages et activités nautiques
+2. 海滩与水上活动
 
-– Plages de L’Escala  
-Riells, Montgó et d’autres plages idéales pour la baignade,
-le bronzage et les activités nautiques.
+– L’Escala 的海滩  
+Riells、Montgó 等海滩适合游泳、日光浴
+以及各种水上活动。
 
-– L’Estartit & les îles Medes (≈ 15 km)  
-Spot réputé pour la plongée et le snorkeling
-dans une réserve marine protégée.
+– L’Estartit 与 Medes 群岛（≈ 15 公里）  
+著名的潜水与浮潜地点，
+位于受保护的海洋自然保护区内。
 
-– Roses (≈ 20 km)  
-Station balnéaire avec longues plages,
-sports nautiques et excursions en bateau.
+– Roses（≈ 20 公里）  
+海滨度假城市，
+拥有宽阔的沙滩、水上运动以及海上游览活动。
 
-3. Nature et randonnées
+3. 自然与徒步体验
 
-– Parc naturel du Montgrí, des îles Medes et du Baix Ter  
-Idéal pour la randonnée, l’observation de la faune
-et les panoramas spectaculaires.
+– Montgrí、Medes 群岛与 Baix Ter 自然公园  
+非常适合徒步旅行、自然观察
+以及欣赏壮阔的地中海景观。
 
-– Aiguamolls de l’Empordà (≈ 25 km)  
-Parc naturel de zones humides,
-parfait pour l’ornithologie et les balades en pleine nature.
+– Aiguamolls de l’Empordà（≈ 25 公里）  
+湿地自然公园，
+是观鸟和亲近自然的理想地点。
 
-4. Villages typiques et Costa Brava
+4. 典型村庄与 Costa Brava 风情
 
-– Pals (≈ 30 km)  
-Village médiéval perché sur une colline,
-ruelles pavées et patrimoine préservé.
+– Pals（≈ 30 公里）  
+坐落在山丘上的中世纪村庄，
+铺石街道与保存完好的历史建筑。
 
-– Peratallada (≈ 35 km)  
-Village médiéval emblématique,
-connu pour son architecture en pierre et son ambiance authentique.
+– Peratallada（≈ 35 公里）  
+极具代表性的中世纪村庄，
+以石质建筑和原始氛围而闻名。
 
-– Calanques de la Costa Brava  
-De nombreuses criques et calas idéales
-pour la baignade, le snorkeling et la détente.
+– Costa Brava 海岸线  
+分布着众多隐秘海湾与小型海滩，
+适合游泳、浮潜或静静放松。
 
-5. Activités sportives et loisirs
+5. 运动与休闲活动
 
-– Randonnée et VTT  
-Sentiers balisés le long de la côte
-ou dans l’arrière-pays.
+– 徒步与山地自行车  
+沿海步道或内陆乡村路线，
+适合不同程度的户外爱好者。
 
-– Sports nautiques  
-Paddle, kayak de mer, plongée, voile
-au Club Nautique de L’Escala et alentours.
+– 水上运动  
+桨板、海上皮划艇、潜水、帆船，
+可在 L’Escala 及周边的航海俱乐部体验。
 
-– Balades à cheval  
-Randonnées équestres le long de la plage
-avec notre partenaire à l’Estartit.
+– 骑马活动  
+沿着海滩进行的骑马漫游，
+由位于 L’Estartit 的合作伙伴提供。
 
-– Golf  
-Plusieurs golfs réputés à proximité,
-dont l’Empordà Golf et le Golf de Pals.
+– 高尔夫  
+周边拥有多座知名高尔夫球场，
+包括 Empordà Golf 与 Golf de Pals。
 
-6. Gastronomie et œnotourisme
+6. 美食与葡萄酒体验
 
-– Spécialités locales  
-Anchois de L’Escala, charcuteries,
-huile d’olive, vins de l’Empordà
-et cuisine méditerranéenne.
+– 当地特色美食  
+L’Escala 凤尾鱼、传统熟食、
+橄榄油、Empordà 葡萄酒
+以及地中海料理。
 
-– Dégustations de vins  
-Visites de vignobles et dégustations
-dans la région de l’Empordà.
+– 葡萄酒品鉴  
+参观当地酒庄，
+品尝 Empordà 地区的特色葡萄酒。
 
-– Marchés locaux  
-Marchés de villages voisins pour découvrir
-les produits frais et locaux.
+– 当地市场  
+周边村庄的集市，
+可发现新鲜的本地农产品与手工食品。
 
-Conclusion:
-Autour de L’Escala, chaque séjour peut être unique.
-Culture, nature, mer, sport et gastronomie s’entremêlent
-pour vous offrir une expérience riche et inoubliable,
-selon vos envies.
+结语：
+在 L’Escala 及其周边，
+每一次旅行都可以独一无二。
+文化、自然、海洋、运动与美食相互融合，
+为您带来丰富而难忘的体验，
+完全取决于您的节奏与喜好。

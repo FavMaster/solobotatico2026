@@ -1,23 +1,16 @@
 INTENT: presentation_generale
 CATEGORY: presentation
-LANG: FR
+LANG: zh-cn
 ---
 
 SHORT:
-Solo Ático Guest Suites est un espace d’hôtes unique à L’Escala, situé au sommet de la résidence Port Escala y Clotamar.
-Avec sa piscine rooftop privée et sa vue panoramique sur la mer, c’est un lieu pensé pour le calme, la détente et le ressourcement.
+Solo Atico Guest Suites 是一家位于 L’Escala 的高端精品住宿，环境安静，靠近海滩，专为追求舒适、私密与品质的旅客而设计。
 
 LONG:
-Solo Ático Guest Suites est un espace d’hôtes de plus de 360 m², doté d’une piscine privée en mode rooftop, perché au sommet de la résidence « Port Escala y Clotamar ».
+Solo Atico Guest Suites 坐落于加泰罗尼亚海岸的 L’Escala，是一处精致而低调的精品住宿空间。
 
-Situé juste au-dessus du Club Nautic de L’Escala et à quelques pas de la plage de Riells, le lieu offre une vue mer exceptionnelle, entre port, passeig et horizon méditerranéen.
+这里并非传统意义上的酒店，而是一个注重宁静、空间感与细节体验的住所，适合希望远离喧嚣、享受海边生活节奏的客人。
 
-Le concept a été imaginé pour offrir un environnement propice au calme, à la détente et à la zénitude : lumière naturelle omniprésente, air marin chargé d’ions négatifs et atmosphère apaisante.
+步行即可到达海滩、港口和老城区。周边环境自然、真实，全年皆宜。
 
-« Le lieu parfait pour vous ressourcer »
-
-Forts de notre expérience dans l’accueil de voyageurs en Belgique, nous avons choisi de poursuivre cette aventure sous d’autres horizons.
-C’est ici, à L’Escala, que nous avons posé nos valises afin de proposer des Suites d’Hôtes uniques, pensées pour le bien-être et la déconnexion.
-
-En sortant de la résidence, que ce soit à pied, en trottinette ou à vélo, vous pouvez rejoindre le vieux village de L’Escala sans jamais croiser de voiture.
-La promenade longe la mer, du port jusqu’à la Plaça de la Sardana, où restaurants et commerces du Nucli Antic vous attendent.
+Solo Atico Guest Suites 由业主亲自打理，注重人与人之间的交流，同时尊重每位客人的隐私与独立性。

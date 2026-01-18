@@ -1,39 +1,14 @@
 INTENT: tintorera_bateau
 CATEGORY: services
-LANG: FR
+LANG: zh-cn
 ---
 
 SHORT:
-Tintorera est une balade en bateau privée à bord d’un llaut catalan traditionnel.
-Idéale pour baignades, couchers de soleil, découvertes marines et moments inoubliables sur la Costa Brava.
+Tintorera 提供私密的海上出行体验，是探索 L’Escala 海岸的独特方式。
 
 LONG:
-Tintorera est un llaut catalan traditionnel de 6,5 mètres, âgé de plus de 70 ans.
-Cette vieille dame pleine de charme est parfaite pour des balades romantiques, des baignades en mer,
-des couchers de soleil côté mer et la découverte de la Costa Brava autrement.
+Tintorera 是一项专为 Solo Atico Guest Suites 客人提供的私人船只体验。
 
-Tout est réuni pour un moment de pur plaisir marin : son bain de soleil, son pont en teck,
-ses boiseries, le ronronnement de son moteur… et la bonne humeur de Laurent,
-votre hôte et capitaine.
+行程可根据当日天气和海况调整，适合希望从海上角度欣赏海岸、放松身心或享受片刻宁静的旅客。
 
-La souplesse, votre bien-être et votre sécurité sont nos priorités.
-
-Le tarif inclut :
-– Le carburant  
-– Le capitaine  
-– Les boissons et snacks à bord  
-
-Capacité maximale : 4 personnes
-
-Tarifs :
-Forfait 1 heure : 125 €  
-Heure supplémentaire : 50 €  
-
-Exemples :
-2h → 175 €  
-3h → 225 €  
-4h → 275 €  
-
-Si vous êtes plus de 4 personnes, il est possible de louer un autre bateau au port.
-Sans permis ? Aucun souci : Laurent peut vous accompagner pour une visite de la région
-au tarif de 300 € la journée ou 200 € la demi-journée (à convenir).
+这是一次私密、从容且贴近自然的体验，节奏舒缓，重在感受海洋本身。

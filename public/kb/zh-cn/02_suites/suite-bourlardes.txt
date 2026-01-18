@@ -1,27 +1,12 @@
 INTENT: suite_bourlardes
 CATEGORY: suites
-LANG: FR
+LANG: zh-cn
 ---
 
 SHORT:
-La Suite Bourlardes est une suite atypique et intimiste, offrant un véritable havre de paix.
-Sa terrasse privative sans vis-à-vis permet de profiter pleinement du soleil et de la vue en toute tranquillité.
+Suite Bourlardes 是一间享有海景的套房，氛围宁静，兼具舒适感与私密性。
 
 LONG:
-Nos suites possèdent chacune leur personnalité, permettant à chacun de s’y retrouver.
-Quelle que soit votre préférence, une chose est certaine : la vue panoramique est toujours au rendez-vous pour vivre des moments inoubliables.
+Suite Bourlardes 面向大海，拥有自然柔和的采光，是一处让人放松身心的空间。
 
-La Suite Bourlardes se distingue par sa disposition atypique et son atmosphère paisible.
-Elle offre un espace privatif avec une terrasse sans vis-à-vis, idéale pour se détendre, profiter du soleil ou simplement savourer un moment de calme absolu.
-
-Description :
-Capacité : 2 personnes  
-Lit : 1 lit double Queen Size  
-Salle de bain avec baignoire et douche  
-Dressing  
-Terrasse privative  
-
-Commodités :
-Wi-Fi, télévision, serviettes, savon, shampoing, sèche-cheveux, ventilateur.  
-En hiver, feu ouvert pour une expérience chaleureuse et unique.  
-Petit-déjeuner inclus – Smart TV (Netflix, Prime Video, Disney+)
+套房布置简约而温暖，强调舒适度与居住体验，非常适合希望在海边停留几天、远离日常节奏的旅客。

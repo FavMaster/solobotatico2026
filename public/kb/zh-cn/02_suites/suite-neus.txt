@@ -1,27 +1,15 @@
 INTENT: suite_neus
 CATEGORY: suites
-LANG: FR
+LANG: zh-cn
 ---
 
 SHORT:
-La Suite Neus est un cocon lumineux et apaisant, idéal pour les couples ou les voyageurs en quête de calme.
-Elle offre une vue exceptionnelle sur le port, le passeig et la mer, avec de superbes couchers de soleil.
+Suite Neus 是一间享有海景的宽敞套房，明亮安静，适合希望在海边放松身心的旅客。
 
 LONG:
-Chacune de nos suites déploie une identité propre, un caractère singulier où chacun peut se projeter.
-Mais au-delà de ces nuances, une promesse demeure immuable : celle d’une vue panoramique spectaculaire, toile de fond de vos moments inoubliables.
+Suite Neus 提供开阔的海景视野，自然光线充足，空间布局舒适而优雅。
 
-La Suite Neus est un cocon lumineux aux tons doux, idéale pour les couples, les voyageurs en quête de calme et de confort, ou encore pour les personnes souhaitant travailler dans un environnement paisible.
+套房设计简洁，强调材质与光线的平衡，让人能够真正放慢节奏，享受海岸的宁静氛围。
 
-Elle offre une vue imprenable sur le port, le passeig et la mer, ainsi qu’un coucher de soleil à couper le souffle chaque fin de journée.
+这是一间非常适合情侣或希望在 L’Escala 度过安静假期的旅客选择。
 
-Description :
-Capacité : 2 personnes  
-Lit : 1 lit double Queen Size  
-Salle de bain avec baignoire et douche, vue mer  
-Dressing  
-Balcon  
-
-Commodités :
-Climatisation, Wi-Fi, télévision, serviettes, savon, shampoing, sèche-cheveux.  
-Petit-déjeuner inclus – Smart TV (Netflix, Prime Video, Disney+)

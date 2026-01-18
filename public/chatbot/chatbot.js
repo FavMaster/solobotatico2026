@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.26 — CORE RESTORED (NO REGRESSION)
+ * Version 1.7.27 — zh-cn ENABLED (NO REGRESSION)
  ****************************************************/
 
 (function () {
@@ -15,7 +15,8 @@
     es: "https://soloatico.amenitiz.io/es/booking/room#DatesGuests-BE",
     nl: "https://soloatico.amenitiz.io/nl/booking/room#DatesGuests-BE",
     ca: "https://soloatico.amenitiz.io/ca/booking/room#DatesGuests-BE",
-    en: "https://soloatico.amenitiz.io/en/booking/room#DatesGuests-BE"
+    en: "https://soloatico.amenitiz.io/en/booking/room#DatesGuests-BE",
+    "zh-cn": "https://soloatico.amenitiz.io/en/booking/room#DatesGuests-BE"
   };
 
   const SERVICE_BOOKING = {
@@ -28,7 +29,8 @@
     en: "✅ **Yes, of course 🙂 You can book right now.**",
     es: "✅ **Sí, por supuesto 🙂 Puedes reservar ahora mismo.**",
     ca: "✅ **Sí, és clar 🙂 Pots reservar ara mateix.**",
-    nl: "✅ **Ja, natuurlijk 🙂 Je kunt nu reserveren.**"
+    nl: "✅ **Ja, natuurlijk 🙂 Je kunt nu reserveren.**",
+    "zh-cn": "✅ **当然可以 🙂 您现在可以直接预订。**"
   };
 
   const WEATHER_TEXT = {
@@ -36,19 +38,21 @@
     en: "🌤️ **Here is the weather forecast for L’Escala:**",
     es: "🌤️ **Aquí tienes la previsión del tiempo en L’Escala:**",
     ca: "🌤️ **Aquí tens la previsió del temps a L’Escala:**",
-    nl: "🌤️ **Hier is de weersvoorspelling voor L’Escala:**"
+    nl: "🌤️ **Hier is de weersvoorspelling voor L’Escala:**",
+    "zh-cn": "🌤️ **以下是 L’Escala 的天气预报：**"
   };
 
   /* ===== FALLBACK SÉCURISÉ ===== */
   const FALLBACK = {
     fr: "✨ Excellente question 🙂 Vous pouvez contacter Sophia ou Laurent via WhatsApp.",
     en: "✨ Great question 🙂 You can contact Sophia or Laurent via WhatsApp.",
-    es: "✨ Excelente pregunta 🙂 Puedes contactar con Sophia o Laurent por WhatsApp.",
+    es: "✨ Excelente pregunta 🙂 Puedes contactar con Sophia o Laurent via WhatsApp.",
     ca: "✨ Bona pregunta 🙂 Pots contactar amb la Sophia o en Laurent via WhatsApp.",
-    nl: "✨ Goede vraag 🙂 Je kunt contact opnemen met Sophia of Laurent via WhatsApp."
+    nl: "✨ Goede vraag 🙂 Je kunt contact opnemen met Sophia of Laurent via WhatsApp.",
+    "zh-cn": "✨ 很好的问题 🙂 您可以通过 WhatsApp 联系 Sophia 或 Laurent。"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.26 — Core restored");
+  console.log("Solo’IA’tico Chatbot v1.7.27 — zh-cn enabled");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -116,8 +120,8 @@
 
     /* ===== LANG ===== */
     function pageLang() {
-      const l = document.documentElement.lang?.slice(0,2);
-      return ["fr","en","es","ca","nl"].includes(l) ? l : "fr";
+      const l = document.documentElement.lang;
+      return ["fr","en","es","ca","nl","zh-cn"].includes(l) ? l : "fr";
     }
 
     function detectLang(text) {
