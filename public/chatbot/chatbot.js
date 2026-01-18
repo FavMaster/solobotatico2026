@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.28 — zh-Hans COMPATIBLE (NO REGRESSION)
+ * Version 1.7.29 — PLUS BTN FIX (NO REGRESSION)
  ****************************************************/
 
 (function () {
@@ -46,12 +46,12 @@
     fr: "✨ Excellente question 🙂 Vous pouvez contacter Sophia ou Laurent via WhatsApp.",
     en: "✨ Great question 🙂 You can contact Sophia or Laurent via WhatsApp.",
     es: "✨ Excelente pregunta 🙂 Puedes contactar con Sophia o Laurent via WhatsApp.",
-    ca: "✨ Bona pregunta 🙂 Pots contactar amb la Sophia o en Laurent via WhatsApp.",
-    nl: "✨ Goede vraag 🙂 Je kunt contact opnemen met Sophia of Laurent via WhatsApp.",
+    ca: "✨ Bona pregunta 🙂 Pots contactar amb la Sophia ou en Laurent via WhatsApp.",
+    nl: "✨ Goede vraag 🙂 Je kunt contact opnemen met Sophia ou Laurent via WhatsApp.",
     "zh-cn": "✨ 很好的问题 🙂 您可以通过 WhatsApp 联系 Sophia 或 Laurent。"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.28 — zh-Hans compatible");
+  console.log("Solo’IA’tico Chatbot v1.7.29 — plus button fixed");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -270,7 +270,12 @@
           const btn=document.createElement("button");
           btn.className="kbMoreBtn";
           btn.textContent="➕";
-          btn.onclick=()=>{btn.remove();renderLong(bot,kb.long);};
+          btn.onclick=(e)=>{
+            e.preventDefault();
+            e.stopPropagation(); // ✅ FIX définitif
+            btn.remove();
+            renderLong(bot,kb.long);
+          };
           bot.appendChild(btn);
         }
 
