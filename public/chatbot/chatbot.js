@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.25 — RESTORE CORE INTENTS (NO REGRESSION)
+ * Version 1.7.26 — CORE RESTORED (NO REGRESSION)
  ****************************************************/
 
 (function () {
@@ -39,7 +39,7 @@
     nl: "🌤️ **Hier is de weersvoorspelling voor L’Escala:**"
   };
 
-  /* ===== FALLBACK (RESTORED SAFETY NET) ===== */
+  /* ===== FALLBACK SÉCURISÉ ===== */
   const FALLBACK = {
     fr: "✨ Excellente question 🙂 Vous pouvez contacter Sophia ou Laurent via WhatsApp.",
     en: "✨ Great question 🙂 You can contact Sophia or Laurent via WhatsApp.",
@@ -48,20 +48,11 @@
     nl: "✨ Goede vraag 🙂 Je kunt contact opnemen met Sophia of Laurent via WhatsApp."
   };
 
-  /* ===== RESTORED INTENT → KB MAPPING (FROM 1.7.14) ===== */
-  const INTENT_FILES = {
-    presentation: ["01_presentation/presentation-generale.txt"],
-    boat: ["03_services/tintorera-bateau.txt"],
-    reiki: ["03_services/reiki.txt"],
-    pool: ["03_services/piscine-rooftop.txt"],
-    activities: ["04_que-faire/que-faire-escala.txt"]
-  };
-
-  console.log("Solo’IA’tico Chatbot v1.7.25 — Core intents restored");
+  console.log("Solo’IA’tico Chatbot v1.7.26 — Core restored");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
-    /* ===== CSS ===== */
+    /* ===== CSS / HTML ===== */
     if (!document.getElementById("soloia-css")) {
       const css = document.createElement("link");
       css.id = "soloia-css";
@@ -70,13 +61,11 @@
       document.head.appendChild(css);
     }
 
-    /* ===== HTML ===== */
     if (!document.getElementById("chatWindow")) {
       const html = await fetch(`${KB_BASE_URL}/chatbot/chatbot.html`).then(r => r.text());
       document.body.insertAdjacentHTML("beforeend", html);
     }
 
-    /* ===== DOM ===== */
     const chatWin = document.getElementById("chatWindow");
     const openBtn = document.getElementById("openChatBtn");
     const sendBtn = document.getElementById("sendBtn");
@@ -122,7 +111,7 @@
     }
 
     function wantsToBook(text) {
-      return /(reserv|book|boeke|pued|puis|kan ik|can i)/.test(normalize(text));
+      return /(reserv|book|pued|puis|kan ik|can i)/.test(normalize(text));
     }
 
     /* ===== LANG ===== */
@@ -133,10 +122,10 @@
 
     function detectLang(text) {
       const t = normalize(text);
-      if (/\b(hello|hi|what|where|things to do|activities)\b/.test(t)) return "en";
-      if (/\b(que hacer|actividades)\b/.test(t)) return "es";
-      if (/\b(que fer|activitats)\b/.test(t)) return "ca";
-      if (/\b(wat te doen|activiteiten)\b/.test(t)) return "nl";
+      if (/\b(hello|what|where)\b/.test(t)) return "en";
+      if (/\b(que hacer)\b/.test(t)) return "es";
+      if (/\b(que fer)\b/.test(t)) return "ca";
+      if (/\b(wat te doen)\b/.test(t)) return "nl";
       return pageLang();
     }
 
@@ -145,51 +134,71 @@
     }
 
     /* ===== INTENTS ===== */
-    const GREETINGS = ["bonjour","bonsoir","salut","hello","hi","hola","bon dia"];
+    const GREETINGS = ["bonjour","bonsoir","salut","hello","hola","bon dia"];
+
+    const SUITES_BY_NAME = {
+      neus: "02_suites/suite-neus.txt",
+      bourlardes: "02_suites/suite-bourlardes.txt",
+      blue: "02_suites/room-blue-patio.txt",
+      patio: "02_suites/room-blue-patio.txt"
+    };
+
     const FUZZY = {
-      presentation: ["presentation","hotel","etablissement","about","place"],
-      rooms: ["suite","suites","chambre","room","kamers"],
-      boat: ["tintorera","bateau","boat","boot","vaixell"],
-      reiki: ["reiki","reiky","riki"],
-      pool: ["piscine","piscina","pool","zwembad"],
-      activities: ["que faire","things to do","que hacer","que fer","wat te doen"],
-      weather: ["meteo","météo","weather","tiempo","weer"]
+      presentation: [
+        "presentation","hotel","etablissement","soloatico","solo atico",
+        "votre hotel","plage"
+      ],
+      rooms: ["suite","suites","chambre","room"],
+      boat: ["bateau","boat","tintorera"],
+      reiki: ["reiki"],
+      pool: ["piscine","pool"],
+      activities: ["que faire","things to do"],
+      weather: ["meteo","météo","weather"]
     };
 
     function intent(text) {
       const t = normalize(text);
+      for (const s in SUITES_BY_NAME) {
+        if (t.includes(s)) return "suite_named";
+      }
       if (GREETINGS.some(g => t.includes(g))) return "greeting";
-      for (const key in FUZZY) {
-        if (FUZZY[key].some(k => t.includes(k))) return key;
+      for (const k in FUZZY) {
+        if (FUZZY[k].some(w => t.includes(w))) return k;
       }
       return "unknown";
     }
 
+    /* ===== ROOMS META ===== */
+    const ROOM_META = {
+      "02_suites/suite-neus.txt": { vue_mer:true },
+      "02_suites/suite-bourlardes.txt": { vue_mer:true },
+      "02_suites/room-blue-patio.txt": { vue_mer:false }
+    };
+
+    function extractRoomCriteria(text) {
+      return { vue_mer: /(vue mer|sea view)/.test(normalize(text)) };
+    }
+
     /* ===== KB ===== */
     async function loadKB(lang, path) {
-      const dir = kbLang(lang);
-      let r = await fetch(`${KB_BASE_URL}/kb/${dir}/${path}`);
-      if (!r.ok && dir !== "fr") {
-        r = await fetch(`${KB_BASE_URL}/kb/fr/${path}`);
-      }
-      if (!r.ok) throw "KB introuvable";
+      let r = await fetch(`${KB_BASE_URL}/kb/${kbLang(lang)}/${path}`);
+      if (!r.ok) r = await fetch(`${KB_BASE_URL}/kb/fr/${path}`);
       return r.text();
     }
 
     function parseKB(txt) {
       return {
-        short: (txt.match(/SHORT:\s*([\s\S]*?)\n/i) || ["",""])[1].trim(),
-        long:  (txt.match(/LONG:\s*([\s\S]*)/i) || ["",""])[1].trim()
+        short: (txt.match(/SHORT:\s*([\s\S]*?)\n/i)||["",""])[1].trim(),
+        long:  (txt.match(/LONG:\s*([\s\S]*)/i)||["",""])[1].trim()
       };
     }
 
-    function renderLongPro(bot, text) {
-      text.split("\n").forEach(line => {
-        const l = line.trim();
-        if (!l) return;
-        const p = document.createElement("div");
-        p.className = "kbLongParagraph";
-        p.textContent = l;
+    function renderLong(bot, text) {
+      text.split("\n").forEach(l=>{
+        l=l.trim(); if(!l)return;
+        const p=document.createElement("div");
+        p.className="kbLongParagraph";
+        p.textContent=l;
         bot.appendChild(p);
       });
     }
@@ -197,96 +206,86 @@
     /* ===== SEND ===== */
     async function sendMessage() {
       if (!input.value.trim()) return;
-
       const raw = input.value;
-      input.value = "";
-
-      bodyEl.insertAdjacentHTML("beforeend",
-        `<div class="msg userMsg">${raw}</div>`);
+      input.value="";
+      bodyEl.insertAdjacentHTML("beforeend",`<div class="msg userMsg">${raw}</div>`);
 
       const lang = detectLang(raw);
       const i = intent(raw);
 
-      if (i === "greeting") {
-        bodyEl.insertAdjacentHTML("beforeend",
-          `<div class="msg botMsg">👋</div>`);
+      if (i==="greeting") {
+        bodyEl.insertAdjacentHTML("beforeend",`<div class="msg botMsg">👋</div>`);
         return;
       }
 
-      if (i === "weather") {
+      if (i==="weather") {
         bodyEl.insertAdjacentHTML("beforeend",
-          `<div class="msg botMsg">${WEATHER_TEXT[lang]}<br><a class="kbBookBtn" href="${WEATHER_URL}" target="_blank">🌦️</a></div>`);
+          `<div class="msg botMsg">${WEATHER_TEXT[lang]}<br>
+           <a class="kbBookBtn" href="${WEATHER_URL}" target="_blank">🌦️</a></div>`);
         return;
       }
 
-      let files = [];
+      let files=[];
 
-      /* ===== ROOMS (UNCHANGED) ===== */
-      if (i === "rooms") {
-        files = [
-          "02_suites/suite-neus.txt",
-          "02_suites/suite-bourlardes.txt",
-          "02_suites/room-blue-patio.txt"
-        ];
+      if (i==="suite_named") {
+        for (const k in SUITES_BY_NAME) {
+          if (normalize(raw).includes(k)) files=[SUITES_BY_NAME[k]];
+        }
       }
 
-      /* ===== RESTORED CORE INTENTS ===== */
-      if (files.length === 0 && INTENT_FILES[i]) {
-        files = INTENT_FILES[i];
+      if (i==="rooms") {
+        files=Object.keys(ROOM_META);
+        if (extractRoomCriteria(raw).vue_mer)
+          files=files.filter(f=>ROOM_META[f].vue_mer);
       }
 
-      if (files.length === 0) {
-        bodyEl.insertAdjacentHTML("beforeend",
-          `<div class="msg botMsg">${FALLBACK[lang]}</div>`);
+      if (i==="presentation") files=["01_presentation/presentation-generale.txt"];
+      if (i==="boat") files=["03_services/tintorera-bateau.txt"];
+      if (i==="reiki") files=["03_services/reiki.txt"];
+      if (i==="pool") files=["03_services/piscine-rooftop.txt"];
+      if (i==="activities") files=["04_que-faire/que-faire-escala.txt"];
+
+      if (!files.length) {
+        bodyEl.insertAdjacentHTML("beforeend",`<div class="msg botMsg">${FALLBACK[lang]}</div>`);
         return;
       }
 
       for (const f of files) {
-        const kb = parseKB(await loadKB(lang, f));
-        const bot = document.createElement("div");
-        bot.className = "msg botMsg";
+        const kb=parseKB(await loadKB(lang,f));
+        const bot=document.createElement("div");
+        bot.className="msg botMsg";
 
-        if (wantsToBook(raw)) {
-          bot.insertAdjacentHTML("beforeend",
-            `<div class="kbLongParagraph">${BOOKING_INTRO[lang]}</div>`);
-        }
+        if (wantsToBook(raw))
+          bot.insertAdjacentHTML("beforeend",`<div>${BOOKING_INTRO[lang]}</div>`);
 
-        bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
+        bot.insertAdjacentHTML("beforeend",`<div>${kb.short}</div>`);
 
         if (kb.long) {
-          const moreBtn = document.createElement("button");
-          moreBtn.className = "kbMoreBtn";
-          moreBtn.textContent = "➕";
-          moreBtn.onclick = () => {
-            moreBtn.remove();
-            renderLongPro(bot, kb.long);
-          };
-          bot.appendChild(moreBtn);
+          const btn=document.createElement("button");
+          btn.className="kbMoreBtn";
+          btn.textContent="➕";
+          btn.onclick=()=>{btn.remove();renderLong(bot,kb.long);};
+          bot.appendChild(btn);
         }
 
-        if (i === "rooms" || i === "boat" || i === "reiki") {
-          const bookBtn = document.createElement("a");
-          bookBtn.href = i === "rooms"
-            ? BOOKING_URLS[lang]
-            : SERVICE_BOOKING[i];
-          bookBtn.target = "_blank";
-          bookBtn.className = "kbBookBtn";
-          bookBtn.textContent = "🛎️";
-          bot.appendChild(bookBtn);
+        if (["rooms","boat","reiki"].includes(i)) {
+          const a=document.createElement("a");
+          a.href=i==="rooms"?BOOKING_URLS[lang]:SERVICE_BOOKING[i];
+          a.target="_blank";
+          a.className="kbBookBtn";
+          a.textContent="🛎️";
+          bot.appendChild(a);
         }
 
         bodyEl.appendChild(bot);
       }
 
-      bodyEl.scrollTop = bodyEl.scrollHeight;
+      bodyEl.scrollTop=bodyEl.scrollHeight;
     }
 
-    sendBtn.addEventListener("click", sendMessage);
-    input.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        sendMessage();
-      }
+    sendBtn.addEventListener("click",sendMessage);
+    input.addEventListener("keydown",e=>{
+      if(e.key==="Enter"){e.preventDefault();sendMessage();}
     });
 
   });
