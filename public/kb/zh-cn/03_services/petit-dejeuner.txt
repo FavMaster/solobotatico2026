@@ -1,0 +1,23 @@
+INTENT: petit_dejeuner
+CATEGORY: services
+LANG: FR
+---
+
+SHORT:
+Le petit-déjeuner est inclus et déposé à l’heure souhaitée devant votre porte.
+À savourer dans votre suite ou sur l’une de nos terrasses rooftop.
+
+LONG:
+Le petit-déjeuner est inclus dans votre séjour à Solo Ático Guest Suites.
+Il est déposé à l’heure souhaitée directement devant votre porte,
+afin que vous puissiez en profiter en toute tranquillité,
+au lit, à table dans votre suite ou sur l’une de nos terrasses de l’Atico.
+
+Il se compose d’un savoureux mélange de sucré et de salé,
+avec notamment du jus d’orange pressé par nos soins,
+des fruits frais, une truita, des viennoiseries,
+des charcuteries et bien d’autres surprises,
+selon l’inspiration et l’humeur du chef.
+
+Une ambiance chaleureuse et gourmande pour bien commencer la journée,
+dans le confort et la sérénité de votre séjour.

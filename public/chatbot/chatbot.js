@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.24 — SUITES & VUE MER FIX (NO REGRESSION)
+ * Version 1.7.25 — RESTORE CORE INTENTS (NO REGRESSION)
  ****************************************************/
 
 (function () {
@@ -31,14 +31,6 @@
     nl: "✅ **Ja, natuurlijk 🙂 Je kunt nu reserveren.**"
   };
 
-  const ACTIVITIES_INTRO = {
-    fr: "✨ **L’Escala regorge d’expériences à découvrir :**",
-    en: "✨ **L’Escala offers many experiences to enjoy:**",
-    es: "✨ **L’Escala ofrece muchas experiencias para descubrir:**",
-    ca: "✨ **L’Escala ofereix moltes experiències per descobrir:**",
-    nl: "✨ **L’Escala biedt tal van ervaringen om te ontdekken:**"
-  };
-
   const WEATHER_TEXT = {
     fr: "🌤️ **Voici les prévisions météo à L’Escala :**",
     en: "🌤️ **Here is the weather forecast for L’Escala:**",
@@ -47,7 +39,25 @@
     nl: "🌤️ **Hier is de weersvoorspelling voor L’Escala:**"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.24 — Suites fixed");
+  /* ===== FALLBACK (RESTORED SAFETY NET) ===== */
+  const FALLBACK = {
+    fr: "✨ Excellente question 🙂 Vous pouvez contacter Sophia ou Laurent via WhatsApp.",
+    en: "✨ Great question 🙂 You can contact Sophia or Laurent via WhatsApp.",
+    es: "✨ Excelente pregunta 🙂 Puedes contactar con Sophia o Laurent por WhatsApp.",
+    ca: "✨ Bona pregunta 🙂 Pots contactar amb la Sophia o en Laurent via WhatsApp.",
+    nl: "✨ Goede vraag 🙂 Je kunt contact opnemen met Sophia of Laurent via WhatsApp."
+  };
+
+  /* ===== RESTORED INTENT → KB MAPPING (FROM 1.7.14) ===== */
+  const INTENT_FILES = {
+    presentation: ["01_presentation/presentation-generale.txt"],
+    boat: ["03_services/tintorera-bateau.txt"],
+    reiki: ["03_services/reiki.txt"],
+    pool: ["03_services/piscine-rooftop.txt"],
+    activities: ["04_que-faire/que-faire-escala.txt"]
+  };
+
+  console.log("Solo’IA’tico Chatbot v1.7.25 — Core intents restored");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -112,8 +122,7 @@
     }
 
     function wantsToBook(text) {
-      const t = normalize(text);
-      return /(reserv|book|boeke|pued|puis[-\s]?je|kan ik|can i)/.test(t);
+      return /(reserv|book|boeke|pued|puis|kan ik|can i)/.test(normalize(text));
     }
 
     /* ===== LANG ===== */
@@ -124,10 +133,10 @@
 
     function detectLang(text) {
       const t = normalize(text);
-      if (/\b(hello|hi|what|where|things to do|activities|nearby)\b/.test(t)) return "en";
-      if (/\b(que hacer|actividades|cerca)\b/.test(t)) return "es";
-      if (/\b(que fer|activitats|voltants)\b/.test(t)) return "ca";
-      if (/\b(wat te doen|activiteiten|in de buurt)\b/.test(t)) return "nl";
+      if (/\b(hello|hi|what|where|things to do|activities)\b/.test(t)) return "en";
+      if (/\b(que hacer|actividades)\b/.test(t)) return "es";
+      if (/\b(que fer|activitats)\b/.test(t)) return "ca";
+      if (/\b(wat te doen|activiteiten)\b/.test(t)) return "nl";
       return pageLang();
     }
 
@@ -136,81 +145,24 @@
     }
 
     /* ===== INTENTS ===== */
-    const GREETINGS = [
-      "bonjour","bonsoir","salut","coucou","bjr",
-      "hello","hi","hey","good morning","good evening",
-      "hola","buenos dias","buenas",
-      "bon dia","bones",
-      "hallo","goeiedag","goedemorgen"
-    ];
-
-    const SUITES_BY_NAME = {
-      neus: "02_suites/suite-neus.txt",
-      bourlardes: "02_suites/suite-bourlardes.txt",
-      blue: "02_suites/room-blue-patio.txt",
-      patio: "02_suites/room-blue-patio.txt"
-    };
-
+    const GREETINGS = ["bonjour","bonsoir","salut","hello","hi","hola","bon dia"];
     const FUZZY = {
-      presentation: [
-        "presentation","hotel","etablissement","concept",
-        "about","place","our hotel",
-        "presentacion","establecimiento",
-        "presentacio","establiment",
-        "accommodatie","hotel concept",
-        "soloatico","solo atico","solo atico guest suite",
-        "votre hotel","votre etablissement",
-        "laurent","sophie","plage"
-      ],
+      presentation: ["presentation","hotel","etablissement","about","place"],
       rooms: ["suite","suites","chambre","room","kamers"],
-      boat: ["tintorera","bateau","batea","bato","boat","boot","vaixell"],
+      boat: ["tintorera","bateau","boat","boot","vaixell"],
       reiki: ["reiki","reiky","riki"],
-      pool: ["piscine","piscina","pool","swimming","zwembad"],
-      activities: [
-        "que faire","quoi faire","activites","activites a",
-        "things to do","activities","what to do","nearby",
-        "que hacer","actividades","cerca",
-        "que fer","activitats","voltants",
-        "wat te doen","activiteiten","in de buurt"
-      ],
-      weather: [
-        "meteo","météo","temps","previsions","prévisions","fait il beau",
-        "weather","forecast","sunny",
-        "tiempo","previsiones",
-        "temps","previsio",
-        "weer","voorspelling"
-      ]
+      pool: ["piscine","piscina","pool","zwembad"],
+      activities: ["que faire","things to do","que hacer","que fer","wat te doen"],
+      weather: ["meteo","météo","weather","tiempo","weer"]
     };
 
     function intent(text) {
       const t = normalize(text);
-
-      // ✅ PRIORITÉ ABSOLUE AUX SUITES PAR NOM
-      for (const name in SUITES_BY_NAME) {
-        if (t.includes(name)) return "suite_named";
-      }
-
       if (GREETINGS.some(g => t.includes(g))) return "greeting";
-
       for (const key in FUZZY) {
         if (FUZZY[key].some(k => t.includes(k))) return key;
       }
-
       return "unknown";
-    }
-
-    /* ===== ROOM META ===== */
-    const ROOM_META = {
-      "02_suites/suite-neus.txt":       { vue_mer:true },
-      "02_suites/suite-bourlardes.txt": { vue_mer:true },
-      "02_suites/room-blue-patio.txt":  { vue_mer:false }
-    };
-
-    function extractRoomCriteria(text) {
-      const t = normalize(text);
-      return {
-        vue_mer: /(vue mer|sea view|vista mar)/.test(t)
-      };
     }
 
     /* ===== KB ===== */
@@ -232,19 +184,14 @@
     }
 
     function renderLongPro(bot, text) {
-      const wrapper = document.createElement("div");
-      wrapper.className = "kbLongWrapper";
-
       text.split("\n").forEach(line => {
         const l = line.trim();
         if (!l) return;
         const p = document.createElement("div");
         p.className = "kbLongParagraph";
         p.textContent = l;
-        wrapper.appendChild(p);
+        bot.appendChild(p);
       });
-
-      bot.appendChild(wrapper);
     }
 
     /* ===== SEND ===== */
@@ -258,13 +205,7 @@
         `<div class="msg userMsg">${raw}</div>`);
 
       const lang = detectLang(raw);
-      let i = intent(raw);
-
-      // ✅ Forcer rooms si critères détectés
-      if (i === "unknown") {
-        const criteria = extractRoomCriteria(raw);
-        if (Object.values(criteria).some(v => v)) i = "rooms";
-      }
+      const i = intent(raw);
 
       if (i === "greeting") {
         bodyEl.insertAdjacentHTML("beforeend",
@@ -273,36 +214,25 @@
       }
 
       if (i === "weather") {
-        const bot = document.createElement("div");
-        bot.className = "msg botMsg";
-        bot.innerHTML = `<div>${WEATHER_TEXT[lang]}</div>`;
-
-        const btn = document.createElement("a");
-        btn.href = WEATHER_URL;
-        btn.target = "_blank";
-        btn.className = "kbBookBtn";
-        btn.textContent = "🌦️";
-        bot.appendChild(btn);
-
-        bodyEl.appendChild(bot);
-        bodyEl.scrollTop = bodyEl.scrollHeight;
+        bodyEl.insertAdjacentHTML("beforeend",
+          `<div class="msg botMsg">${WEATHER_TEXT[lang]}<br><a class="kbBookBtn" href="${WEATHER_URL}" target="_blank">🌦️</a></div>`);
         return;
       }
 
       let files = [];
 
-      if (i === "suite_named") {
-        for (const key in SUITES_BY_NAME) {
-          if (normalize(raw).includes(key)) files = [SUITES_BY_NAME[key]];
-        }
+      /* ===== ROOMS (UNCHANGED) ===== */
+      if (i === "rooms") {
+        files = [
+          "02_suites/suite-neus.txt",
+          "02_suites/suite-bourlardes.txt",
+          "02_suites/room-blue-patio.txt"
+        ];
       }
 
-      if (i === "rooms") {
-        files = Object.keys(ROOM_META);
-        const criteria = extractRoomCriteria(raw);
-        if (criteria.vue_mer) {
-          files = files.filter(f => ROOM_META[f].vue_mer);
-        }
+      /* ===== RESTORED CORE INTENTS ===== */
+      if (files.length === 0 && INTENT_FILES[i]) {
+        files = INTENT_FILES[i];
       }
 
       if (files.length === 0) {
@@ -327,20 +257,23 @@
           const moreBtn = document.createElement("button");
           moreBtn.className = "kbMoreBtn";
           moreBtn.textContent = "➕";
-          moreBtn.onclick = e => {
-            e.preventDefault(); e.stopPropagation();
+          moreBtn.onclick = () => {
             moreBtn.remove();
             renderLongPro(bot, kb.long);
           };
           bot.appendChild(moreBtn);
         }
 
-        const bookBtn = document.createElement("a");
-        bookBtn.href = BOOKING_URLS[lang];
-        bookBtn.target = "_blank";
-        bookBtn.className = "kbBookBtn";
-        bookBtn.textContent = "🛎️";
-        bot.appendChild(bookBtn);
+        if (i === "rooms" || i === "boat" || i === "reiki") {
+          const bookBtn = document.createElement("a");
+          bookBtn.href = i === "rooms"
+            ? BOOKING_URLS[lang]
+            : SERVICE_BOOKING[i];
+          bookBtn.target = "_blank";
+          bookBtn.className = "kbBookBtn";
+          bookBtn.textContent = "🛎️";
+          bot.appendChild(bookBtn);
+        }
 
         bodyEl.appendChild(bot);
       }

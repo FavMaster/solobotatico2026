@@ -1,0 +1,28 @@
+INTENT: infos_pratiques
+CATEGORY: infos_pratiques
+LANG: FR
+---
+
+SHORT:
+Vos hôtes sont Sophia et Laurent.
+Check-in à partir de 14h, check-out jusqu’à 11h.
+Nous sommes joignables facilement via WhatsApp.
+
+LONG:
+Vos hôtes à Solo Ático Guest Suites sont Sophia et Laurent.
+Nous sommes ravis de vous accueillir et restons disponibles tout au long de votre séjour
+pour toute question, conseil ou besoin particulier.
+
+HORAIRES
+– Check-in : à partir de 14h  
+– Check-out : jusqu’à 11h  
+
+CONTACT WHATSAPP
+– Laurent : +34 621 21 06 42  
+– Sophia : +34 621 12 83 03  
+
+N’hésitez pas à nous écrire à tout moment via WhatsApp,
+que ce soit pour une question pratique,
+une recommandation,
+ou pour personnaliser votre séjour.
+
