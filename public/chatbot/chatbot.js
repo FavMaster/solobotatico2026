@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.23 — WEATHER ADDITION (NO REGRESSION)
+ * Version 1.7.24 — SUITES & VUE MER FIX (NO REGRESSION)
  ****************************************************/
 
 (function () {
@@ -47,7 +47,7 @@
     nl: "🌤️ **Hier is de weersvoorspelling voor L’Escala:**"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.23 — Weather added safely");
+  console.log("Solo’IA’tico Chatbot v1.7.24 — Suites fixed");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -185,11 +185,12 @@
     function intent(text) {
       const t = normalize(text);
 
-      if (GREETINGS.some(g => t.includes(g))) return "greeting";
-
+      // ✅ PRIORITÉ ABSOLUE AUX SUITES PAR NOM
       for (const name in SUITES_BY_NAME) {
         if (t.includes(name)) return "suite_named";
       }
+
+      if (GREETINGS.some(g => t.includes(g))) return "greeting";
 
       for (const key in FUZZY) {
         if (FUZZY[key].some(k => t.includes(k))) return key;
@@ -198,14 +199,53 @@
       return "unknown";
     }
 
-    /* ===== FALLBACK ===== */
-    const FALLBACK = {
-      fr: "✨ **Excellente question !**<br>Contactez **Sophia** ou **Laurent** via WhatsApp afin d’avoir votre réponse 🙂",
-      en: "✨ **Great question!**<br>Please contact **Sophia** or **Laurent** on WhatsApp 🙂",
-      es: "✨ **¡Excelente pregunta!**<br>Contacta con **Sophia** o **Laurent** por WhatsApp 🙂",
-      ca: "✨ **Excel·lent pregunta!**<br>Contacta amb **Sophia** o **Laurent** via WhatsApp 🙂",
-      nl: "✨ **Goede vraag!**<br>Neem contact op met **Sophia** or **Laurent** via WhatsApp 🙂"
+    /* ===== ROOM META ===== */
+    const ROOM_META = {
+      "02_suites/suite-neus.txt":       { vue_mer:true },
+      "02_suites/suite-bourlardes.txt": { vue_mer:true },
+      "02_suites/room-blue-patio.txt":  { vue_mer:false }
     };
+
+    function extractRoomCriteria(text) {
+      const t = normalize(text);
+      return {
+        vue_mer: /(vue mer|sea view|vista mar)/.test(t)
+      };
+    }
+
+    /* ===== KB ===== */
+    async function loadKB(lang, path) {
+      const dir = kbLang(lang);
+      let r = await fetch(`${KB_BASE_URL}/kb/${dir}/${path}`);
+      if (!r.ok && dir !== "fr") {
+        r = await fetch(`${KB_BASE_URL}/kb/fr/${path}`);
+      }
+      if (!r.ok) throw "KB introuvable";
+      return r.text();
+    }
+
+    function parseKB(txt) {
+      return {
+        short: (txt.match(/SHORT:\s*([\s\S]*?)\n/i) || ["",""])[1].trim(),
+        long:  (txt.match(/LONG:\s*([\s\S]*)/i) || ["",""])[1].trim()
+      };
+    }
+
+    function renderLongPro(bot, text) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "kbLongWrapper";
+
+      text.split("\n").forEach(line => {
+        const l = line.trim();
+        if (!l) return;
+        const p = document.createElement("div");
+        p.className = "kbLongParagraph";
+        p.textContent = l;
+        wrapper.appendChild(p);
+      });
+
+      bot.appendChild(wrapper);
+    }
 
     /* ===== SEND ===== */
     async function sendMessage() {
@@ -218,7 +258,13 @@
         `<div class="msg userMsg">${raw}</div>`);
 
       const lang = detectLang(raw);
-      const i = intent(raw);
+      let i = intent(raw);
+
+      // ✅ Forcer rooms si critères détectés
+      if (i === "unknown") {
+        const criteria = extractRoomCriteria(raw);
+        if (Object.values(criteria).some(v => v)) i = "rooms";
+      }
 
       if (i === "greeting") {
         bodyEl.insertAdjacentHTML("beforeend",
@@ -231,21 +277,75 @@
         bot.className = "msg botMsg";
         bot.innerHTML = `<div>${WEATHER_TEXT[lang]}</div>`;
 
-        const weatherBtn = document.createElement("a");
-        weatherBtn.href = WEATHER_URL;
-        weatherBtn.target = "_blank";
-        weatherBtn.className = "kbBookBtn";
-        weatherBtn.textContent = "🌦️";
+        const btn = document.createElement("a");
+        btn.href = WEATHER_URL;
+        btn.target = "_blank";
+        btn.className = "kbBookBtn";
+        btn.textContent = "🌦️";
+        bot.appendChild(btn);
 
-        bot.appendChild(weatherBtn);
         bodyEl.appendChild(bot);
         bodyEl.scrollTop = bodyEl.scrollHeight;
         return;
       }
 
-      /* ⚠️ TOUT LE RESTE DE TA LOGIQUE 1.7.22 EST INCHANGÉE ⚠️ */
-      bodyEl.insertAdjacentHTML("beforeend",
-        `<div class="msg botMsg">${FALLBACK[lang]}</div>`);
+      let files = [];
+
+      if (i === "suite_named") {
+        for (const key in SUITES_BY_NAME) {
+          if (normalize(raw).includes(key)) files = [SUITES_BY_NAME[key]];
+        }
+      }
+
+      if (i === "rooms") {
+        files = Object.keys(ROOM_META);
+        const criteria = extractRoomCriteria(raw);
+        if (criteria.vue_mer) {
+          files = files.filter(f => ROOM_META[f].vue_mer);
+        }
+      }
+
+      if (files.length === 0) {
+        bodyEl.insertAdjacentHTML("beforeend",
+          `<div class="msg botMsg">${FALLBACK[lang]}</div>`);
+        return;
+      }
+
+      for (const f of files) {
+        const kb = parseKB(await loadKB(lang, f));
+        const bot = document.createElement("div");
+        bot.className = "msg botMsg";
+
+        if (wantsToBook(raw)) {
+          bot.insertAdjacentHTML("beforeend",
+            `<div class="kbLongParagraph">${BOOKING_INTRO[lang]}</div>`);
+        }
+
+        bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
+
+        if (kb.long) {
+          const moreBtn = document.createElement("button");
+          moreBtn.className = "kbMoreBtn";
+          moreBtn.textContent = "➕";
+          moreBtn.onclick = e => {
+            e.preventDefault(); e.stopPropagation();
+            moreBtn.remove();
+            renderLongPro(bot, kb.long);
+          };
+          bot.appendChild(moreBtn);
+        }
+
+        const bookBtn = document.createElement("a");
+        bookBtn.href = BOOKING_URLS[lang];
+        bookBtn.target = "_blank";
+        bookBtn.className = "kbBookBtn";
+        bookBtn.textContent = "🛎️";
+        bot.appendChild(bookBtn);
+
+        bodyEl.appendChild(bot);
+      }
+
+      bodyEl.scrollTop = bodyEl.scrollHeight;
     }
 
     sendBtn.addEventListener("click", sendMessage);
