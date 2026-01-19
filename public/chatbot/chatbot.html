@@ -32,18 +32,24 @@
   <!-- CHAT BODY -->
   <div id="chatBody">
 
-    <div class="msg botMsg">
-      <b>👋 Bonjour et bienvenue !</b><br>
-      Je suis Solo’IA’tico Assistant.<br>
-      Posez-moi vos questions concernant :<br>
+    <!-- WELCOME MESSAGE (STATIC / MULTI-LANG COLUMN) -->
+    <div class="msg botMsg" style="text-align:center;">
 
-      <ul class="luxList">
-        <li>Suites & Réservation</li>
-        <li>Bateau Tintorera</li>
-        <li>Reiki & Bien-être</li>
-       </ul>
+      <img src="https://soloatico.es/bot2026/images/So_welcome.png"
+           alt="Welcome"
+           style="width:44px;height:44px;object-fit:contain;
+           margin-bottom:10px;
+           filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));" />
 
-      <br><b>Comment puis-je vous aider ?</b>
+      <div style="line-height:1.6; font-weight:500;">
+        <div>Welcome</div>
+        <div>Bienvenue</div>
+        <div>Bienvenido</div>
+        <div>Benvingut</div>
+        <div>Welkom</div>
+        <div>欢迎</div>
+      </div>
+
     </div>
 
     <div id="typing">
@@ -57,19 +63,19 @@
   <!-- FOOTER -->
   <div id="chatFooter">
 
-   <div class="whatsappBtns">
+    <div class="whatsappBtns">
 
-  <div class="waBtn" id="waLaurent">
-  <img src="https://soloatico.es/bot2026/images/whatsapp_solo.png" />
-  Laurent
-</div>
+      <div class="waBtn" id="waLaurent">
+        <img src="https://soloatico.es/bot2026/images/whatsapp_solo.png" />
+        Laurent
+      </div>
 
-<div class="waBtn" id="waSophia">
-  <img src="https://soloatico.es/bot2026/images/whatsapp_solo.png" />
-  Sophia
-</div>
+      <div class="waBtn" id="waSophia">
+        <img src="https://soloatico.es/bot2026/images/whatsapp_solo.png" />
+        Sophia
+      </div>
 
-</div>
+    </div>
 
     <div id="inputZone">
       <input type="text" id="userInput" placeholder="Écrire un message..." />
