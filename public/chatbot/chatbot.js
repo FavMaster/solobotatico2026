@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.29 — PLUS BTN FIX (NO REGRESSION)
+ * Version 1.7.30 — SMART BOOKING ORIENTATION (NO REGRESSION)
  ****************************************************/
 
 (function () {
@@ -33,6 +33,16 @@
     "zh-cn": "✅ **当然可以 🙂 您现在可以直接预订。**"
   };
 
+  /* ===== NOUVEAU : ORIENTATION RÉSERVATION GÉNÉRIQUE ===== */
+  const BOOKING_GUIDE = {
+    fr: "✨ **Bien sûr 🙂 Que souhaitez-vous réserver ?**<br>– Une suite<br>– Un soin Reiki<br>– Une balade en bateau",
+    en: "✨ **Of course 🙂 What would you like to book?**<br>– A suite<br>– A Reiki treatment<br>– A boat trip",
+    es: "✨ **Por supuesto 🙂 ¿Qué te gustaría reservar?**<br>– Una suite<br>– Un tratamiento Reiki<br>– Un paseo en barco",
+    ca: "✨ **És clar 🙂 Què t’agradaria reservar?**<br>– Una suite<br>– Un tractament Reiki<br>– Una sortida en vaixell",
+    nl: "✨ **Natuurlijk 🙂 Wat wil je reserveren?**<br>– Een suite<br>– Een Reiki-behandeling<br>– Een boottocht",
+    "zh-cn": "✨ **当然可以 🙂 您想预订什么？**<br>– 套房<br>– 灵气疗程<br>– 海上游船"
+  };
+
   const WEATHER_TEXT = {
     fr: "🌤️ **Voici les prévisions météo à L’Escala :**",
     en: "🌤️ **Here is the weather forecast for L’Escala:**",
@@ -45,13 +55,13 @@
   const FALLBACK = {
     fr: "✨ Excellente question 🙂 Vous pouvez contacter Sophia ou Laurent via WhatsApp.",
     en: "✨ Great question 🙂 You can contact Sophia or Laurent via WhatsApp.",
-    es: "✨ Excelente pregunta 🙂 Puedes contactar con Sophia o Laurent via WhatsApp.",
+    es: "✨ Excelente pregunta 🙂 Puedes contactar con Sophia ou Laurent via WhatsApp.",
     ca: "✨ Bona pregunta 🙂 Pots contactar amb la Sophia ou en Laurent via WhatsApp.",
     nl: "✨ Goede vraag 🙂 Je kunt contact opnemen met Sophia ou Laurent via WhatsApp.",
     "zh-cn": "✨ 很好的问题 🙂 您可以通过 WhatsApp 联系 Sophia 或 Laurent。"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.29 — plus button fixed");
+  console.log("Solo’IA’tico Chatbot v1.7.30 — smart booking orientation");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -231,6 +241,16 @@
         return;
       }
 
+      /* ===== NOUVEAU : RÉSERVATION GÉNÉRIQUE ===== */
+      if (wantsToBook(raw) && i === "unknown") {
+        bodyEl.insertAdjacentHTML(
+          "beforeend",
+          `<div class="msg botMsg">${BOOKING_GUIDE[lang]}</div>`
+        );
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+        return;
+      }
+
       let files=[];
 
       if (i==="suite_named") {
@@ -272,7 +292,7 @@
           btn.textContent="➕";
           btn.onclick=(e)=>{
             e.preventDefault();
-            e.stopPropagation(); // ✅ FIX définitif
+            e.stopPropagation();
             btn.remove();
             renderLong(bot,kb.long);
           };
