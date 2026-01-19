@@ -14,7 +14,7 @@ html, body {
 
 #openChatBtn {
   position: fixed;
-  bottom: env(safe-area-inset-bottom, 20px);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
   right: 20px;
 
   width: 72px;
@@ -32,10 +32,9 @@ html, body {
   box-shadow: 0 6px 18px rgba(0,0,0,0.28);
   border: 1px solid rgba(255,255,255,0.55);
 
-  z-index: 2147483647; /* MAX SAFE iOS */
+  z-index: 2147483647;
   pointer-events: auto;
 
-  /* 🔥 iOS FIXES */
   transform: translate3d(0,0,0);
   -webkit-transform: translate3d(0,0,0);
   will-change: transform;
