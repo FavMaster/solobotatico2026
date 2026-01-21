@@ -408,20 +408,26 @@ html, body {
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(0,0,0,0.28);
 }
+/* === KB SECTIONS PLIABLES (OPTION 2) === */
 
 .kbSectionTitle {
+  margin-top: 14px;
   font-weight: 600;
-  margin-top: 12px;
+  font-size: 15px;
+  color: #2a2116;
   cursor: pointer;
+  user-select: none;
 }
 
 .kbSectionTitle::after {
   content: "  ➕";
   font-weight: normal;
+  color: #8a6f3d;
 }
 
 .kbSectionContent {
-  margin-left: 10px;
+  margin-left: 8px;
   margin-top: 6px;
+  animation: fadeDetail 0.35s ease-out;
 }
 
