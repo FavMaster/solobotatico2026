@@ -341,7 +341,7 @@ if (implicitSeaView && i === "unknown") {
 
         bot.insertAdjacentHTML("beforeend",`<div>${kb.short}</div>`);
 
-  if (kb.long) {
+if (kb.long) {
   const btn = document.createElement("button");
   btn.className = "kbMoreBtn";
   btn.textContent = "➕";
@@ -363,6 +363,7 @@ if (implicitSeaView && i === "unknown") {
   bot.appendChild(btn);
   bot.appendChild(longWrapper);
 }
+
 
         if (["rooms","boat","reiki"].includes(i)) {
           const a=document.createElement("a");
