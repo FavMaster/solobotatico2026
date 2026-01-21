@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.31 — VOCABULARY ENRICHMENT (NO REGRESSION)
+ * Version 1.7.30 — SMART BOOKING ORIENTATION (NO REGRESSION)
  ****************************************************/
 
 (function () {
@@ -33,6 +33,7 @@
     "zh-cn": "✅ **当然可以 🙂 您现在可以直接预订。**"
   };
 
+  /* ===== NOUVEAU : ORIENTATION RÉSERVATION GÉNÉRIQUE ===== */
   const BOOKING_GUIDE = {
     fr: "✨ **Bien sûr 🙂 Que souhaitez-vous réserver ?**<br>– Une suite<br>– Un soin Reiki<br>– Une balade en bateau",
     en: "✨ **Of course 🙂 What would you like to book?**<br>– A suite<br>– A Reiki treatment<br>– A boat trip",
@@ -60,9 +61,59 @@
     "zh-cn": "✨ 很好的问题 🙂 您可以通过 WhatsApp 联系 Sophia 或 Laurent。"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.31 — vocabulary enrichment");
+  console.log("Solo’IA’tico Chatbot v1.7.30 — smart booking orientation");
 
   document.addEventListener("DOMContentLoaded", async () => {
+
+    /* ===== CSS / HTML ===== */
+    if (!document.getElementById("soloia-css")) {
+      const css = document.createElement("link");
+      css.id = "soloia-css";
+      css.rel = "stylesheet";
+      css.href = `${KB_BASE_URL}/chatbot/chatbot.css`;
+      document.head.appendChild(css);
+    }
+
+    if (!document.getElementById("chatWindow")) {
+      const html = await fetch(`${KB_BASE_URL}/chatbot/chatbot.html`).then(r => r.text());
+      document.body.insertAdjacentHTML("beforeend", html);
+    }
+
+    const chatWin = document.getElementById("chatWindow");
+    const openBtn = document.getElementById("openChatBtn");
+    const sendBtn = document.getElementById("sendBtn");
+    const input   = document.getElementById("userInput");
+    const bodyEl  = document.getElementById("chatBody");
+
+    if (!chatWin || !openBtn || !sendBtn || !input || !bodyEl) return;
+
+    /* ===== OPEN / CLOSE ===== */
+    let isOpen = false;
+    chatWin.style.display = "none";
+
+    openBtn.addEventListener("click", e => {
+      e.preventDefault(); e.stopPropagation();
+      isOpen = !isOpen;
+      chatWin.style.display = isOpen ? "flex" : "none";
+    });
+
+    document.addEventListener("click", e => {
+      if (isOpen && !chatWin.contains(e.target) && !openBtn.contains(e.target)) {
+        chatWin.style.display = "none";
+        isOpen = false;
+      }
+    });
+
+    /* ===== WHATSAPP ===== */
+    document.getElementById("waLaurent")?.addEventListener("click", e => {
+      e.preventDefault(); e.stopPropagation();
+      window.open("https://wa.me/34621210642", "_blank");
+    });
+
+    document.getElementById("waSophia")?.addEventListener("click", e => {
+      e.preventDefault(); e.stopPropagation();
+      window.open("https://wa.me/34621128303", "_blank");
+    });
 
     /* ===== NORMALISATION ===== */
     function normalize(text) {
@@ -72,9 +123,8 @@
         .replace(/[^a-z\s]/g, "");
     }
 
-    /* ===== BOOKING INTENT (➕ tolérance fautes) ===== */
     function wantsToBook(text) {
-      return /(reserv|reser|rezer|book|bok|pued|puis|kan ik|can i)/.test(normalize(text));
+      return /(reserv|book|pued|puis|kan ik|can i)/.test(normalize(text));
     }
 
     /* ===== LANG ===== */
@@ -100,7 +150,7 @@
     }
 
     /* ===== INTENTS ===== */
-    const GREETINGS = ["bonjour","bonsoir","salut","hello","hola","bon dia","hallo"];
+    const GREETINGS = ["bonjour","bonsoir","salut","hello","hola","bon dia"];
 
     const SUITES_BY_NAME = {
       neus: "02_suites/suite-neus.txt",
@@ -114,17 +164,10 @@
         "presentation","hotel","etablissement","soloatico","solo atico",
         "votre hotel","plage"
       ],
-      rooms: [
-        // ➕ tolérance fautes / pluriels
-        "suite","suites","uite","uites","suiete","suietes",
-        "chambre","chambres","chmabre",
-        "room","rooms",
-        "habitacion","habitaciones",
-        "kamer","kamers"
-      ],
-      boat: ["bateau","boat","boot","bato","tintorera"],
-      reiki: ["reiki","reiky","riki"],
-      pool: ["piscine","piscina","pool"],
+      rooms: ["suite","suites","chambre","room"],
+      boat: ["bateau","boat","tintorera"],
+      reiki: ["reiki"],
+      pool: ["piscine","pool"],
       activities: ["que faire","things to do"],
       weather: ["meteo","météo","weather"]
     };
@@ -198,6 +241,7 @@
         return;
       }
 
+      /* ===== NOUVEAU : RÉSERVATION GÉNÉRIQUE ===== */
       if (wantsToBook(raw) && i === "unknown") {
         bodyEl.insertAdjacentHTML(
           "beforeend",
