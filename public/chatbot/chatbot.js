@@ -285,12 +285,12 @@
 /* ===== MICRO PATCH : CRITÈRE IMPLICITE VUE MER ===== */
 const implicitSeaView =
   /\b(mer|la mer|sea|mar|vue mer|vue sur la mer|sea view|vista mar|vista al mar)\b/
-  .test(normalize(raw));
-
+    .test(normalize(raw));
 
 if (implicitSeaView && i === "unknown") {
+
   // On force une recherche de chambres avec critère vue mer
-  let files = Object.keys(ROOM_META).filter(f => ROOM_META[f].vue_mer);
+  const files = Object.keys(ROOM_META).filter(f => ROOM_META[f].vue_mer);
 
   if (files.length) {
     for (const f of files) {
@@ -298,30 +298,49 @@ if (implicitSeaView && i === "unknown") {
       const bot = document.createElement("div");
       bot.className = "msg botMsg";
 
+      // SHORT
       bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
 
-  if (kb.long) {
-  const btn = document.createElement("button");
-  btn.className = "kbMoreBtn";
-  btn.textContent = "➕";
-if (kb.long) {
-  const btn = document.createElement("button");
-  btn.className = "kbMoreBtn";
-  btn.textContent = "➕";
+      // LONG avec toggle ➕ / ➖
+      if (kb.long) {
+        const btn = document.createElement("button");
+        btn.className = "kbMoreBtn";
+        btn.textContent = "➕";
 
-  const longWrapper = document.createElement("div");
-  longWrapper.style.display = "none";
-  renderLong(longWrapper, kb.long);
+        const longWrapper = document.createElement("div");
+        longWrapper.style.display = "none";
+        renderLong(longWrapper, kb.long);
 
-  btn.onclick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+        btn.onclick = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
 
-    const isOpen = longWrapper.style.display === "block";
-    longWrapper.style.display = isOpen ? "none" : "block";
-    btn.textContent = isOpen ? "➕" : "➖";
-    btn.classList.toggle("open", !isOpen);
-  };
+          const isOpen = longWrapper.style.display === "block";
+          longWrapper.style.display = isOpen ? "none" : "block";
+          btn.textContent = isOpen ? "➕" : "➖";
+          btn.classList.toggle("open", !isOpen);
+        };
+
+        bot.appendChild(btn);
+        bot.appendChild(longWrapper);
+      }
+
+      // Bouton réservation
+      const a = document.createElement("a");
+      a.href = BOOKING_URLS[lang];
+      a.target = "_blank";
+      a.className = "kbBookBtn";
+      a.textContent = "🛎️";
+      bot.appendChild(a);
+
+      bodyEl.appendChild(bot);
+    }
+
+    bodyEl.scrollTop = bodyEl.scrollHeight;
+    return; // ⛔ stop ici, on ne continue pas le flux normal
+  }
+}
+
 
   bot.appendChild(btn);
   bot.appendChild(longWrapper);
