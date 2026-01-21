@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.31 — VOCABULARY MICRO PATCH (NO REGRESSION)
+ * Version 1.7.31A — VOCABULARY MICRO PATCH -  QUE FAIRE PATCH (NO REGRESSION)
  ****************************************************/
 
 (function () {
