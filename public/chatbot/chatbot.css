@@ -408,3 +408,20 @@ html, body {
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(0,0,0,0.28);
 }
+
+.kbSectionTitle {
+  font-weight: 600;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.kbSectionTitle::after {
+  content: "  ➕";
+  font-weight: normal;
+}
+
+.kbSectionContent {
+  margin-left: 10px;
+  margin-top: 6px;
+}
+
