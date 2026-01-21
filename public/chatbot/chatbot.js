@@ -1,6 +1,6 @@
 /****************************************************
  * SOLO'IA'TICO — CHATBOT LUXE
- * Version 1.7.30 — SMART BOOKING ORIENTATION (NO REGRESSION)
+ * Version 1.7.31 — VOCABULARY MICRO PATCH (NO REGRESSION)
  ****************************************************/
 
 (function () {
@@ -33,7 +33,6 @@
     "zh-cn": "✅ **当然可以 🙂 您现在可以直接预订。**"
   };
 
-  /* ===== NOUVEAU : ORIENTATION RÉSERVATION GÉNÉRIQUE ===== */
   const BOOKING_GUIDE = {
     fr: "✨ **Bien sûr 🙂 Que souhaitez-vous réserver ?**<br>– Une suite<br>– Un soin Reiki<br>– Une balade en bateau",
     en: "✨ **Of course 🙂 What would you like to book?**<br>– A suite<br>– A Reiki treatment<br>– A boat trip",
@@ -61,7 +60,7 @@
     "zh-cn": "✨ 很好的问题 🙂 您可以通过 WhatsApp 联系 Sophia 或 Laurent。"
   };
 
-  console.log("Solo’IA’tico Chatbot v1.7.30 — smart booking orientation");
+  console.log("Solo’IA’tico Chatbot v1.7.31 — vocabulary micro patch");
 
   document.addEventListener("DOMContentLoaded", async () => {
 
@@ -125,6 +124,20 @@
 
     function wantsToBook(text) {
       return /(reserv|book|pued|puis|kan ik|can i)/.test(normalize(text));
+    }
+
+    /* ===== MICRO PATCH : VOCABULAIRE ===== */
+    const TYPO_ROOMS = [
+      "uite","uites","suit","suites",
+      "chamre","chambres","rom","rooom","roomm",
+      "abitacion","abitacio","kameer"
+    ];
+
+    function detectTypoIntent(t) {
+      for (const w of TYPO_ROOMS) {
+        if (t.includes(w)) return "rooms";
+      }
+      return null;
     }
 
     /* ===== LANG ===== */
@@ -227,7 +240,8 @@
       bodyEl.insertAdjacentHTML("beforeend",`<div class="msg userMsg">${raw}</div>`);
 
       const lang = detectLang(raw);
-      const i = intent(raw);
+      const typoIntent = detectTypoIntent(normalize(raw));
+      const i = typoIntent || intent(raw);
 
       if (i==="greeting") {
         bodyEl.insertAdjacentHTML("beforeend",`<div class="msg botMsg">👋</div>`);
@@ -241,13 +255,8 @@
         return;
       }
 
-      /* ===== NOUVEAU : RÉSERVATION GÉNÉRIQUE ===== */
       if (wantsToBook(raw) && i === "unknown") {
-        bodyEl.insertAdjacentHTML(
-          "beforeend",
-          `<div class="msg botMsg">${BOOKING_GUIDE[lang]}</div>`
-        );
-        bodyEl.scrollTop = bodyEl.scrollHeight;
+        bodyEl.insertAdjacentHTML("beforeend",`<div class="msg botMsg">${BOOKING_GUIDE[lang]}</div>`);
         return;
       }
 
