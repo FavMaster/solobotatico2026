@@ -243,6 +243,50 @@
       const typoIntent = detectTypoIntent(normalize(raw));
       const i = typoIntent || intent(raw);
 
+/* ===== MICRO PATCH : CRITÈRE IMPLICITE VUE MER ===== */
+const implicitSeaView =
+  /(vue mer|vue sur la mer|sea view|vista mar|vista al mar)/.test(normalize(raw));
+
+if (implicitSeaView && i === "unknown") {
+  // On force une recherche de chambres avec critère vue mer
+  let files = Object.keys(ROOM_META).filter(f => ROOM_META[f].vue_mer);
+
+  if (files.length) {
+    for (const f of files) {
+      const kb = parseKB(await loadKB(lang, f));
+      const bot = document.createElement("div");
+      bot.className = "msg botMsg";
+
+      bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
+
+      if (kb.long) {
+        const btn = document.createElement("button");
+        btn.className = "kbMoreBtn";
+        btn.textContent = "➕";
+        btn.onclick = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          btn.remove();
+          renderLong(bot, kb.long);
+        };
+        bot.appendChild(btn);
+      }
+
+      const a = document.createElement("a");
+      a.href = BOOKING_URLS[lang];
+      a.target = "_blank";
+      a.className = "kbBookBtn";
+      a.textContent = "🛎️";
+      bot.appendChild(a);
+
+      bodyEl.appendChild(bot);
+    }
+
+    bodyEl.scrollTop = bodyEl.scrollHeight;
+    return;
+  }
+}
+
       if (i==="greeting") {
         bodyEl.insertAdjacentHTML("beforeend",`<div class="msg botMsg">👋</div>`);
         return;
