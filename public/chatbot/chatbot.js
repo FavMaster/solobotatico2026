@@ -266,15 +266,11 @@ if (implicitSeaView && i === "unknown") {
         btn.className = "kbMoreBtn";
         btn.textContent = "➕";
         btn.onclick = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-
-  const isOpen = longWrapper.style.display === "block";
-  longWrapper.style.display = isOpen ? "none" : "block";
-  btn.textContent = isOpen ? "➕" : "➖";
-  btn.classList.toggle("open", !isOpen);
-};
-
+          e.preventDefault();
+          e.stopPropagation();
+          btn.remove();
+          renderLong(bot, kb.long);
+        };
         bot.appendChild(btn);
       }
 
@@ -345,29 +341,18 @@ if (implicitSeaView && i === "unknown") {
 
         bot.insertAdjacentHTML("beforeend",`<div>${kb.short}</div>`);
 
-if (kb.long) {
-  const btn = document.createElement("button");
-  btn.className = "kbMoreBtn";
-  btn.textContent = "➕";
-
-  const longWrapper = document.createElement("div");
-  longWrapper.style.display = "none";
-  renderLong(longWrapper, kb.long);
-
-  btn.onclick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const isOpen = longWrapper.style.display === "block";
-    longWrapper.style.display = isOpen ? "none" : "block";
-    btn.textContent = isOpen ? "➕" : "➖";
-    btn.classList.toggle("open", !isOpen);
-  };
-
-  bot.appendChild(btn);
-  bot.appendChild(longWrapper);
-}
-
+        if (kb.long) {
+          const btn=document.createElement("button");
+          btn.className="kbMoreBtn";
+          btn.textContent="➕";
+          btn.onclick=(e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+            btn.remove();
+            renderLong(bot,kb.long);
+          };
+          bot.appendChild(btn);
+        }
 
         if (["rooms","boat","reiki"].includes(i)) {
           const a=document.createElement("a");
