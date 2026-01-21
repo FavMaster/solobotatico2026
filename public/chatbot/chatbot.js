@@ -266,11 +266,15 @@ if (implicitSeaView && i === "unknown") {
         btn.className = "kbMoreBtn";
         btn.textContent = "➕";
         btn.onclick = (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          btn.remove();
-          renderLong(bot, kb.long);
-        };
+  e.preventDefault();
+  e.stopPropagation();
+
+  const isOpen = longWrapper.style.display === "block";
+  longWrapper.style.display = isOpen ? "none" : "block";
+  btn.textContent = isOpen ? "➕" : "➖";
+  btn.classList.toggle("open", !isOpen);
+};
+
         bot.appendChild(btn);
       }
 
