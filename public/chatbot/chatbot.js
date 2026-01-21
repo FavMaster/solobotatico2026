@@ -300,18 +300,19 @@ if (implicitSeaView && i === "unknown") {
 
       bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
 
-      if (kb.long) {
-        const btn = document.createElement("button");
-        btn.className = "kbMoreBtn";
-        btn.textContent = "➕";
-        btn.onclick = (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          btn.remove();
-          renderLong(bot, kb.long);
-        };
-        bot.appendChild(btn);
-      }
+  if (kb.long) {
+  const btn = document.createElement("button");
+  btn.className = "kbMoreBtn";
+  btn.textContent = "➕";
+  btn.onclick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    btn.remove();
+    renderLong(bot, kb.long);
+  };
+  bot.appendChild(btn);
+}
+
 
       const a = document.createElement("a");
       a.href = BOOKING_URLS[lang];
