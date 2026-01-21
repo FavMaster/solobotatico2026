@@ -222,15 +222,54 @@
       };
     }
 
-    function renderLong(bot, text) {
-      text.split("\n").forEach(l=>{
-        l=l.trim(); if(!l)return;
-        const p=document.createElement("div");
-        p.className="kbLongParagraph";
-        p.textContent=l;
-        bot.appendChild(p);
-      });
+function renderLong(bot, text) {
+  let currentSection = null;
+  let currentContent = null;
+
+  text.split("\n").forEach(line => {
+    const l = line.trim();
+    if (!l) return;
+
+    // 🔹 Détection des titres numérotés (1. / 2. / 3.)
+    if (/^\d+\.\s/.test(l)) {
+      // Création du titre cliquable
+      const title = document.createElement("div");
+      title.className = "kbSectionTitle";
+      title.textContent = l;
+
+      // Conteneur repliable
+      const content = document.createElement("div");
+      content.className = "kbSectionContent";
+      content.style.display = "none";
+
+      title.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        content.style.display =
+          content.style.display === "none" ? "block" : "none";
+      };
+
+      bot.appendChild(title);
+      bot.appendChild(content);
+
+      currentSection = title;
+      currentContent = content;
+      return;
     }
+
+    // 🔹 Contenu de section
+    const p = document.createElement("div");
+    p.className = "kbLongParagraph";
+    p.textContent = l;
+
+    if (currentContent) {
+      currentContent.appendChild(p);
+    } else {
+      bot.appendChild(p);
+    }
+  });
+}
+
 
     /* ===== SEND ===== */
     async function sendMessage() {
