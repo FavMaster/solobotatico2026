@@ -245,7 +245,9 @@
 
 /* ===== MICRO PATCH : CRITÈRE IMPLICITE VUE MER ===== */
 const implicitSeaView =
-  /(vue mer|vue sur la mer|sea view|vista mar|vista al mar)/.test(normalize(raw));
+  /\b(mer|la mer|sea|mar|vue mer|vue sur la mer|sea view|vista mar|vista al mar)\b/
+  .test(normalize(raw));
+
 
 if (implicitSeaView && i === "unknown") {
   // On force une recherche de chambres avec critère vue mer
