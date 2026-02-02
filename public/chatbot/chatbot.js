@@ -271,6 +271,24 @@ function renderLong(bot, text) {
 }
 
 
+/* ===== MICRO PATCH : THEME RUINES ===== */
+const RUINS_KEYWORDS = [
+  "ruine", "ruines",
+  "vestige", "vestiges",
+  "empurie", "empuries",
+  "romain", "romaine",
+  "grec", "grecque",
+  "archeologique", "archéologique",
+  "site historique", "site archeologique"
+];
+
+function detectRuinsIntent(t) {
+  return RUINS_KEYWORDS.some(w => t.includes(w));
+}
+
+
+
+
     /* ===== SEND ===== */
     async function sendMessage() {
       if (!input.value.trim()) return;
@@ -281,6 +299,17 @@ function renderLong(bot, text) {
       const lang = detectLang(raw);
       const typoIntent = detectTypoIntent(normalize(raw));
       const i = typoIntent || intent(raw);
+
+/* ===== MICRO PATCH : QUESTION SUR LES RUINES ===== */
+const isRuinsQuestion = detectRuinsIntent(normalize(raw));
+
+if (isRuinsQuestion) {
+  // On force l'affichage de "Que faire à L’Escala"
+  // mais le rendu long gère déjà les sections numérotées
+  // donc l'utilisateur cliquera directement sur la partie Ruines
+  i = "activities";
+}
+
 
 /* ===== MICRO PATCH : CRITÈRE IMPLICITE VUE MER ===== */
 const implicitSeaView =
