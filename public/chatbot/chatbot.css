@@ -62,7 +62,7 @@ html, body {
   position: fixed;
   bottom: 90px;
   right: 20px;
-  z-index: 99999; /* juste sous le bouton */
+  z-index: 999999; /* juste sous le bouton */
 
 
 
