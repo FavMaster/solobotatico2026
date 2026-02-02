@@ -301,7 +301,6 @@ function detectRuinsIntent(t) {
 /* ===== SEND ===== */
 async function sendMessage() {
   if (!input.value.trim()) return;
-
   const raw = input.value;
   input.value = "";
   bodyEl.insertAdjacentHTML(
@@ -311,12 +310,13 @@ async function sendMessage() {
 
   const lang = detectLang(raw);
   const typoIntent = detectTypoIntent(normalize(raw));
-
-  let i = typoIntent || intent(raw); // ⚠️ let et non const
+  let intentFinal = typoIntent || intent(raw);
 
   /* ===== MICRO PATCH : QUESTION SUR LES RUINES ===== */
-  if (detectRuinsIntent(normalize(raw))) {
-    i = "activities"; // on redirige intelligemment
+  const isRuinsQuestion = detectRuinsIntent(normalize(raw));
+
+  if (isRuinsQuestion && intentFinal === "unknown") {
+    intentFinal = "activities";
   }
 
   /* ===== MICRO PATCH : CRITÈRE IMPLICITE VUE MER ===== */
@@ -324,7 +324,7 @@ async function sendMessage() {
     /\b(mer|la mer|sea|mar|vue mer|vue sur la mer|sea view|vista mar|vista al mar)\b/
       .test(normalize(raw));
 
-  if (implicitSeaView && i === "unknown") {
+  if (implicitSeaView && intentFinal === "unknown") {
     const files = Object.keys(ROOM_META).filter(f => ROOM_META[f].vue_mer);
 
     if (files.length) {
@@ -363,8 +363,7 @@ async function sendMessage() {
     }
   }
 
-  /* ===== INTENTS CLASSIQUES ===== */
-  if (i === "greeting") {
+  if (intentFinal === "greeting") {
     bodyEl.insertAdjacentHTML(
       "beforeend",
       `<div class="msg botMsg">👋</div>`
@@ -372,18 +371,16 @@ async function sendMessage() {
     return;
   }
 
-  if (i === "weather") {
+  if (intentFinal === "weather") {
     bodyEl.insertAdjacentHTML(
       "beforeend",
-      `<div class="msg botMsg">
-        ${WEATHER_TEXT[lang]}<br>
-        <a class="kbBookBtn" href="${WEATHER_URL}" target="_blank">🌦️</a>
-      </div>`
+      `<div class="msg botMsg">${WEATHER_TEXT[lang]}<br>
+       <a class="kbBookBtn" href="${WEATHER_URL}" target="_blank">🌦️</a></div>`
     );
     return;
   }
 
-  if (wantsToBook(raw) && i === "unknown") {
+  if (wantsToBook(raw) && intentFinal === "unknown") {
     bodyEl.insertAdjacentHTML(
       "beforeend",
       `<div class="msg botMsg">${BOOKING_GUIDE[lang]}</div>`
@@ -393,23 +390,29 @@ async function sendMessage() {
 
   let files = [];
 
-  if (i === "suite_named") {
+  if (intentFinal === "suite_named") {
     for (const k in SUITES_BY_NAME) {
       if (normalize(raw).includes(k)) files = [SUITES_BY_NAME[k]];
     }
   }
 
-  if (i === "rooms") {
+  if (intentFinal === "rooms") {
     files = Object.keys(ROOM_META);
-    if (extractRoomCriteria(raw).vue_mer)
+    if (extractRoomCriteria(raw).vue_mer) {
       files = files.filter(f => ROOM_META[f].vue_mer);
+    }
   }
 
-  if (i === "presentation") files = ["01_presentation/presentation-generale.txt"];
-  if (i === "boat") files = ["03_services/tintorera-bateau.txt"];
-  if (i === "reiki") files = ["03_services/reiki.txt"];
-  if (i === "pool") files = ["03_services/piscine-rooftop.txt"];
-  if (i === "activities") files = ["04_que-faire/que-faire-escala.txt"];
+  if (intentFinal === "presentation")
+    files = ["01_presentation/presentation-generale.txt"];
+  if (intentFinal === "boat")
+    files = ["03_services/tintorera-bateau.txt"];
+  if (intentFinal === "reiki")
+    files = ["03_services/reiki.txt"];
+  if (intentFinal === "pool")
+    files = ["03_services/piscine-rooftop.txt"];
+  if (intentFinal === "activities")
+    files = ["04_que-faire/que-faire-escala.txt"];
 
   if (!files.length) {
     bodyEl.insertAdjacentHTML(
@@ -424,11 +427,12 @@ async function sendMessage() {
     const bot = document.createElement("div");
     bot.className = "msg botMsg";
 
-    if (wantsToBook(raw))
+    if (wantsToBook(raw)) {
       bot.insertAdjacentHTML(
         "beforeend",
         `<div>${BOOKING_INTRO[lang]}</div>`
       );
+    }
 
     bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
 
@@ -445,9 +449,12 @@ async function sendMessage() {
       bot.appendChild(btn);
     }
 
-    if (["rooms", "boat", "reiki"].includes(i)) {
+    if (["rooms", "boat", "reiki"].includes(intentFinal)) {
       const a = document.createElement("a");
-      a.href = i === "rooms" ? BOOKING_URLS[lang] : SERVICE_BOOKING[i];
+      a.href =
+        intentFinal === "rooms"
+          ? BOOKING_URLS[lang]
+          : SERVICE_BOOKING[intentFinal];
       a.target = "_blank";
       a.className = "kbBookBtn";
       a.textContent = "🛎️";
