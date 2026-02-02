@@ -222,8 +222,9 @@
       };
     }
 
-function renderLong(bot, text, autoOpenKeyword = null) {
+function renderLong(bot, text, autoOpenSectionIndex = null) {
   let currentContent = null;
+  let sectionIndex = 0;
 
   text.split("\n").forEach(line => {
     const l = line.trim();
@@ -231,13 +232,21 @@ function renderLong(bot, text, autoOpenKeyword = null) {
 
     // 🔹 Détection des titres numérotés (1. / 2. / 3.)
     if (/^\d+\.\s/.test(l)) {
+      sectionIndex++;
+
       const title = document.createElement("div");
       title.className = "kbSectionTitle";
       title.textContent = l;
 
       const content = document.createElement("div");
       content.className = "kbSectionContent";
-      content.style.display = "none";
+
+      // ✅ ouverture automatique UNIQUEMENT de la bonne section
+      const shouldAutoOpen =
+        autoOpenSectionIndex !== null &&
+        sectionIndex === autoOpenSectionIndex;
+
+      content.style.display = shouldAutoOpen ? "block" : "none";
 
       title.onclick = (e) => {
         e.preventDefault();
@@ -245,14 +254,6 @@ function renderLong(bot, text, autoOpenKeyword = null) {
         content.style.display =
           content.style.display === "none" ? "block" : "none";
       };
-
-      // ✅ OUVERTURE AUTOMATIQUE si mot-clé détecté
-      if (
-        autoOpenKeyword &&
-        l.toLowerCase().includes(autoOpenKeyword.toLowerCase())
-      ) {
-        content.style.display = "block";
-      }
 
       bot.appendChild(title);
       bot.appendChild(content);
@@ -273,6 +274,7 @@ function renderLong(bot, text, autoOpenKeyword = null) {
     }
   });
 }
+
 
 
 /* ===== MICRO PATCH : THEME RUINES ===== */
@@ -309,12 +311,13 @@ async function sendMessage() {
 
   /* ===== MICRO PATCH : QUESTION SUR LES RUINES ===== */
   const isRuinsQuestion = detectRuinsIntent(normalize(raw));
-  let autoOpenKeyword = null;
+  let autoOpenSectionIndex = null;
 
   if (isRuinsQuestion && intentFinal === "unknown") {
-    intentFinal = "activities";
-    autoOpenKeyword = "empurie"; // Empúries / Empuries / ruines
-  }
+  intentFinal = "activities";
+  autoOpenSectionIndex = 1; // 👉 section 1 = Découvertes culturelles / Empúries
+}
+
 
   /* ===== MICRO PATCH : CRITÈRE IMPLICITE VUE MER ===== */
   const implicitSeaView =
@@ -340,7 +343,7 @@ async function sendMessage() {
             e.preventDefault();
             e.stopPropagation();
             btn.remove();
-            renderLong(bot, kb.long, autoOpenKeyword);
+           renderLong(bot, kb.long, autoOpenSectionIndex);
           };
           bot.appendChild(btn);
         }
