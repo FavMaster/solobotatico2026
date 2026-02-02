@@ -433,18 +433,25 @@ async function sendMessage() {
 
     bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
 
-    if (kb.long) {
-      const btn = document.createElement("button");
-      btn.className = "kbMoreBtn";
-      btn.textContent = "➕";
-      btn.onclick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        btn.remove();
-        renderLong(bot, kb.long, autoOpenKeyword);
-      };
-      bot.appendChild(btn);
-    }
+if (kb.long) {
+  // 👉 Question sur les ruines : on affiche directement le contenu
+  if (autoOpenKeyword) {
+    renderLong(bot, kb.long, autoOpenKeyword);
+  } else {
+    // 👉 Comportement normal avec bouton +
+    const btn = document.createElement("button");
+    btn.className = "kbMoreBtn";
+    btn.textContent = "➕";
+    btn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      btn.remove();
+      renderLong(bot, kb.long, null);
+    };
+    bot.appendChild(btn);
+  }
+}
+
 
     if (["rooms", "boat", "reiki"].includes(intentFinal)) {
       const a = document.createElement("a");
