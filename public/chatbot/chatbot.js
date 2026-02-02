@@ -295,6 +295,7 @@ function detectRuinsIntent(t) {
 /* ===== SEND ===== */
 async function sendMessage() {
   if (!input.value.trim()) return;
+
   const raw = input.value;
   input.value = "";
   bodyEl.insertAdjacentHTML(
@@ -308,9 +309,11 @@ async function sendMessage() {
 
   /* ===== MICRO PATCH : QUESTION SUR LES RUINES ===== */
   const isRuinsQuestion = detectRuinsIntent(normalize(raw));
+  let autoOpenKeyword = null;
 
   if (isRuinsQuestion && intentFinal === "unknown") {
     intentFinal = "activities";
+    autoOpenKeyword = "empurie"; // Empúries / Empuries / ruines
   }
 
   /* ===== MICRO PATCH : CRITÈRE IMPLICITE VUE MER ===== */
@@ -337,7 +340,7 @@ async function sendMessage() {
             e.preventDefault();
             e.stopPropagation();
             btn.remove();
-            renderLong(bot, kb.long);
+            renderLong(bot, kb.long, autoOpenKeyword);
           };
           bot.appendChild(btn);
         }
@@ -438,7 +441,7 @@ async function sendMessage() {
         e.preventDefault();
         e.stopPropagation();
         btn.remove();
-        renderLong(bot, kb.long);
+        renderLong(bot, kb.long, autoOpenKeyword);
       };
       bot.appendChild(btn);
     }
