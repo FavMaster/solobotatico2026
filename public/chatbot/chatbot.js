@@ -222,8 +222,7 @@
       };
     }
 
-function renderLong(bot, text) {
-  let currentSection = null;
+function renderLong(bot, text, autoOpenKeyword = null) {
   let currentContent = null;
 
   text.split("\n").forEach(line => {
@@ -232,12 +231,10 @@ function renderLong(bot, text) {
 
     // 🔹 Détection des titres numérotés (1. / 2. / 3.)
     if (/^\d+\.\s/.test(l)) {
-      // Création du titre cliquable
       const title = document.createElement("div");
       title.className = "kbSectionTitle";
       title.textContent = l;
 
-      // Conteneur repliable
       const content = document.createElement("div");
       content.className = "kbSectionContent";
       content.style.display = "none";
@@ -249,10 +246,17 @@ function renderLong(bot, text) {
           content.style.display === "none" ? "block" : "none";
       };
 
+      // ✅ OUVERTURE AUTOMATIQUE si mot-clé détecté
+      if (
+        autoOpenKeyword &&
+        l.toLowerCase().includes(autoOpenKeyword.toLowerCase())
+      ) {
+        content.style.display = "block";
+      }
+
       bot.appendChild(title);
       bot.appendChild(content);
 
-      currentSection = title;
       currentContent = content;
       return;
     }
