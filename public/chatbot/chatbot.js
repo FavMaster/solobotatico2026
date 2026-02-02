@@ -437,9 +437,9 @@ async function sendMessage() {
     bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
 
 if (kb.long) {
-  // 👉 Question sur les ruines : on affiche directement le contenu
-  if (autoOpenKeyword) {
-    renderLong(bot, kb.long, autoOpenKeyword);
+  // 👉 Si une section doit être ouverte automatiquement (ruines)
+  if (autoOpenSectionIndex !== null) {
+    renderLong(bot, kb.long, autoOpenSectionIndex);
   } else {
     // 👉 Comportement normal avec bouton +
     const btn = document.createElement("button");
@@ -454,7 +454,6 @@ if (kb.long) {
     bot.appendChild(btn);
   }
 }
-
 
     if (["rooms", "boat", "reiki"].includes(intentFinal)) {
       const a = document.createElement("a");
