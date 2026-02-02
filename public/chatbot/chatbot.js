@@ -286,16 +286,6 @@ function detectRuinsIntent(t) {
   return RUINS_KEYWORDS.some(w => t.includes(w));
 }
 
-/* ===== MICRO PATCH : INTENT RUINES ===== */
-function detectRuinsIntent(t) {
-  return /\b(
-    ruine|ruines|roman|romaine|romaines|grec|grecque|grecques|
-    empuries|empories|arqueologico|arqueologic|
-    ruins|archaeological|archaeology|
-    yacimiento|yacimientos|
-    jaciment|jaciments
-  )\b/.test(t);
-}
 
 
 /* ===== SEND ===== */
