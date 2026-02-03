@@ -431,3 +431,39 @@ html, body {
   animation: fadeDetail 0.35s ease-out;
 }
 
+/* ==========================================================
+   SOLO'IA'TICO — CHATBOT LUXE
+   PATCH AFFICHAGE PROGRESSIF DES MESSAGES BOT (SAFE)
+   À coller EN FIN de fichier CSS
+   ========================================================== */
+
+/* Animation douce de la bulle (déjà existante, conservée) */
+.botMsg {
+  animation: botAppear 0.45s ease-out;
+}
+
+/* Apparition progressive du contenu interne */
+.botMsg > * {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: botLineIn 0.35s ease-out forwards;
+}
+
+/* Délais progressifs (lecture naturelle) */
+.botMsg > *:nth-child(1) { animation-delay: 0.06s; }
+.botMsg > *:nth-child(2) { animation-delay: 0.16s; }
+.botMsg > *:nth-child(3) { animation-delay: 0.26s; }
+.botMsg > *:nth-child(4) { animation-delay: 0.36s; }
+.botMsg > *:nth-child(5) { animation-delay: 0.46s; }
+.botMsg > *:nth-child(6) { animation-delay: 0.56s; }
+.botMsg > *:nth-child(7) { animation-delay: 0.66s; }
+.botMsg > *:nth-child(8) { animation-delay: 0.76s; }
+
+/* Keyframes dédiées */
+@keyframes botLineIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
