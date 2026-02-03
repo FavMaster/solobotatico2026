@@ -1,6 +1,6 @@
 /* ==========================================================
-   SOLO'IA'TICO — CHATBOT LUXE — CSS COMPLET (Version 1.4.1)
-   Affichage progressif ralenti — UX luxe — CLEAN
+   SOLO'IA'TICO — CHATBOT LUXE — CSS COMPLET
+   Version 1.4.2 — UX luxe stable (NO REGRESSION)
    ========================================================== */
 
 body {
@@ -149,7 +149,7 @@ html, body {
 }
 
 /* ==========================================================
-   TYPING INDICATOR
+   INDICATEUR DE FRAPPE
    ========================================================== */
 
 #typing {
@@ -181,47 +181,76 @@ html, body {
    ========================================================== */
 
 @keyframes botAppear {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ==========================================================
-   AFFICHAGE PROGRESSIF LIGNE PAR LIGNE — RALENTI (FINAL)
+   AFFICHAGE PROGRESSIF — TEXTE SEULEMENT (SAFE)
    ========================================================== */
 
-.botMsg > * {
+.botMsg > div:not(.kbSectionTitle):not(.kbSectionContent) {
   opacity: 0;
   transform: translateY(6px);
   animation: botLineIn 0.65s ease-out forwards;
 }
 
-.botMsg > *:nth-child(1) { animation-delay: 0.18s; }
-.botMsg > *:nth-child(2) { animation-delay: 0.42s; }
-.botMsg > *:nth-child(3) { animation-delay: 0.66s; }
-.botMsg > *:nth-child(4) { animation-delay: 0.90s; }
-.botMsg > *:nth-child(5) { animation-delay: 1.14s; }
-.botMsg > *:nth-child(6) { animation-delay: 1.38s; }
-.botMsg > *:nth-child(7) { animation-delay: 1.62s; }
-.botMsg > *:nth-child(8) { animation-delay: 1.86s; }
+/* Délais progressifs */
+.botMsg > div:nth-child(1) { animation-delay: 0.18s; }
+.botMsg > div:nth-child(2) { animation-delay: 0.42s; }
+.botMsg > div:nth-child(3) { animation-delay: 0.66s; }
+.botMsg > div:nth-child(4) { animation-delay: 0.90s; }
+.botMsg > div:nth-child(5) { animation-delay: 1.14s; }
+.botMsg > div:nth-child(6) { animation-delay: 1.38s; }
+.botMsg > div:nth-child(7) { animation-delay: 1.62s; }
+.botMsg > div:nth-child(8) { animation-delay: 1.86s; }
 
 @keyframes botLineIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ==========================================================
-   KB / BOUTONS / FOOTER
+   KB — SECTIONS DÉPLIABLES (RÉTABLIES)
    ========================================================== */
 
-.kbLongParagraph { margin-bottom: 8px; }
+.kbSectionTitle {
+  margin-top: 14px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #2a2116;
+  cursor: pointer;
+  user-select: none;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.kbSectionTitle::after {
+  content: "  ➕";
+  font-weight: normal;
+  color: #8a6f3d;
+}
+
+.kbSectionContent {
+  margin-left: 8px;
+  margin-top: 6px;
+  display: none;
+  opacity: 1 !important;
+  transform: none !important;
+  animation: fadeDetail 0.35s ease-out;
+}
+
+@keyframes fadeDetail {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.kbLongParagraph {
+  margin-bottom: 8px;
+}
+
+/* ==========================================================
+   BOUTONS & CTA
+   ========================================================== */
 
 .kbMoreBtn {
   background: transparent;
@@ -238,14 +267,29 @@ html, body {
   border-color: rgba(0,0,0,0.25);
 }
 
-.kbPrice {
-  margin-top: 10px;
-  font-size: 14.5px;
-  color: #2c2c2c;
+.kbBookBtn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #e6c98f, #cfa85f);
+  color: #1a1a1a;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform .15s ease, box-shadow .15s ease;
 }
-.kbPrice b { color: #000; }
 
-/* Footer */
+.kbBookBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+}
+
+/* ==========================================================
+   FOOTER
+   ========================================================== */
+
 #chatFooter {
   padding: 12px;
   border-top: 1px solid #ddd;
@@ -253,82 +297,4 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-/* WhatsApp */
-.whatsappBtns {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-}
-
-.waBtn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #f7e7c1, #e0c28c);
-  color: #333;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.18);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  max-width: 160px;
-}
-
-.waBtn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-}
-
-.waBtn img {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-/* Input */
-
-#inputZone {
-  display: flex;
-  gap: 8px;
-}
-
-#userInput {
-  flex: 1;
-  padding: 14px 16px;
-  border: 1px solid rgba(214, 190, 150, 0.6);
-  border-radius: 18px;
-  font-size: 15px;
-  background: linear-gradient(135deg, #fdf8f1, #f5e8d5);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
-  color: #5a4a33;
-}
-
-#sendBtn {
-  padding: 14px 18px;
-  background: linear-gradient(135deg, #e0c28c, #d4b27a);
-  color: #4a3a23;
-  border-radius: 18px;
-  cursor: pointer;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.18),
-              inset 0 1px 4px rgba(255,255,255,0.6);
-  border: 1px solid rgba(255,255,255,0.5);
-  transition: all 0.2s ease;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#sendBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.25),
-              inset 0 1px 4px rgba(255,255,255,0.8);
 }
