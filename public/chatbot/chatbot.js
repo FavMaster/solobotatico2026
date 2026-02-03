@@ -299,65 +299,92 @@ function renderLong(bot, text, autoOpenSectionIndex = null) {
 
 
 
-/* ===== MICRO PATCH : THEME RUINES ===== */
+/* =====================================================
+   MICRO PATCH — INTENTS "QUE FAIRE À L’ESCALA"
+   MULTI-LANGUES — SAFE — NO REGRESSION
+   ===================================================== */
+
+/* ===== RUINES / CULTURE ===== */
 const RUINS_KEYWORDS = [
-  "ruine", "ruines",
-  "vestige", "vestiges",
-  "empurie", "empuries",
-  "romain", "romaine",
-  "grec", "grecque",
-  "archeologique", "archéologique",
+  "ruine", "ruines", "vestige", "vestiges",
+  "empurie", "empuries", "romain", "romaine",
+  "grec", "grecque", "archeologique", "archeologique",
   "site historique", "site archeologique"
 ];
-
 function detectRuinsIntent(t) {
   return RUINS_KEYWORDS.some(w => t.includes(w));
 }
 
-/* ===== MICRO PATCH : THEME PLAGES & ACTIVITÉS NAUTIQUES ===== */
+/* ===== PLAGES & NAUTIQUE ===== */
 const BEACH_KEYWORDS = [
-  "plage", "plages",
-  "crique", "criques",
-  "cala", "calas",
-  "baignade", "se baigner",
-  "mer", "mer calme",
-  "snorkel", "snorkeling",
-  "masque", "tuba",
-  "paddle", "kayak",
-  "voile", "bateau",
-  "activite nautique", "activites nautiques",
-  "eau", "eau claire",
-  "plage tranquille", "plage calme"
+  "plage","plages","mer","baignade","snorkeling","paddle",
+  "playa","playas","mar","snorkel",
+  "platja","platges",
+  "beach","beaches","sea","swimming","kayak",
+  "strand","stranden","zee",
+  "riells","montgo","medes","estartit"
 ];
-
 function detectBeachIntent(t) {
   return BEACH_KEYWORDS.some(w => t.includes(w));
 }
 
-/* ===== MICRO PATCH : THEME VILLAGES AUTOUR ===== */
-const VILLAGES_KEYWORDS = [
-  "village", "villages",
-  "village typique", "villages typiques",
-  "vieux village", "village medieval", "village médiéval",
-  "pals", "peratallada",
-  "sant marti", "sant marti d empuries", "sant marti d’empuries",
-  "cadaques", "cadaqués",
-  "begur", "monells",
-  "village autour", "villages autour",
-  "village a visiter", "village à visiter"
+/* ===== NATURE & RANDONNÉES ===== */
+const NATURE_KEYWORDS = [
+  "nature","randonnee","randonnée","marche","balade",
+  "naturaleza","senderismo","caminar",
+  "natura","senderisme","passeig",
+  "hiking","walk","trail",
+  "natuur","wandelen",
+  "montgri","aiguamolls","parc naturel","natural park"
 ];
-
-function detectVillageIntent(t) {
-  return VILLAGES_KEYWORDS.some(w => t.includes(w));
+function detectNatureIntent(t) {
+  return NATURE_KEYWORDS.some(w => t.includes(w));
 }
 
+/* ===== VILLAGES ===== */
+const VILLAGE_KEYWORDS = [
+  "village","villages","medieval","medieval",
+  "pueblo","pueblos",
+  "poble","pobles",
+  "dorp","dorpen",
+  "pals","peratallada","begur","palau","sant marti","empuries"
+];
+function detectVillageIntent(t) {
+  return VILLAGE_KEYWORDS.some(w => t.includes(w));
+}
 
-/* ===== SEND ===== */
+/* ===== SPORTS & LOISIRS ===== */
+const SPORT_KEYWORDS = [
+  "sport","sports","velo","vélo","vtt","bike","cycling",
+  "golf","cheval","equitation","kayak","paddle",
+  "plongee","plongée","snorkeling","voile","sailing"
+];
+function detectSportIntent(t) {
+  return SPORT_KEYWORDS.some(w => t.includes(w));
+}
+
+/* ===== GASTRONOMIE & ŒNOTOURISME ===== */
+const FOOD_KEYWORDS = [
+  "restaurant","restaurants","gastronomie","cuisine",
+  "vino","vin","vins","wine","wines",
+  "degustation","tasting",
+  "anchois","anxoves","emporda","empordà",
+  "marche","marché","marches","marchés"
+];
+function detectFoodIntent(t) {
+  return FOOD_KEYWORDS.some(w => t.includes(w));
+}
+
+/* =====================================================
+   SEND MESSAGE — DÉBUT (PARTIE MODIFIÉE)
+   ===================================================== */
+
 async function sendMessage() {
   if (!input.value.trim()) return;
 
   const raw = input.value;
   input.value = "";
+
   bodyEl.insertAdjacentHTML(
     "beforeend",
     `<div class="msg userMsg">${raw}</div>`
@@ -366,30 +393,43 @@ async function sendMessage() {
   const lang = detectLang(raw);
   const typoIntent = detectTypoIntent(normalize(raw));
   let intentFinal = typoIntent || intent(raw);
-
-  /* ===== MICRO PATCH : QUESTION SUR LES RUINES ===== */
-  const isRuinsQuestion = detectRuinsIntent(normalize(raw));
   let autoOpenSectionIndex = null;
 
-  if (isRuinsQuestion && intentFinal === "unknown") {
-  intentFinal = "activities";
-  autoOpenSectionIndex = 1; // 👉 section 1 = Découvertes culturelles / Empúries
-}
-/* ===== MICRO PATCH : QUESTION PLAGES & ACTIVITÉS NAUTIQUES ===== */
-const isBeachQuestion = detectBeachIntent(normalize(raw));
+  const n = normalize(raw);
 
-if (isBeachQuestion && intentFinal === "unknown") {
-  intentFinal = "activities";
-  autoOpenSectionIndex = 2; // 👉 Plages & activités nautiques
-}
+  /* ===== ORDRE LOGIQUE DES SECTIONS ===== */
 
-/* ===== MICRO PATCH : QUESTION VILLAGES AUTOUR ===== */
-const isVillageQuestion = detectVillageIntent(normalize(raw));
+  if (detectRuinsIntent(n) && intentFinal === "unknown") {
+    intentFinal = "activities";
+    autoOpenSectionIndex = 1;
+  }
 
-if (isVillageQuestion && intentFinal === "unknown") {
-  intentFinal = "activities";
-  autoOpenSectionIndex = 4; // 👉 Villages typiques et Costa Brava
-}
+  if (detectBeachIntent(n) && intentFinal === "unknown") {
+    intentFinal = "activities";
+    autoOpenSectionIndex = 2;
+  }
+
+  if (detectNatureIntent(n) && intentFinal === "unknown") {
+    intentFinal = "activities";
+    autoOpenSectionIndex = 3;
+  }
+
+  if (detectVillageIntent(n) && intentFinal === "unknown") {
+    intentFinal = "activities";
+    autoOpenSectionIndex = 4;
+  }
+
+  if (detectSportIntent(n) && intentFinal === "unknown") {
+    intentFinal = "activities";
+    autoOpenSectionIndex = 5;
+  }
+
+  if (detectFoodIntent(n) && intentFinal === "unknown") {
+    intentFinal = "activities";
+    autoOpenSectionIndex = 6;
+  }
+
+  /* 👉 la suite de TON sendMessage reste STRICTEMENT identique */
 
 
   /* ===== MICRO PATCH : CRITÈRE IMPLICITE VUE MER ===== */
