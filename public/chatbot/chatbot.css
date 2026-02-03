@@ -1,5 +1,6 @@
 /* ==========================================================
-   SOLO'IA'TICO — CHATBOT LUXE — CSS COMPLET (Version 1.4)
+   SOLO'IA'TICO — CHATBOT LUXE — CSS COMPLET (Version 1.4.1)
+   Affichage progressif ralenti — UX luxe — CLEAN
    ========================================================== */
 
 body {
@@ -12,38 +13,30 @@ html, body {
   overflow-x: visible !important;
 }
 
+/* ==========================================================
+   BOUTON OUVERTURE
+   ========================================================== */
+
 #openChatBtn {
   position: fixed;
   bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
   right: 20px;
-
   width: 72px;
   height: 72px;
-
   background: linear-gradient(135deg, #f7e7c1, #e0c28c);
   border-radius: 50%;
-
   display: flex !important;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
-
   box-shadow: 0 6px 18px rgba(0,0,0,0.28);
   border: 1px solid rgba(255,255,255,0.55);
-
   z-index: 2147483647;
   pointer-events: auto;
-
   transform: translate3d(0,0,0);
-  -webkit-transform: translate3d(0,0,0);
   will-change: transform;
-
   isolation: isolate;
 }
-
-
-
 
 #openChatBtn:hover {
   box-shadow: 0 0 14px rgba(255,225,170,0.75),
@@ -51,7 +44,10 @@ html, body {
   transform: scale(1.06);
 }
 
-/* Fenêtre du chatbot */
+/* ==========================================================
+   FENÊTRE CHAT
+   ========================================================== */
+
 #chatWindow {
   width: 380px;
   height: 75vh;
@@ -62,19 +58,16 @@ html, body {
   position: fixed;
   bottom: 90px;
   right: 20px;
-  z-index: 2147483646; /* juste sous le bouton */
-
-
-
-
-  /* FIX : fenêtre toujours fermée au chargement */
+  z-index: 2147483646;
   display: none;
-
   overflow: hidden;
   flex-direction: column;
 }
 
-/* HEADER */
+/* ==========================================================
+   HEADER
+   ========================================================== */
+
 #chatHeader {
   height: 80px;
   background: #ffffff;
@@ -99,7 +92,10 @@ html, body {
   color: #000;
 }
 
-/* Messages */
+/* ==========================================================
+   CORPS DES MESSAGES
+   ========================================================== */
+
 #chatBody {
   -webkit-overflow-scrolling: touch;
   flex: 1;
@@ -117,6 +113,10 @@ html, body {
   font-size: 15px;
 }
 
+/* ==========================================================
+   MESSAGE BOT
+   ========================================================== */
+
 .botMsg {
   margin-right: auto !important;
   background: linear-gradient(135deg, #f9f5ef 0%, #e7d9c9 40%, #d6c4b1 100%);
@@ -129,7 +129,12 @@ html, body {
   border: 1px solid rgba(255,255,255,0.65);
   backdrop-filter: blur(5px);
   z-index: 1;
+  animation: botAppear 0.6s ease-out;
 }
+
+/* ==========================================================
+   MESSAGE UTILISATEUR
+   ========================================================== */
 
 .userMsg {
   margin-left: auto !important;
@@ -143,7 +148,10 @@ html, body {
   font-weight: 500;
 }
 
-/* Typing */
+/* ==========================================================
+   TYPING INDICATOR
+   ========================================================== */
+
 #typing {
   display: none;
   align-items: center;
@@ -168,15 +176,14 @@ html, body {
   100% { opacity: 0.3; }
 }
 
-/* Animation apparition message bot */
-.botMsg {
-  animation: botAppear 0.45s ease-out;
-}
+/* ==========================================================
+   ANIMATIONS
+   ========================================================== */
 
 @keyframes botAppear {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -184,44 +191,37 @@ html, body {
   }
 }
 
-/* --- KB LONG PRO --- */
+/* ==========================================================
+   AFFICHAGE PROGRESSIF LIGNE PAR LIGNE — RALENTI (FINAL)
+   ========================================================== */
 
-.kbLongWrapper {
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(0,0,0,0.08);
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: #3b2f1a;
-
-  animation: fadeDetail 0.4s ease-out;
+.botMsg > * {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: botLineIn 0.65s ease-out forwards;
 }
 
-.kbLongTitle {
-  margin: 14px 0 6px;
-  font-weight: 600;
-  font-size: 15px;
-  color: #2a2116;
-}
+.botMsg > *:nth-child(1) { animation-delay: 0.18s; }
+.botMsg > *:nth-child(2) { animation-delay: 0.42s; }
+.botMsg > *:nth-child(3) { animation-delay: 0.66s; }
+.botMsg > *:nth-child(4) { animation-delay: 0.90s; }
+.botMsg > *:nth-child(5) { animation-delay: 1.14s; }
+.botMsg > *:nth-child(6) { animation-delay: 1.38s; }
+.botMsg > *:nth-child(7) { animation-delay: 1.62s; }
+.botMsg > *:nth-child(8) { animation-delay: 1.86s; }
 
-.kbLongParagraph {
-  margin-bottom: 8px;
-}
-
-.kbLongBullet {
-  margin-left: 8px;
-  margin-bottom: 6px;
-}
-
-
-@keyframes fadeDetail {
-  from {
-    opacity: 0;
-  }
+@keyframes botLineIn {
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
+
+/* ==========================================================
+   KB / BOUTONS / FOOTER
+   ========================================================== */
+
+.kbLongParagraph { margin-bottom: 8px; }
 
 .kbMoreBtn {
   background: transparent;
@@ -243,10 +243,7 @@ html, body {
   font-size: 14.5px;
   color: #2c2c2c;
 }
-.kbPrice b {
-  color: #000;
-}
-
+.kbPrice b { color: #000; }
 
 /* Footer */
 #chatFooter {
@@ -258,7 +255,7 @@ html, body {
   gap: 8px;
 }
 
-/* Zone boutons WhatsApp */
+/* WhatsApp */
 .whatsappBtns {
   display: flex;
   gap: 12px;
@@ -267,42 +264,35 @@ html, body {
   padding: 10px;
 }
 
-/* Bouton WhatsApp individuel */
 .waBtn {
   display: flex;
   align-items: center;
   gap: 8px;
-
   padding: 10px 14px;
   border-radius: 14px;
-
   background: linear-gradient(135deg, #f7e7c1, #e0c28c);
   color: #333;
   font-weight: 600;
   font-size: 14px;
-
   cursor: pointer;
   user-select: none;
-
   box-shadow: 0 4px 10px rgba(0,0,0,0.18);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  width: auto;        /* 🔑 empêche l’extension */
-  max-width: 160px;   /* 🔑 sécurité */
+  max-width: 160px;
 }
 
-/* Hover effet luxe */
 .waBtn:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 14px rgba(0,0,0,0.25);
 }
 
-/* Icône WhatsApp */
 .waBtn img {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
 }
+
+/* Input */
 
 #inputZone {
   display: flex;
@@ -331,137 +321,14 @@ html, body {
               inset 0 1px 4px rgba(255,255,255,0.6);
   border: 1px solid rgba(255,255,255,0.5);
   transition: all 0.2s ease;
-
-  /* 👇 AJOUTS POUR ICÔNE */
-  font-size: 18px;          /* taille idéale pour l’avion */
-  line-height: 1;           /* évite le décalage vertical */
-  display: flex;            /* centrage parfait */
+  font-size: 18px;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
-
 
 #sendBtn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 18px rgba(0,0,0,0.25),
               inset 0 1px 4px rgba(255,255,255,0.8);
-}
-
-/* Luxe list */
-.luxList {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0 0 0;
-}
-
-.luxList li {
-  margin: 6px 0;
-  padding-left: 22px;
-  position: relative;
-  font-weight: 500;
-}
-
-.luxList li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 6px;
-  width: 12px;
-  height: 12px;
-  background: radial-gradient(circle at 30% 30%, #f7e7c1, #d6b98a, #b89a6d);
-  border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-}
-
-.readMoreBtn {
-  margin-top: 8px;
-  background: transparent;
-  border: none;
-  color: #b89b5e;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-}
-
-.readMoreBtn:hover {
-  text-decoration: underline;
-}
-
-.kbBookBtn {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 10px 16px;
-
-  background: linear-gradient(135deg, #e6c98f, #cfa85f);
-  color: #1a1a1a;
-  text-decoration: none;
-
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 999px;
-
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-
-.kbBookBtn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.28);
-}
-/* === KB SECTIONS PLIABLES (OPTION 2) === */
-
-.kbSectionTitle {
-  margin-top: 14px;
-  font-weight: 600;
-  font-size: 15px;
-  color: #2a2116;
-  cursor: pointer;
-  user-select: none;
-}
-
-.kbSectionTitle::after {
-  content: "  ➕";
-  font-weight: normal;
-  color: #8a6f3d;
-}
-
-.kbSectionContent {
-  margin-left: 8px;
-  margin-top: 6px;
-  animation: fadeDetail 0.35s ease-out;
-}
-
-/* ==========================================================
-   SOLO'IA'TICO — CHATBOT LUXE
-   PATCH AFFICHAGE PROGRESSIF DES MESSAGES BOT (SAFE)
-   ========================================================== */
-
-/* Animation douce de la bulle */
-.botMsg {
-  animation: botAppear 0.45s ease-out;
-}
-
-/* Apparition progressive du contenu interne (RALENTIE) */
-.botMsg > * {
-  opacity: 0;
-  transform: translateY(6px);
-  animation: botLineIn 0.45s ease-out forwards;
-}
-
-/* Délais progressifs (lecture naturelle) */
-.botMsg > *:nth-child(1) { animation-delay: 0.06s; }
-.botMsg > *:nth-child(2) { animation-delay: 0.16s; }
-.botMsg > *:nth-child(3) { animation-delay: 0.26s; }
-.botMsg > *:nth-child(4) { animation-delay: 0.36s; }
-.botMsg > *:nth-child(5) { animation-delay: 0.46s; }
-.botMsg > *:nth-child(6) { animation-delay: 0.56s; }
-.botMsg > *:nth-child(7) { animation-delay: 0.66s; }
-.botMsg > *:nth-child(8) { animation-delay: 0.76s; }
-
-/* Keyframes dédiées */
-@keyframes botLineIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
