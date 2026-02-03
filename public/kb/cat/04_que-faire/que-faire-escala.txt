@@ -1,112 +1,102 @@
 INTENT: que_faire_escala
 CATEGORY: activites
-LANG: CAT
+LANG: CA
 ---
 
 SHORT:
-A l’entorn de L’Escala trobareu platges, pobles medievals,
-cultura, natura, activitats nàutiques i gastronomia local,
-tot en un radi d’uns 40 km.
+A l’entorn de L’Escala podreu gaudir de platges, pobles medievals,
+espais culturals, passejades per la natura,
+activitats nàutiques i gastronomia local,
+en un radi aproximat de 40 km.
 
 LONG:
-Als voltants de L’Escala hi ha una gran varietat d’activitats.
-En un radi aproximat de 40 km podeu descobrir cultura, natura,
-platges, esport, gastronomia i pobles típics de la Costa Brava.
+A l’entorn de L’Escala, les possibilitats d’activitats són nombroses i variades.
+En un radi d’uns 40 km, podreu descobrir cultura, natura,
+mar, esport, gastronomia i pobles típics de la Costa Brava.
 
 1. Descobertes culturals i històriques
-
-– Ruïnes d’Empúries (≤ 2 km)  
+Ruïnes d’Empúries (≤ 2 km)  
 Important jaciment arqueològic amb restes gregues i romanes,
 amb museu i accés directe al mar.
 
-– Sant Martí d’Empúries (≤ 3 km)  
-Poble medieval encantador amb carrers estrets
-i magnífiques vistes al Mediterrani.
+Sant Martí d’Empúries (≤ 3 km)  
+Poble medieval amb carrers estrets,
+amb magnífiques vistes sobre el Mediterrani.
 
-– Museu Dalí de Figueres (≈ 25 km)  
+Museu Dalí de Figueres (≈ 25 km)  
 El famós teatre-museu dedicat a Salvador Dalí,
-imprescindible per als amants de l’art.
+imprescindible per als amants de l’art i el surrealisme.
 
-– Castell del Montgrí (≈ 15 km)  
+Castell del Montgrí (≈ 15 km)  
 Castell medieval situat dalt d’un turó,
-amb vistes panoràmiques sobre el Baix Empordà.
+amb vistes panoràmiques espectaculars del Baix Empordà.
 
-– Girona (≈ 45 km)  
-Ciutat històrica amb catedral,
-barri jueu i cases acolorides al riu Onyar.
+Girona (≈ 45 km)  
+Ciutat històrica destacada per la seva catedral,
+el barri jueu i les cases de colors del riu Onyar.
 
 2. Plages i activitats nàutiques
+Platges de L’Escala  
+Riells, Montgó i altres platges ideals per al bany,
+el sol i les activitats aquàtiques.
 
-– Platges de L’Escala  
-Riells, Montgó i altres platges
-ideals per banyar-se i prendre el sol.
-
-– L’Estartit i les Illes Medes (≈ 15 km)  
-Destí reconegut per al busseig i snorkel
+L’Estartit i les Illes Medes (≈ 15 km)  
+Zona reconeguda per al busseig i l’snorkel
 en una reserva marina protegida.
 
-– Roses (≈ 20 km)  
-Estació balneària amb platges llargues,
-port esportiu i excursions en vaixell.
+Roses (≈ 20 km)  
+Destinació costanera amb llargues platges,
+esports nàutics i excursions en vaixell.
 
 3. Natura i senderisme
+Parc Natural del Montgrí, les Illes Medes i el Baix Ter  
+Ideal per al senderisme, l’observació de fauna
+i paisatges espectaculars.
 
-– Parc Natural del Montgrí, Illes Medes i Baix Ter  
-Ideal per fer senderisme,
-observar la fauna i gaudir del paisatge.
-
-– Aiguamolls de l’Empordà (≈ 25 km)  
+Aiguamolls de l’Empordà (≈ 25 km)  
 Parc natural d’aiguamolls,
-ideal per a l’observació d’ocells.
+perfecte per a l’observació d’ocells i passejades tranquil·les.
 
 4. Pobles típics i Costa Brava
+Pals (≈ 30 km)  
+Poble medieval dalt d’un turó,
+carrers empedrats i patrimoni conservat.
 
-– Pals (≈ 30 km)  
-Poble medieval sobre un turó,
-amb carrers empedrats.
+Peratallada (≈ 35 km)  
+Poble medieval emblemàtic,
+conegut per la seva arquitectura de pedra i ambient autèntic.
 
-– Peratallada (≈ 35 km)  
-Un dels pobles medievals millor conservats,
-amb arquitectura de pedra i ambient autèntic.
+Cales i cales de la Costa Brava  
+Nombroses cales ideals per al bany,
+l’snorkel i la relaxació.
 
-– Cales de la Costa Brava  
-Moltes cales ideals per banyar-se,
-fer snorkel i relaxar-se.
+5. Activitats esportives i lleure
+Senderisme i BTT  
+Camins senyalitzats al llarg de la costa
+o a l’interior.
 
-5. Esport i oci
+Esports nàutics  
+Paddle surf, caiac de mar, busseig i vela
+al Club Nàutic de L’Escala i rodalia.
 
-– Senderisme i BTT  
-Rutes senyalitzades per la costa
-i l’interior.
-
-– Esports nàutics  
-Paddle, caiac, busseig i vela
-a L’Escala i voltants.
-
-– Rutes a cavall  
+Rutes a cavall  
 Passejades a cavall per la platja
-amb el nostre col·laborador a l’Estartit.
+amb un col·laborador local a l’Estartit.
 
-– Golf  
-Diversos camps de golf a prop,
+Golf  
+Diversos camps de golf reconeguts a prop,
 com l’Empordà Golf i el Golf de Pals.
 
 6. Gastronomia i enoturisme
-
-– Especialitats locals  
+Especialitats locals  
 Anxoves de L’Escala, embotits,
 oli d’oliva, vins de l’Empordà
 i cuina mediterrània.
 
-– Tast de vins  
-Visites i degustacions
-als cellers de la regió.
+Tasts de vi  
+Visites a cellers i degustacions
+a la comarca de l’Empordà.
 
-– Mercats locals  
-Mercats dels pobles propers
-amb productes frescos i locals.
-
-Conclusió:
-A l’entorn de L’Escala, cada estada pot ser diferent.
-Cultura, natura, mar, esport i gastronomia
-es combinen per oferir una experiència inoblidable.
+Mercats locals  
+Mercats de pobles propers
+per descobrir productes frescos i locals.

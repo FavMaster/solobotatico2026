@@ -334,6 +334,22 @@ function detectBeachIntent(t) {
   return BEACH_KEYWORDS.some(w => t.includes(w));
 }
 
+/* ===== MICRO PATCH : THEME VILLAGES AUTOUR ===== */
+const VILLAGES_KEYWORDS = [
+  "village", "villages",
+  "village typique", "villages typiques",
+  "vieux village", "village medieval", "village médiéval",
+  "pals", "peratallada",
+  "sant marti", "sant marti d empuries", "sant marti d’empuries",
+  "cadaques", "cadaqués",
+  "begur", "monells",
+  "village autour", "villages autour",
+  "village a visiter", "village à visiter"
+];
+
+function detectVillageIntent(t) {
+  return VILLAGES_KEYWORDS.some(w => t.includes(w));
+}
 
 
 /* ===== SEND ===== */
@@ -365,6 +381,14 @@ const isBeachQuestion = detectBeachIntent(normalize(raw));
 if (isBeachQuestion && intentFinal === "unknown") {
   intentFinal = "activities";
   autoOpenSectionIndex = 2; // 👉 Plages & activités nautiques
+}
+
+/* ===== MICRO PATCH : QUESTION VILLAGES AUTOUR ===== */
+const isVillageQuestion = detectVillageIntent(normalize(raw));
+
+if (isVillageQuestion && intentFinal === "unknown") {
+  intentFinal = "activities";
+  autoOpenSectionIndex = 4; // 👉 Villages typiques et Costa Brava
 }
 
 
