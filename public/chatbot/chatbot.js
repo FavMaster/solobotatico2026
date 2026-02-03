@@ -314,6 +314,26 @@ function detectRuinsIntent(t) {
   return RUINS_KEYWORDS.some(w => t.includes(w));
 }
 
+/* ===== MICRO PATCH : THEME PLAGES & ACTIVITÉS NAUTIQUES ===== */
+const BEACH_KEYWORDS = [
+  "plage", "plages",
+  "crique", "criques",
+  "cala", "calas",
+  "baignade", "se baigner",
+  "mer", "mer calme",
+  "snorkel", "snorkeling",
+  "masque", "tuba",
+  "paddle", "kayak",
+  "voile", "bateau",
+  "activite nautique", "activites nautiques",
+  "eau", "eau claire",
+  "plage tranquille", "plage calme"
+];
+
+function detectBeachIntent(t) {
+  return BEACH_KEYWORDS.some(w => t.includes(w));
+}
+
 
 
 /* ===== SEND ===== */
@@ -338,6 +358,13 @@ async function sendMessage() {
   if (isRuinsQuestion && intentFinal === "unknown") {
   intentFinal = "activities";
   autoOpenSectionIndex = 1; // 👉 section 1 = Découvertes culturelles / Empúries
+}
+/* ===== MICRO PATCH : QUESTION PLAGES & ACTIVITÉS NAUTIQUES ===== */
+const isBeachQuestion = detectBeachIntent(normalize(raw));
+
+if (isBeachQuestion && intentFinal === "unknown") {
+  intentFinal = "activities";
+  autoOpenSectionIndex = 2; // 👉 Plages & activités nautiques
 }
 
 
