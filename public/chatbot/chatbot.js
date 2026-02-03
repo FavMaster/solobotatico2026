@@ -86,6 +86,28 @@
 
     if (!chatWin || !openBtn || !sendBtn || !input || !bodyEl) return;
 
+/* ===== PATCH SCROLL DOUX LUXE (AJOUT SAFE) ===== */
+function smoothScrollChat() {
+  bodyEl.scrollTo({
+    top: bodyEl.scrollHeight,
+    behavior: "smooth"
+  });
+}
+
+function progressiveScrollLastBot() {
+  const lastBot = bodyEl.querySelector(".botMsg:last-child");
+  if (!lastBot) return;
+
+  Array.from(lastBot.children).forEach((_, i) => {
+    setTimeout(() => {
+      smoothScrollChat();
+    }, i * 140);
+  });
+}
+/* ===== FIN PATCH SCROLL ===== */
+
+
+
     /* ===== OPEN / CLOSE ===== */
     let isOpen = false;
     chatWin.style.display = "none";
@@ -358,7 +380,7 @@ async function sendMessage() {
         bodyEl.appendChild(bot);
       }
 
-      bodyEl.scrollTop = bodyEl.scrollHeight;
+     bodyEl.scrollTop = bodyEl.scrollHeight;
       return;
     }
   }
@@ -470,9 +492,9 @@ if (kb.long) {
     bodyEl.appendChild(bot);
   }
 
-  bodyEl.scrollTop = bodyEl.scrollHeight;
-}
+progressiveScrollLastBot();
 
+}
 
     sendBtn.addEventListener("click",sendMessage);
     input.addEventListener("keydown",e=>{
