@@ -380,8 +380,9 @@ async function sendMessage() {
         bodyEl.appendChild(bot);
       }
 
-     bodyEl.scrollTop = bodyEl.scrollHeight;
-      return;
+progressiveScrollLastBot();
+return;
+
     }
   }
 
