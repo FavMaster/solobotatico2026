@@ -220,14 +220,38 @@ function progressiveScrollLastBot() {
       return ["fr","en","es","ca","nl","zh-cn"].includes(l) ? l : "fr";
     }
 
-    function detectLang(text) {
-      const t = normalize(text);
-      if (/\b(hello|what|where)\b/.test(t)) return "en";
-      if (/\b(que hacer)\b/.test(t)) return "es";
-      if (/\b(que fer)\b/.test(t)) return "ca";
-      if (/\b(wat te doen)\b/.test(t)) return "nl";
-      return pageLang();
-    }
+ function detectLang(text) {
+  const t = normalize(text);
+
+  // 🇳🇱 Néerlandais (important)
+  if (/\b(prijs|kosten|boeken|kamer|kamers|suite|overnachting)\b/.test(t)) {
+    return "nl";
+  }
+
+  // 🇬🇧 Anglais
+  if (/\b(price|prices|rate|rates|book|booking|room|rooms)\b/.test(t)) {
+    return "en";
+  }
+
+  // 🇪🇸 Espagnol
+  if (/\b(precio|precios|reservar|habitacion|habitaciones)\b/.test(t)) {
+    return "es";
+  }
+
+  // 🇨🇦 Catalan
+  if (/\b(preu|reserva|habitacio|habitacions)\b/.test(t)) {
+    return "ca";
+  }
+
+  // 🇫🇷 Français
+  if (/\b(prix|tarif|tarifs|reserver|chambre|chambres|suite|suites)\b/.test(t)) {
+    return "fr";
+  }
+
+  // Fallback langue de la page
+  return pageLang();
+}
+
 
     function kbLang(lang) {
       if (lang === "ca") return "cat";
