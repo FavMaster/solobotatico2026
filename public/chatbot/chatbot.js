@@ -60,6 +60,29 @@
     "zh-cn": "✨ 很好的问题 🙂 您可以通过 WhatsApp 联系 Sophia 或 Laurent。"
   };
 
+/* =====================================================
+   FULL PALACE — SCORING INTENTION (V1 SAFE)
+   ===================================================== */
+
+let palaceScore = 0;
+
+/* Augmente l'intention de réservation */
+function addPalaceScore(value) {
+  palaceScore += value;
+  if (palaceScore > 10) palaceScore = 10;
+}
+
+/* Réinitialisation (nouvelle session / retour calme) */
+function resetPalaceScore() {
+  palaceScore = 0;
+}
+
+/* Seuil luxe : prêt à orienter vers réservation */
+function isPalaceReady() {
+  return palaceScore >= 5;
+}
+
+
   console.log("Solo’IA’tico Chatbot v1.7.31 — vocabulary micro patch");
 
   document.addEventListener("DOMContentLoaded", async () => {
@@ -587,6 +610,9 @@ if (kb.long) {
 progressiveScrollLastBot();
 
 }
+
+console.log("🏰 Palace score:", palaceScore);
+
 
     sendBtn.addEventListener("click",sendMessage);
     input.addEventListener("keydown",e=>{
