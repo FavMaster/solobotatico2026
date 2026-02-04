@@ -160,7 +160,7 @@ function progressiveScrollLastBot() {
 
 
 
-   /* ===== OPEN / CLOSE ===== */
+/* ===== OPEN / CLOSE ===== */
 let isOpen = false;
 chatWin.style.display = "none";
 
@@ -183,7 +183,11 @@ openBtn.addEventListener("click", e => {
       ca: "👋 **Benvingut/da a Solo Ático Guest Suites**<br>Et puc ajudar amb **les nostres suites**, **els nostres serveis (vaixell, Reiki)** o **què fer a la zona**.<br>Com et puc ajudar? 😊"
     };
 
-    addBotMessage(WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en);
+    bodyEl.insertAdjacentHTML(
+      "beforeend",
+      `<div class="msg botMsg">${WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en}</div>`
+    );
+
     window.__SOLOIA_WELCOME_SHOWN__ = true;
   }
 });
@@ -194,7 +198,6 @@ document.addEventListener("click", e => {
     isOpen = false;
   }
 });
-
 
     /* ===== WHATSAPP ===== */
     document.getElementById("waLaurent")?.addEventListener("click", e => {
