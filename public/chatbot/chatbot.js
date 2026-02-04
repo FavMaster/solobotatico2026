@@ -183,20 +183,17 @@ openBtn.addEventListener("click", e => {
       ca: "👋 **Benvingut/da a Solo Ático Guest Suites**<br>Et puc ajudar amb **les nostres suites**, **els nostres serveis (vaixell, Reiki)** o **què fer a la zona**.<br>Com et puc ajudar? 😊"
     };
 
-   bodyEl.insertAdjacentHTML(
+  bodyEl.insertAdjacentHTML(
   "beforeend",
   `
-  <div class="msg botMsg" style="text-align:center;">
-    
+  <div class="msg botMsg welcomeMsg">
+
     <img src="https://soloatico.es/bot2026/images/So_welcome.png"
          alt="Sophia"
-         style="width:72px;height:72px;
-                object-fit:contain;
-                margin-bottom:12px;
-                filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35));" />
+         class="welcomeAvatar" />
 
-    <div style="line-height:1.55; font-weight:500;">
-      ${WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en}
+    <div class="welcomeCard">
+      ${WELCOME_MESSAGE[wl]}
     </div>
 
   </div>

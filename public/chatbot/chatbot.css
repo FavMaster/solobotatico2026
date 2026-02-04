@@ -433,6 +433,37 @@ html, body {
 
 /* ==========================================================
    SOLO'IA'TICO — CHATBOT LUXE
+   PATCH MEESSAGE ACCUEIL
+   ========================================================== */
+
+
+.welcomeMsg {
+  text-align: center;
+}
+
+.welcomeAvatar {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.35));
+}
+
+.welcomeCard {
+  background: rgba(255,255,255,0.9);
+  border-radius: 18px;
+  padding: 16px 18px;
+  line-height: 1.55;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+
+
+
+
+/* ==========================================================
+   SOLO'IA'TICO — CHATBOT LUXE
    PATCH AFFICHAGE PROGRESSIF DES MESSAGES BOT (SAFE)
    ========================================================== */
 
