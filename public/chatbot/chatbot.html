@@ -41,12 +41,11 @@
            margin-bottom:14px;
            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45));" />
 
-    <div id="welcomeText"
+<div id="welcomeText"
      style="line-height:1.6;
-            font-weight:600;
-            color:#000;
+            font-weight:500;
+            color:#3a3a3a;
             font-size:16px;">
-  TEST TEXTE VISIBLE
 </div>
 
 
@@ -89,30 +88,31 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-  const lang = document.documentElement.lang?.toLowerCase();
+  let lang = document.documentElement.lang || "en";
+  lang = lang.toLowerCase().split("-")[0];
 
   const messages = {
     fr: `👋 Bienvenue à <strong>Solo Ático Guest Suites</strong><br>
-         Je peux vous renseigner sur <strong>nos suites</strong>, 
-         <strong>nos services (bateau, Reiki)</strong> 
+         Je peux vous renseigner sur <strong>nos suites</strong>,
+         <strong>nos services (bateau, Reiki)</strong>
          ou <strong>que faire dans la région</strong>.<br>
          Comment puis-je vous aider ? 😊`,
 
     es: `👋 Bienvenido a <strong>Solo Ático Guest Suites</strong><br>
-         Puedo informarle sobre <strong>nuestras suites</strong>, 
-         <strong>nuestros servicios (barco, Reiki)</strong> 
+         Puedo informarle sobre <strong>nuestras suites</strong>,
+         <strong>nuestros servicios (barco, Reiki)</strong>
          o <strong>qué hacer en la zona</strong>.<br>
          ¿Cómo puedo ayudarle? 😊`,
 
     en: `👋 Welcome to <strong>Solo Ático Guest Suites</strong><br>
-         I can provide information about <strong>our suites</strong>, 
-         <strong>our services (boat, Reiki)</strong> 
+         I can provide information about <strong>our suites</strong>,
+         <strong>our services (boat, Reiki)</strong>
          or <strong>things to do in the area</strong>.<br>
          How can I help you today? 😊`,
 
     ca: `👋 Benvingut/da a <strong>Solo Ático Guest Suites</strong><br>
-         Et puc informar sobre <strong>les nostres suites</strong>, 
-         <strong>els nostres serveis (vaixell, Reiki)</strong> 
+         Et puc informar sobre <strong>les nostres suites</strong>,
+         <strong>els nostres serveis (vaixell, Reiki)</strong>
          o <strong>què fer a la zona</strong>.<br>
          Com et puc ajudar? 😊`
   };
