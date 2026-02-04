@@ -80,7 +80,8 @@
 
 </div>
 <script>
-(function () {
+document.addEventListener("DOMContentLoaded", function () {
+
   const lang = document.documentElement.lang?.toLowerCase();
 
   const messages = {
@@ -113,5 +114,6 @@
   if (el) {
     el.innerHTML = messages[lang] || messages.en;
   }
-})();
+
+});
 </script>
