@@ -254,8 +254,8 @@ bodyEl.insertAdjacentHTML(
     <img src="https://soloatico.es/bot2026/images/So_welcome.png"
          alt="Sophia"
          style="
-           width:48px;
-           height:48px;
+           width:65px;
+           height:65px;
            object-fit:contain;
            margin:0 auto 2px;
            display:block;
