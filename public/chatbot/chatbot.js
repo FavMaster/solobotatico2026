@@ -176,61 +176,74 @@ openBtn.addEventListener("click", e => {
     const langAttr = document.documentElement.lang || "en";
     const lang = langAttr.toLowerCase().split("-")[0];
 
- const WELCOME_MESSAGE = {
+const WELCOME_MESSAGE = {
   fr: `
-Bienvenue à Solo Ático Guest Suites
+<strong>Bienvenue</strong>
 
-Je peux vous renseigner sur nos suites,
-nos expériences Reiki et nos sorties en bateau.
+Je peux vous renseigner :
+– sur nos suites
+– nos expériences Reiki
+– nos sorties en bateau
 
 Comment puis-je vous aider ?
 `,
 
   en: `
-Welcome to Solo Ático Guest Suites
+<strong>Welcome</strong>
 
-I can help you with our suites,
-our Reiki experiences and our boat outings.
+I can help you with:
+– our suites
+– our Reiki experiences
+– our boat outings
 
 How can I help you today?
 `,
 
   es: `
-Bienvenido a Solo Ático Guest Suites
+<strong>Bienvenido</strong>
 
-Puedo ayudarte con nuestras suites,
-nuestras experiencias Reiki y nuestras salidas en barco.
+Puedo ayudarte con:
+– nuestras suites
+– nuestras experiencias Reiki
+– nuestras salidas en barco
 
 ¿En qué puedo ayudarte?
 `,
 
   ca: `
-Benvingut/da a Solo Ático Guest Suites
+<strong>Benvingut/da</strong>
 
-Et puc ajudar amb les nostres suites,
-les experiències Reiki i les sortides en vaixell.
+Et puc ajudar amb:
+– les nostres suites
+– les experiències Reiki
+– les sortides en vaixell
 
 Com et puc ajudar?
 `,
 
   nl: `
-Welkom bij Solo Ático Guest Suites
+<strong>Welkom</strong>
 
-Ik kan je helpen met onze suites,
-onze Reiki-ervaringen en onze boottochten.
+Ik kan je helpen met:
+– onze suites
+– onze Reiki-ervaringen
+– onze boottochten
 
 Waarmee kan ik je helpen?
 `,
 
   "zh-cn": `
-欢迎来到 Solo Ático Guest Suites
+<strong>欢迎</strong>
 
-我可以为您介绍我们的套房、
-灵气体验以及游船出行。
+我可以为您介绍：
+– 我们的套房
+– 灵气体验
+– 游船出行
 
 我可以如何帮助您？
 `
 };
+
 
 
 bodyEl.insertAdjacentHTML(
@@ -241,19 +254,18 @@ bodyEl.insertAdjacentHTML(
     <img src="https://soloatico.es/bot2026/images/So_welcome.png"
          alt="Sophia"
          style="
-           width:64px;
-           height:64px;
+           width:52px;
+           height:52px;
            object-fit:contain;
-           margin:2px auto 10px;
+           margin:0 auto 4px;
            display:block;
-           filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
+           filter: drop-shadow(0 2px 5px rgba(0,0,0,.25));
          " />
 
     <div style="
-      line-height:1.55;
+      line-height:1.45;
       font-size:15px;
       font-weight:400;
-      opacity:0.95;
       white-space:pre-line;
     ">
       ${WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en}
