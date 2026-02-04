@@ -254,19 +254,20 @@ bodyEl.insertAdjacentHTML(
     <img src="https://soloatico.es/bot2026/images/So_welcome.png"
          alt="Sophia"
          style="
-           width:52px;
-           height:52px;
+           width:48px;
+           height:48px;
            object-fit:contain;
-           margin:0 auto 4px;
+           margin:0 auto 2px;
            display:block;
-           filter: drop-shadow(0 2px 5px rgba(0,0,0,.25));
+           filter: drop-shadow(0 2px 4px rgba(0,0,0,.22));
          " />
 
     <div style="
-      line-height:1.45;
+      line-height:1.4;
       font-size:15px;
       font-weight:400;
       white-space:pre-line;
+      margin-top:-2px;
     ">
       ${WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en}
     </div>
