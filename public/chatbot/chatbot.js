@@ -160,22 +160,41 @@ function progressiveScrollLastBot() {
 
 
 
-    /* ===== OPEN / CLOSE ===== */
-    let isOpen = false;
+   /* ===== OPEN / CLOSE ===== */
+let isOpen = false;
+chatWin.style.display = "none";
+
+openBtn.addEventListener("click", e => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  isOpen = !isOpen;
+  chatWin.style.display = isOpen ? "flex" : "none";
+
+  // 👋 WELCOME MESSAGE — une seule fois
+  if (isOpen && !window.__SOLOIA_WELCOME_SHOWN__) {
+    const langAttr = document.documentElement.lang || "en";
+    const lang = langAttr.toLowerCase().split("-")[0];
+
+    const WELCOME_MESSAGE = {
+      fr: "👋 **Bienvenue à Solo Ático Guest Suites**<br>Je peux vous renseigner sur **nos suites**, **nos services (bateau, Reiki)** ou **que faire dans la région**.<br>Comment puis-je vous aider ? 😊",
+      en: "👋 **Welcome to Solo Ático Guest Suites**<br>I can help you with **our suites**, **our services (boat, Reiki)** or **things to do in the area**.<br>How can I help you today? 😊",
+      es: "👋 **Bienvenido a Solo Ático Guest Suites**<br>Puedo ayudarte con **nuestras suites**, **nuestros servicios (barco, Reiki)** o **qué hacer en la zona**.<br>¿Cómo puedo ayudarte? 😊",
+      ca: "👋 **Benvingut/da a Solo Ático Guest Suites**<br>Et puc ajudar amb **les nostres suites**, **els nostres serveis (vaixell, Reiki)** o **què fer a la zona**.<br>Com et puc ajudar? 😊"
+    };
+
+    addBotMessage(WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en);
+    window.__SOLOIA_WELCOME_SHOWN__ = true;
+  }
+});
+
+document.addEventListener("click", e => {
+  if (isOpen && !chatWin.contains(e.target) && !openBtn.contains(e.target)) {
     chatWin.style.display = "none";
+    isOpen = false;
+  }
+});
 
-    openBtn.addEventListener("click", e => {
-      e.preventDefault(); e.stopPropagation();
-      isOpen = !isOpen;
-      chatWin.style.display = isOpen ? "flex" : "none";
-    });
-
-    document.addEventListener("click", e => {
-      if (isOpen && !chatWin.contains(e.target) && !openBtn.contains(e.target)) {
-        chatWin.style.display = "none";
-        isOpen = false;
-      }
-    });
 
     /* ===== WHATSAPP ===== */
     document.getElementById("waLaurent")?.addEventListener("click", e => {
