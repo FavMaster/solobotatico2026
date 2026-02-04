@@ -449,10 +449,32 @@ console.log("🏰 Palace score:", palaceScore);
 
 /* ===== FULL PALACE — QUESTION PRIX (SANS TARIF) ===== */
 
-if (
-  /(prix|tarif|price|preise|preu)/.test(n) &&
-  isPalaceReady()
-) {
+if (/(prix|tarif|price|preise|preu)/.test(n)) {
+  const bot = document.createElement("div");
+  bot.className = "msg botMsg";
+
+  bot.innerHTML = `
+    <div>
+      ✨ Les tarifs varient selon la suite et les dates choisies.
+      <br><br>
+      Pour connaître les disponibilités et les meilleurs prix en temps réel,
+      je vous invite à consulter notre moteur de réservation sécurisé.
+    </div>
+  `;
+
+  const a = document.createElement("a");
+  a.href = BOOKING_URLS[lang];
+  a.target = "_blank";
+  a.className = "kbBookBtn";
+  a.textContent = "🛎️ Voir disponibilités & tarifs";
+
+  bot.appendChild(a);
+  bodyEl.appendChild(bot);
+
+  progressiveScrollLastBot();
+  return;
+}
+ {
   const bot = document.createElement("div");
   bot.className = "msg botMsg";
 
