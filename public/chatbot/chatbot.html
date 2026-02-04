@@ -1,4 +1,18 @@
 <!-- CHATBOT LUXE — SOLO'IA'TICO — TEMPLATE HTML -->
+<script>
+(function () {
+  const originalGetElementById = document.getElementById;
+
+  document.getElementById = function (id) {
+    if (!id || typeof id !== "string") {
+      return null;
+    }
+    return originalGetElementById.call(document, id);
+  };
+})();
+</script>
+
+
 
 <div id="openChatBtn">
   <img src="https://soloatico.es/bot2026/images/avatar.png"
