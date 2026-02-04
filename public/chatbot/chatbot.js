@@ -176,81 +176,57 @@ openBtn.addEventListener("click", e => {
     const langAttr = document.documentElement.lang || "en";
     const lang = langAttr.toLowerCase().split("-")[0];
 
-    const WELCOME_MESSAGE = {
+ const WELCOME_MESSAGE = {
   fr: `
-👋 Bienvenue à Solo Ático Guest Suites
+Bienvenue à Solo Ático Guest Suites
 
-Je suis là pour vous accompagner pendant votre séjour.
-
-Je peux vous renseigner sur :
-– nos suites  
-– nos expériences (bateau, Reiki)  
-– les meilleures choses à découvrir dans la région  
+Je peux vous renseigner sur nos suites,
+nos expériences Reiki et nos sorties en bateau.
 
 Comment puis-je vous aider ?
 `,
 
   en: `
-👋 Welcome to Solo Ático Guest Suites
+Welcome to Solo Ático Guest Suites
 
-I’m here to assist you during your stay.
-
-I can help you with:
-– our suites  
-– our experiences (boat, Reiki)  
-– the best things to do in the area  
+I can help you with our suites,
+our Reiki experiences and our boat outings.
 
 How can I help you today?
 `,
 
   es: `
-👋 Bienvenido a Solo Ático Guest Suites
+Bienvenido a Solo Ático Guest Suites
 
-Estoy aquí para acompañarte durante tu estancia.
-
-Puedo ayudarte con:
-– nuestras suites  
-– nuestras experiencias (barco, Reiki)  
-– las mejores cosas que hacer en la zona  
+Puedo ayudarte con nuestras suites,
+nuestras experiencias Reiki y nuestras salidas en barco.
 
 ¿En qué puedo ayudarte?
 `,
 
   ca: `
-👋 Benvingut/da a Solo Ático Guest Suites
+Benvingut/da a Solo Ático Guest Suites
 
-Sóc aquí per acompanyar-te durant la teva estada.
-
-Et puc ajudar amb:
-– les nostres suites  
-– les experiències (vaixell, Reiki)  
-– les millors coses per fer a la zona  
+Et puc ajudar amb les nostres suites,
+les experiències Reiki i les sortides en vaixell.
 
 Com et puc ajudar?
 `,
 
   nl: `
-👋 Welkom bij Solo Ático Guest Suites
+Welkom bij Solo Ático Guest Suites
 
-Ik ben er om je te helpen tijdens je verblijf.
-
-Ik kan je informeren over:
-– onze suites  
-– onze ervaringen (boot, Reiki)  
-– de beste dingen om te doen in de regio  
+Ik kan je helpen met onze suites,
+onze Reiki-ervaringen en onze boottochten.
 
 Waarmee kan ik je helpen?
 `,
 
   "zh-cn": `
-👋 欢迎来到 Solo Ático Guest Suites
+欢迎来到 Solo Ático Guest Suites
 
-我将在您入住期间为您提供帮助。
-
-我可以为您介绍：
-– 我们的套房  
-– 我们的体验项目（游船、灵气）  
-– 周边值得探索的活动  
+我可以为您介绍我们的套房、
+灵气体验以及游船出行。
 
 我可以如何帮助您？
 `
