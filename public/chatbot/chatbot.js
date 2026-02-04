@@ -451,6 +451,11 @@ function detectFoodIntent(t) {
   return FOOD_KEYWORDS.some(w => t.includes(w));
 }
 
+
+/* =====================================================
+   SEND MESSAGE — VERSION STABLE PALACE (SAFE)
+   ===================================================== */
+
 async function sendMessage() {
   if (!input.value.trim()) return;
 
@@ -476,7 +481,7 @@ async function sendMessage() {
     addPalaceScore(2);
   }
 
-  if (/(vue mer|sea view|vista mar|mer|mar|zee)/.test(n)) {
+  if (/(vue mer|sea view|vista mar|mar|mer)/.test(n)) {
     addPalaceScore(1);
   }
 
@@ -484,14 +489,29 @@ async function sendMessage() {
     addPalaceScore(2);
   }
 
-  if (/(reserver|réserver|booking|book|disponibilite|dates|prix|price|prijs|tarif)/.test(n)) {
+  if (/(reserver|réserver|booking|book|disponibilite|dates|prix|tarif|price|prijs)/.test(n)) {
     addPalaceScore(3);
   }
 
   console.log("🏰 Palace score:", palaceScore);
 
+/* =====================================================
+   CRITÈRE IMPLICITE VUE MER — VERSION PALACE SAFE
+   ===================================================== */
+
+const implicitSeaView =
+  /\b(vue mer|sea view|vista mar|vista al mar)\b/.test(n);
+
+if (
+  implicitSeaView &&
+  isPalaceReady() &&
+  intentFinal === "unknown"
+) {
+  intentFinal = "rooms";
+}
+
   /* =====================================================
-     QUESTION PRIX — MULTI-LANGUE (PRIORITAIRE)
+     QUESTION PRIX — MULTI-LANGUE (PRIORITÉ ABSOLUE)
      ===================================================== */
 
   if (PRICE_REGEX.test(n)) {
@@ -514,7 +534,7 @@ async function sendMessage() {
   }
 
   /* =====================================================
-     PRIORITÉ HÔTEL SI INTENTION SÉJOUR
+     PRIORITÉ PALACE (NE JAMAIS CASSER BOAT / REIKI)
      ===================================================== */
 
   if (isPalaceReady() && intentFinal === "activities") {
@@ -522,72 +542,37 @@ async function sendMessage() {
   }
 
   /* =====================================================
-     QUE FAIRE — AUTO-OUVERTURE SECTIONS
+     MICRO PATCH — QUE FAIRE À L’ESCALA
      ===================================================== */
 
   if (detectRuinsIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 1;
   }
+
   if (detectBeachIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 2;
   }
+
   if (detectNatureIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 3;
   }
+
   if (detectVillageIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 4;
   }
+
   if (detectSportIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 5;
   }
+
   if (detectFoodIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 6;
-  }
-
-  /* =====================================================
-     CRITÈRE IMPLICITE VUE MER
-     ===================================================== */
-
-  if (/(mer|sea|mar|zee|vue mer|sea view|vista mar)/.test(n) && intentFinal === "unknown") {
-    const files = Object.keys(ROOM_META).filter(f => ROOM_META[f].vue_mer);
-
-    for (const f of files) {
-      const kb = parseKB(await loadKB(lang, f));
-      const bot = document.createElement("div");
-      bot.className = "msg botMsg";
-
-      bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
-
-      if (kb.long) {
-        const btn = document.createElement("button");
-        btn.className = "kbMoreBtn";
-        btn.textContent = "➕";
-        btn.onclick = e => {
-          e.preventDefault();
-          btn.remove();
-          renderLong(bot, kb.long, autoOpenSectionIndex);
-        };
-        bot.appendChild(btn);
-      }
-
-      const a = document.createElement("a");
-      a.href = BOOKING_URLS[lang];
-      a.target = "_blank";
-      a.className = "kbBookBtn";
-      a.textContent = "🛎️";
-      bot.appendChild(a);
-
-      bodyEl.appendChild(bot);
-    }
-
-    progressiveScrollLastBot();
-    return;
   }
 
   /* =====================================================
@@ -595,7 +580,10 @@ async function sendMessage() {
      ===================================================== */
 
   if (intentFinal === "greeting") {
-    bodyEl.insertAdjacentHTML("beforeend", `<div class="msg botMsg">👋</div>`);
+    bodyEl.insertAdjacentHTML(
+      "beforeend",
+      `<div class="msg botMsg">👋</div>`
+    );
     return;
   }
 
@@ -617,7 +605,7 @@ async function sendMessage() {
   }
 
   /* =====================================================
-     CHARGEMENT KB
+     FICHIERS KB
      ===================================================== */
 
   let files = [];
@@ -630,13 +618,21 @@ async function sendMessage() {
 
   if (intentFinal === "rooms") {
     files = Object.keys(ROOM_META);
+    if (extractRoomCriteria(raw).vue_mer) {
+      files = files.filter(f => ROOM_META[f].vue_mer);
+    }
   }
 
-  if (intentFinal === "presentation") files = ["01_presentation/presentation-generale.txt"];
-  if (intentFinal === "boat") files = ["03_services/tintorera-bateau.txt"];
-  if (intentFinal === "reiki") files = ["03_services/reiki.txt"];
-  if (intentFinal === "pool") files = ["03_services/piscine-rooftop.txt"];
-  if (intentFinal === "activities") files = ["04_que-faire/que-faire-escala.txt"];
+  if (intentFinal === "presentation")
+    files = ["01_presentation/presentation-generale.txt"];
+  if (intentFinal === "boat")
+    files = ["03_services/tintorera-bateau.txt"];
+  if (intentFinal === "reiki")
+    files = ["03_services/reiki.txt"];
+  if (intentFinal === "pool")
+    files = ["03_services/piscine-rooftop.txt"];
+  if (intentFinal === "activities")
+    files = ["04_que-faire/que-faire-escala.txt"];
 
   if (!files.length) {
     bodyEl.insertAdjacentHTML(
@@ -646,34 +642,57 @@ async function sendMessage() {
     return;
   }
 
+  /* =====================================================
+     RENDU FINAL KB
+     ===================================================== */
+
   for (const f of files) {
     const kb = parseKB(await loadKB(lang, f));
     const bot = document.createElement("div");
     bot.className = "msg botMsg";
 
     if (wantsToBook(raw)) {
-      bot.insertAdjacentHTML("beforeend", `<div>${BOOKING_INTRO[lang]}</div>`);
+      bot.insertAdjacentHTML(
+        "beforeend",
+        `<div>${BOOKING_INTRO[lang]}</div>`
+      );
     }
 
     bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
 
-    if (kb.long) {
-      const btn = document.createElement("button");
-      btn.className = "kbMoreBtn";
-      btn.textContent = "➕";
-      btn.onclick = e => {
-        e.preventDefault();
-        btn.remove();
-        renderLong(bot, kb.long, autoOpenSectionIndex);
-      };
-      bot.appendChild(btn);
+    /* 🌟 SURCOUCHE PALACE (NE CASSE PAS LE +) */
+    if (isPalaceReady() && ["boat","reiki"].includes(intentFinal)) {
+      bot.insertAdjacentHTML(
+        "beforeend",
+        `<div style="margin-top:10px;opacity:.85">
+          ✨ Cette expérience s’intègre parfaitement dans un séjour à Solo Ático.
+        </div>`
+      );
     }
 
-    if (["rooms", "boat", "reiki"].includes(intentFinal)) {
+    if (kb.long) {
+      if (autoOpenSectionIndex !== null) {
+        renderLong(bot, kb.long, autoOpenSectionIndex);
+      } else {
+        const btn = document.createElement("button");
+        btn.className = "kbMoreBtn";
+        btn.textContent = "➕";
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          btn.remove();
+          renderLong(bot, kb.long, null);
+        });
+        bot.appendChild(btn);
+      }
+    }
+
+    if (["rooms","boat","reiki"].includes(intentFinal)) {
       const a = document.createElement("a");
-      a.href = intentFinal === "rooms"
-        ? BOOKING_URLS[lang]
-        : SERVICE_BOOKING[intentFinal];
+      a.href =
+        intentFinal === "rooms"
+          ? BOOKING_URLS[lang]
+          : SERVICE_BOOKING[intentFinal];
       a.target = "_blank";
       a.className = "kbBookBtn";
       a.textContent = "🛎️";
