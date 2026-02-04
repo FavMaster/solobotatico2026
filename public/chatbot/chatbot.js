@@ -183,39 +183,10 @@ openBtn.addEventListener("click", e => {
       ca: "👋 **Benvingut/da a Solo Ático Guest Suites**<br>Et puc ajudar amb **les nostres suites**, **els nostres serveis (vaixell, Reiki)** o **què fer a la zona**.<br>Com et puc ajudar? 😊"
     };
 
-  bodyEl.insertAdjacentHTML(
-  "beforeend",
-  `
-  <div class="msg botMsg" style="text-align:center;">
-
-    <img src="https://soloatico.es/bot2026/images/So_welcome.png"
-         alt="Sophia"
-         style="
-           width:72px;
-           height:72px;
-           object-fit:contain;
-           margin:4px auto 12px;
-           display:block;
-           filter: drop-shadow(0 4px 10px rgba(0,0,0,.35));
-         " />
-
-    <div style="
-      background: rgba(255,255,255,.88);
-      border-radius: 18px;
-      padding: 16px 18px;
-      line-height: 1.55;
-      font-weight: 500;
-      box-shadow: 0 8px 24px rgba(0,0,0,.12);
-      display:inline-block;
-      max-width: 90%;
-    ">
-      ${WELCOME_MESSAGE[wl]}
-    </div>
-
-  </div>
-  `
-);
-
+    bodyEl.insertAdjacentHTML(
+      "beforeend",
+      `<div class="msg botMsg">${WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en}</div>`
+    );
 
     window.__SOLOIA_WELCOME_SHOWN__ = true;
   }
