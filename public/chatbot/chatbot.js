@@ -447,6 +447,17 @@ console.log("🏰 Palace score:", palaceScore);
 
 /* ===== FIN STEP 2 ===== */
 
+/* ===== FULL PALACE — PRIORITÉ INTENTION ===== */
+
+if (isPalaceReady()) {
+  // Si l'utilisateur est en intention séjour,
+  // on empêche "que faire" de voler la priorité
+  if (intentFinal === "activities") {
+    intentFinal = "presentation"; // recentrage hôtel
+  }
+}
+
+/* ===== FIN FULL PALACE PRIORITÉ ===== */
 
 
   /* ===== ORDRE LOGIQUE DES SECTIONS ===== */
