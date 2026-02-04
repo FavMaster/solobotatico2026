@@ -496,7 +496,6 @@ if (
 
 /* ===== FULL PALACE — PRIX CONTEXTUALISÉ (SERVICES) ===== */
 
-// Si "prix" concerne un SERVICE, on NE PASSE PAS par Amenitiz
 if (
   PRICE_REGEX.test(n) &&
   /(reiki|boat|bateau|tintorera)/.test(n)
@@ -506,8 +505,11 @@ if (
   } else {
     intentFinal = "boat";
   }
-  // ⚠️ PAS de return → on laisse le flux normal continuer
+
+  // 🔒 On neutralise la logique Palace pour ce tour
+  resetPalaceScore();
 }
+
 
 
  /* =====================================================
