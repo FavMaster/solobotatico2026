@@ -260,22 +260,27 @@ Waarmee kan ik je helpen?
 bodyEl.insertAdjacentHTML(
   "beforeend",
   `
-  <div class="msg botMsg">
+  <div class="msg botMsg" style="text-align:center;">
+
+    <img src="https://soloatico.es/bot2026/images/So_welcome.png"
+         alt="Sophia"
+         style="
+           width:64px;
+           height:64px;
+           object-fit:contain;
+           margin:2px auto 10px;
+           display:block;
+           filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
+         " />
 
     <div style="
-      line-height:1.6;
-      font-weight:500;
-      font-size:15.5px;
+      line-height:1.55;
+      font-size:15px;
+      font-weight:400;
+      opacity:0.95;
+      white-space:pre-line;
     ">
-
-      <div style="
-        font-size:16.5px;
-        font-weight:600;
-        margin-bottom:8px;
-      ">
-        ${WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en}
-      </div>
-
+      ${WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en}
     </div>
 
   </div>
