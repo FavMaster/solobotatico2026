@@ -263,7 +263,7 @@ bodyEl.insertAdjacentHTML(
          " />
 
     <div style="
-      line-height:1.35;
+      line-height:1.25;
       font-size:15px;
       font-weight:400;
       white-space:pre-line;
