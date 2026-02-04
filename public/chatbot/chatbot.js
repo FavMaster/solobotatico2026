@@ -220,38 +220,21 @@ function progressiveScrollLastBot() {
       return ["fr","en","es","ca","nl","zh-cn"].includes(l) ? l : "fr";
     }
 
- function detectLang(text) {
-  const t = normalize(text);
+ function detectLang() {
+  const l = document.documentElement.lang || "fr";
 
-  // 🇳🇱 Néerlandais (important)
-  if (/\b(prijs|kosten|boeken|kamer|kamers|suite|overnachting)\b/.test(t)) {
-    return "nl";
-  }
+  if (l.startsWith("fr")) return "fr";
+  if (l.startsWith("en")) return "en";
+  if (l.startsWith("es")) return "es";
+  if (l.startsWith("ca")) return "ca";
+  if (l.startsWith("nl")) return "nl";
 
-  // 🇬🇧 Anglais
-  if (/\b(price|prices|rate|rates|book|booking|room|rooms)\b/.test(t)) {
-    return "en";
-  }
+  // 🇨🇳 Chinois simplifié
+  if (l.startsWith("zh")) return "zh-cn";
 
-  // 🇪🇸 Espagnol
-  if (/\b(precio|precios|reservar|habitacion|habitaciones)\b/.test(t)) {
-    return "es";
-  }
-
-  // 🇨🇦 Catalan
-  if (/\b(preu|reserva|habitacio|habitacions)\b/.test(t)) {
-    return "ca";
-  }
-
-  // 🇫🇷 Français
-  if (/\b(prix|tarif|tarifs|reserver|chambre|chambres|suite|suites)\b/.test(t)) {
-    return "fr";
-  }
-
-  // Fallback langue de la page
-  return pageLang();
+  // Fallback sécurité
+  return "fr";
 }
-
 
     function kbLang(lang) {
       if (lang === "ca") return "cat";
@@ -468,7 +451,7 @@ async function sendMessage() {
   );
 
   const n = normalize(raw);
-  const lang = detectLang(raw);
+  const lang = detectLang();
   const typoIntent = detectTypoIntent(n);
   let intentFinal = typoIntent || intent(raw);
   let autoOpenSectionIndex = null;
