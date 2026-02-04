@@ -183,10 +183,31 @@ openBtn.addEventListener("click", e => {
       ca: "👋 **Benvingut/da a Solo Ático Guest Suites**<br>Et puc ajudar amb **les nostres suites**, **els nostres serveis (vaixell, Reiki)** o **què fer a la zona**.<br>Com et puc ajudar? 😊"
     };
 
-    bodyEl.insertAdjacentHTML(
-      "beforeend",
-      `<div class="msg botMsg">${WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en}</div>`
-    );
+bodyEl.insertAdjacentHTML(
+  "beforeend",
+  `
+  <div class="msg botMsg">
+
+    <div style="
+      line-height:1.6;
+      font-weight:500;
+      font-size:15.5px;
+    ">
+
+      <div style="
+        font-size:16.5px;
+        font-weight:600;
+        margin-bottom:8px;
+      ">
+        ${WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en}
+      </div>
+
+    </div>
+
+  </div>
+  `
+);
+
 
     window.__SOLOIA_WELCOME_SHOWN__ = true;
   }
