@@ -60,6 +60,34 @@
     "zh-cn": "✨ 很好的问题 🙂 您可以通过 WhatsApp 联系 Sophia 或 Laurent。"
   };
 
+
+/* ===== FULL PALACE — PRIX (MULTI-LANGUE) ===== */
+
+const PRICE_REGEX =
+  /(prix|tarif|tarifs|price|prices|rate|rates|precio|precios|preu|tarifa|preise|kosten|prijs)/;
+
+const PRICE_MESSAGE = {
+  fr: "✨ Les tarifs varient selon la suite et les dates choisies.<br><br>Pour connaître les disponibilités et les meilleurs prix en temps réel, je vous invite à consulter notre moteur de réservation sécurisé.",
+  en: "✨ Rates vary depending on the suite and selected dates.<br><br>To check availability and the best prices in real time, please use our secure booking engine.",
+  es: "✨ Las tarifas varían según la suite y las fechas seleccionadas.<br><br>Para consultar disponibilidad y los mejores precios en tiempo real, le invitamos a utilizar nuestro motor de reservas seguro.",
+  ca: "✨ Les tarifes varien segons la suite i les dates seleccionades.<br><br>Per consultar disponibilitat i els millors preus en temps real, us convidem a utilitzar el nostre motor de reserves segur.",
+  nl: "✨ Tarieven variëren afhankelijk van de suite en de gekozen data.<br><br>Bekijk beschikbaarheid en actuele prijzen via onze beveiligde reserveringsmodule.",
+  "zh-cn": "✨ 房价会根据套房类型和所选日期而有所不同。<br><br>请通过我们的安全预订系统查看实时房价和可用情况。"
+};
+
+const PRICE_BTN_LABEL = {
+  fr: "🛎️ Voir disponibilités & tarifs",
+  en: "🛎️ Check availability & rates",
+  es: "🛎️ Ver disponibilidad y tarifas",
+  ca: "🛎️ Veure disponibilitat i tarifes",
+  nl: "🛎️ Beschikbaarheid & prijzen",
+  "zh-cn": "🛎️ 查看房价与可用性"
+};
+
+
+
+
+
 /* =====================================================
    FULL PALACE — SCORING INTENTION (V1 SAFE)
    ===================================================== */
@@ -275,6 +303,7 @@ function renderLong(bot, text, autoOpenSectionIndex = null) {
     const l = line.trim();
     if (!l) return;
 
+
     // 🔹 Détection des titres numérotés (1. / 2. / 3.)
     if (/^\d+\.\s/.test(l)) {
       sectionIndex++;
@@ -447,26 +476,19 @@ console.log("🏰 Palace score:", palaceScore);
 
 /* ===== FIN STEP 2 ===== */
 
-/* ===== FULL PALACE — QUESTION PRIX (SANS TARIF) ===== */
+/* ===== FULL PALACE — QUESTION PRIX (MULTI-LANGUE) ===== */
 
-if (/(prix|tarif|price|preise|preu)/.test(n)) {
+if (PRICE_REGEX.test(n)) {
   const bot = document.createElement("div");
   bot.className = "msg botMsg";
 
-  bot.innerHTML = `
-    <div>
-      ✨ Les tarifs varient selon la suite et les dates choisies.
-      <br><br>
-      Pour connaître les disponibilités et les meilleurs prix en temps réel,
-      je vous invite à consulter notre moteur de réservation sécurisé.
-    </div>
-  `;
+  bot.innerHTML = `<div>${PRICE_MESSAGE[lang] || PRICE_MESSAGE.fr}</div>`;
 
   const a = document.createElement("a");
-  a.href = BOOKING_URLS[lang];
+  a.href = BOOKING_URLS[lang] || BOOKING_URLS.fr;
   a.target = "_blank";
   a.className = "kbBookBtn";
-  a.textContent = "🛎️ Voir disponibilités & tarifs";
+  a.textContent = PRICE_BTN_LABEL[lang] || PRICE_BTN_LABEL.fr;
 
   bot.appendChild(a);
   bodyEl.appendChild(bot);
@@ -474,6 +496,7 @@ if (/(prix|tarif|price|preise|preu)/.test(n)) {
   progressiveScrollLastBot();
   return;
 }
+
  {
   const bot = document.createElement("div");
   bot.className = "msg botMsg";
