@@ -88,10 +88,7 @@
 <script>
 (function () {
 
-  function setWelcomeText() {
-    const el = document.getElementById("welcomeText");
-    if (!el || el.dataset.filled === "true") return;
-
+  function getWelcomeMessage() {
     let lang = document.documentElement.lang || "en";
     lang = lang.toLowerCase().split("-")[0];
 
@@ -121,16 +118,38 @@
            Com et puc ajudar? 😊`
     };
 
-    el.innerHTML = messages[lang] || messages.en;
+    return messages[lang] || messages.en;
+  }
+
+  function injectWelcome() {
+    const el = document.getElementById("welcomeText");
+    if (!el) return;
+
+    if (el.dataset.filled === "true") return;
+
+    el.innerHTML = getWelcomeMessage();
     el.dataset.filled = "true";
   }
 
-  // Injection retardée pour laisser le chatbot s'initialiser
-  window.addEventListener("load", () => {
-    setTimeout(setWelcomeText, 300);
-    setTimeout(setWelcomeText, 800);
+  // Observer le chatBody : dès qu'il est modifié, on injecte
+  const observer = new MutationObserver(() => {
+    injectWelcome();
   });
+
+  function startObserver() {
+    const chatBody = document.getElementById("chatBody");
+    if (!chatBody) return;
+
+    observer.observe(chatBody, {
+      childList: true,
+      subtree: true
+    });
+
+    injectWelcome();
+  }
+
+  // Lancer quand la page est prête
+  window.addEventListener("load", startObserver);
 
 })();
 </script>
-
