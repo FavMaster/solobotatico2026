@@ -451,10 +451,6 @@ function detectFoodIntent(t) {
   return FOOD_KEYWORDS.some(w => t.includes(w));
 }
 
-/* =====================================================
-   SEND MESSAGE — DÉBUT (PARTIE MODIFIÉE)
-   ===================================================== */
-
 async function sendMessage() {
   if (!input.value.trim()) return;
 
@@ -466,186 +462,140 @@ async function sendMessage() {
     `<div class="msg userMsg">${raw}</div>`
   );
 
+  const n = normalize(raw);
   const lang = detectLang(raw);
-  const typoIntent = detectTypoIntent(normalize(raw));
+  const typoIntent = detectTypoIntent(n);
   let intentFinal = typoIntent || intent(raw);
   let autoOpenSectionIndex = null;
 
- /* ===== FULL PALACE — SCORING INTENTION (STEP 2) ===== */
+  /* =====================================================
+     FULL PALACE — SCORING INTENTION
+     ===================================================== */
 
-const n = normalize(raw);
-
-/* Intention SUITE / CHAMBRE */
-if (/(suite|suites|chambre|room|rooms)/.test(n)) {
-  addPalaceScore(2);
-}
-
-/* Intention VUE MER / EMPLACEMENT */
-if (/(vue mer|sea view|vista mar|mar|mer)/.test(n)) {
-  addPalaceScore(1);
-}
-
-/* Intention SERVICE PREMIUM */
-if (/(bateau|boat|tintorera|reiki|massage|soin)/.test(n)) {
-  addPalaceScore(2);
-}
-
-/* Intention RÉSERVATION */
-if (/(reserver|réserver|booking|book|disponibilite|disponibilité|dates|prix|tarif)/.test(n)) {
-  addPalaceScore(3);
-}
-
-/* Debug temporaire */
-console.log("🏰 Palace score:", palaceScore);
-
-/* ===== FIN STEP 2 ===== */
-
-/* ===== FULL PALACE — QUESTION PRIX (MULTI-LANGUE) ===== */
-
-if (PRICE_REGEX.test(n)) {
-  const bot = document.createElement("div");
-  bot.className = "msg botMsg";
-
-  bot.innerHTML = `<div>${PRICE_MESSAGE[lang] || PRICE_MESSAGE.fr}</div>`;
-
-  const a = document.createElement("a");
-  a.href = BOOKING_URLS[lang] || BOOKING_URLS.fr;
-  a.target = "_blank";
-  a.className = "kbBookBtn";
-  a.textContent = PRICE_BTN_LABEL[lang] || PRICE_BTN_LABEL.fr;
-
-  bot.appendChild(a);
-  bodyEl.appendChild(bot);
-
-  progressiveScrollLastBot();
-  return;
-}
-
- {
-  const bot = document.createElement("div");
-  bot.className = "msg botMsg";
-
-  bot.innerHTML = `
-    <div>
-      ✨ Les tarifs varient selon la suite et les dates choisies.
-      <br><br>
-      Pour connaître les disponibilités et les meilleurs prix en temps réel,
-      je vous invite à consulter notre moteur de réservation sécurisé.
-    </div>
-  `;
-
-  const a = document.createElement("a");
-  a.href = BOOKING_URLS[lang];
-  a.target = "_blank";
-  a.className = "kbBookBtn";
-  a.textContent = "🛎️ Voir disponibilités & tarifs";
-
-  bot.appendChild(a);
-  bodyEl.appendChild(bot);
-
-  progressiveScrollLastBot();
-  return;
-}
-
-
-/* ===== FULL PALACE — PRIORITÉ INTENTION ===== */
-
-if (isPalaceReady()) {
-  // Si l'utilisateur est en intention séjour,
-  // on empêche "que faire" de voler la priorité
-  if (intentFinal === "activities") {
-    intentFinal = "presentation"; // recentrage hôtel
+  if (/(suite|suites|chambre|room|rooms|kamer|kamers)/.test(n)) {
+    addPalaceScore(2);
   }
-}
 
-/* ===== FIN FULL PALACE PRIORITÉ ===== */
+  if (/(vue mer|sea view|vista mar|mer|mar|zee)/.test(n)) {
+    addPalaceScore(1);
+  }
 
+  if (/(bateau|boat|tintorera|reiki|massage|soin)/.test(n)) {
+    addPalaceScore(2);
+  }
 
-  /* ===== ORDRE LOGIQUE DES SECTIONS ===== */
+  if (/(reserver|réserver|booking|book|disponibilite|dates|prix|price|prijs|tarif)/.test(n)) {
+    addPalaceScore(3);
+  }
+
+  console.log("🏰 Palace score:", palaceScore);
+
+  /* =====================================================
+     QUESTION PRIX — MULTI-LANGUE (PRIORITAIRE)
+     ===================================================== */
+
+  if (PRICE_REGEX.test(n)) {
+    const bot = document.createElement("div");
+    bot.className = "msg botMsg";
+
+    bot.innerHTML = `<div>${PRICE_MESSAGE[lang] || PRICE_MESSAGE.fr}</div>`;
+
+    const a = document.createElement("a");
+    a.href = BOOKING_URLS[lang] || BOOKING_URLS.fr;
+    a.target = "_blank";
+    a.className = "kbBookBtn";
+    a.textContent = PRICE_BTN_LABEL[lang] || PRICE_BTN_LABEL.fr;
+
+    bot.appendChild(a);
+    bodyEl.appendChild(bot);
+
+    progressiveScrollLastBot();
+    return;
+  }
+
+  /* =====================================================
+     PRIORITÉ HÔTEL SI INTENTION SÉJOUR
+     ===================================================== */
+
+  if (isPalaceReady() && intentFinal === "activities") {
+    intentFinal = "presentation";
+  }
+
+  /* =====================================================
+     QUE FAIRE — AUTO-OUVERTURE SECTIONS
+     ===================================================== */
 
   if (detectRuinsIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 1;
   }
-
   if (detectBeachIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 2;
   }
-
   if (detectNatureIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 3;
   }
-
   if (detectVillageIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 4;
   }
-
   if (detectSportIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 5;
   }
-
   if (detectFoodIntent(n) && intentFinal === "unknown") {
     intentFinal = "activities";
     autoOpenSectionIndex = 6;
   }
 
-  /* 👉 la suite de TON sendMessage reste STRICTEMENT identique */
+  /* =====================================================
+     CRITÈRE IMPLICITE VUE MER
+     ===================================================== */
 
-
-  /* ===== MICRO PATCH : CRITÈRE IMPLICITE VUE MER ===== */
-  const implicitSeaView =
-    /\b(mer|la mer|sea|mar|vue mer|vue sur la mer|sea view|vista mar|vista al mar)\b/
-      .test(normalize(raw));
-
-  if (implicitSeaView && intentFinal === "unknown") {
+  if (/(mer|sea|mar|zee|vue mer|sea view|vista mar)/.test(n) && intentFinal === "unknown") {
     const files = Object.keys(ROOM_META).filter(f => ROOM_META[f].vue_mer);
 
-    if (files.length) {
-      for (const f of files) {
-        const kb = parseKB(await loadKB(lang, f));
-        const bot = document.createElement("div");
-        bot.className = "msg botMsg";
+    for (const f of files) {
+      const kb = parseKB(await loadKB(lang, f));
+      const bot = document.createElement("div");
+      bot.className = "msg botMsg";
 
-        bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
+      bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
 
-        if (kb.long) {
-          const btn = document.createElement("button");
-          btn.className = "kbMoreBtn";
-          btn.textContent = "➕";
-          btn.onclick = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            btn.remove();
-           renderLong(bot, kb.long, autoOpenSectionIndex);
-          };
-          bot.appendChild(btn);
-        }
-
-        const a = document.createElement("a");
-        a.href = BOOKING_URLS[lang];
-        a.target = "_blank";
-        a.className = "kbBookBtn";
-        a.textContent = "🛎️";
-        bot.appendChild(a);
-
-        bodyEl.appendChild(bot);
+      if (kb.long) {
+        const btn = document.createElement("button");
+        btn.className = "kbMoreBtn";
+        btn.textContent = "➕";
+        btn.onclick = e => {
+          e.preventDefault();
+          btn.remove();
+          renderLong(bot, kb.long, autoOpenSectionIndex);
+        };
+        bot.appendChild(btn);
       }
 
-progressiveScrollLastBot();
-return;
+      const a = document.createElement("a");
+      a.href = BOOKING_URLS[lang];
+      a.target = "_blank";
+      a.className = "kbBookBtn";
+      a.textContent = "🛎️";
+      bot.appendChild(a);
 
+      bodyEl.appendChild(bot);
     }
+
+    progressiveScrollLastBot();
+    return;
   }
 
+  /* =====================================================
+     INTENTS SIMPLES
+     ===================================================== */
+
   if (intentFinal === "greeting") {
-    bodyEl.insertAdjacentHTML(
-      "beforeend",
-      `<div class="msg botMsg">👋</div>`
-    );
+    bodyEl.insertAdjacentHTML("beforeend", `<div class="msg botMsg">👋</div>`);
     return;
   }
 
@@ -666,31 +616,27 @@ return;
     return;
   }
 
+  /* =====================================================
+     CHARGEMENT KB
+     ===================================================== */
+
   let files = [];
 
   if (intentFinal === "suite_named") {
     for (const k in SUITES_BY_NAME) {
-      if (normalize(raw).includes(k)) files = [SUITES_BY_NAME[k]];
+      if (n.includes(k)) files = [SUITES_BY_NAME[k]];
     }
   }
 
   if (intentFinal === "rooms") {
     files = Object.keys(ROOM_META);
-    if (extractRoomCriteria(raw).vue_mer) {
-      files = files.filter(f => ROOM_META[f].vue_mer);
-    }
   }
 
-  if (intentFinal === "presentation")
-    files = ["01_presentation/presentation-generale.txt"];
-  if (intentFinal === "boat")
-    files = ["03_services/tintorera-bateau.txt"];
-  if (intentFinal === "reiki")
-    files = ["03_services/reiki.txt"];
-  if (intentFinal === "pool")
-    files = ["03_services/piscine-rooftop.txt"];
-  if (intentFinal === "activities")
-    files = ["04_que-faire/que-faire-escala.txt"];
+  if (intentFinal === "presentation") files = ["01_presentation/presentation-generale.txt"];
+  if (intentFinal === "boat") files = ["03_services/tintorera-bateau.txt"];
+  if (intentFinal === "reiki") files = ["03_services/reiki.txt"];
+  if (intentFinal === "pool") files = ["03_services/piscine-rooftop.txt"];
+  if (intentFinal === "activities") files = ["04_que-faire/que-faire-escala.txt"];
 
   if (!files.length) {
     bodyEl.insertAdjacentHTML(
@@ -706,39 +652,28 @@ return;
     bot.className = "msg botMsg";
 
     if (wantsToBook(raw)) {
-      bot.insertAdjacentHTML(
-        "beforeend",
-        `<div>${BOOKING_INTRO[lang]}</div>`
-      );
+      bot.insertAdjacentHTML("beforeend", `<div>${BOOKING_INTRO[lang]}</div>`);
     }
 
     bot.insertAdjacentHTML("beforeend", `<div>${kb.short}</div>`);
 
-if (kb.long) {
-  // 👉 Si une section doit être ouverte automatiquement (ruines)
-  if (autoOpenSectionIndex !== null) {
-    renderLong(bot, kb.long, autoOpenSectionIndex);
-  } else {
-    // 👉 Comportement normal avec bouton +
-    const btn = document.createElement("button");
-    btn.className = "kbMoreBtn";
-    btn.textContent = "➕";
-    btn.onclick = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      btn.remove();
-      renderLong(bot, kb.long, null);
-    };
-    bot.appendChild(btn);
-  }
-}
+    if (kb.long) {
+      const btn = document.createElement("button");
+      btn.className = "kbMoreBtn";
+      btn.textContent = "➕";
+      btn.onclick = e => {
+        e.preventDefault();
+        btn.remove();
+        renderLong(bot, kb.long, autoOpenSectionIndex);
+      };
+      bot.appendChild(btn);
+    }
 
     if (["rooms", "boat", "reiki"].includes(intentFinal)) {
       const a = document.createElement("a");
-      a.href =
-        intentFinal === "rooms"
-          ? BOOKING_URLS[lang]
-          : SERVICE_BOOKING[intentFinal];
+      a.href = intentFinal === "rooms"
+        ? BOOKING_URLS[lang]
+        : SERVICE_BOOKING[intentFinal];
       a.target = "_blank";
       a.className = "kbBookBtn";
       a.textContent = "🛎️";
@@ -748,9 +683,9 @@ if (kb.long) {
     bodyEl.appendChild(bot);
   }
 
-progressiveScrollLastBot();
-
+  progressiveScrollLastBot();
 }
+
 
 console.log("🏰 Palace score:", palaceScore);
 
