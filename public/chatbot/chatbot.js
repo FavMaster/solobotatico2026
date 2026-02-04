@@ -418,7 +418,36 @@ async function sendMessage() {
   let intentFinal = typoIntent || intent(raw);
   let autoOpenSectionIndex = null;
 
-  const n = normalize(raw);
+ /* ===== FULL PALACE — SCORING INTENTION (STEP 2) ===== */
+
+const n = normalize(raw);
+
+/* Intention SUITE / CHAMBRE */
+if (/(suite|suites|chambre|room|rooms)/.test(n)) {
+  addPalaceScore(2);
+}
+
+/* Intention VUE MER / EMPLACEMENT */
+if (/(vue mer|sea view|vista mar|mar|mer)/.test(n)) {
+  addPalaceScore(1);
+}
+
+/* Intention SERVICE PREMIUM */
+if (/(bateau|boat|tintorera|reiki|massage|soin)/.test(n)) {
+  addPalaceScore(2);
+}
+
+/* Intention RÉSERVATION */
+if (/(reserver|réserver|booking|book|disponibilite|disponibilité|dates|prix|tarif)/.test(n)) {
+  addPalaceScore(3);
+}
+
+/* Debug temporaire */
+console.log("🏰 Palace score:", palaceScore);
+
+/* ===== FIN STEP 2 ===== */
+
+
 
   /* ===== ORDRE LOGIQUE DES SECTIONS ===== */
 
