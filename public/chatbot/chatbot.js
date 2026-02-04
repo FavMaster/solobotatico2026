@@ -61,6 +61,7 @@
   };
 
 
+
 /* ===== FULL PALACE — PRIX (MULTI-LANGUE) ===== */
 
 const PRICE_REGEX =
@@ -493,28 +494,48 @@ if (
   intentFinal = "rooms";
 }
 
-  /* =====================================================
-     QUESTION PRIX — MULTI-LANGUE (PRIORITÉ ABSOLUE)
-     ===================================================== */
+/* ===== FULL PALACE — PRIX CONTEXTUALISÉ (SERVICES) ===== */
 
-  if (PRICE_REGEX.test(n)) {
-    const bot = document.createElement("div");
-    bot.className = "msg botMsg";
-
-    bot.innerHTML = `<div>${PRICE_MESSAGE[lang] || PRICE_MESSAGE.fr}</div>`;
-
-    const a = document.createElement("a");
-    a.href = BOOKING_URLS[lang] || BOOKING_URLS.fr;
-    a.target = "_blank";
-    a.className = "kbBookBtn";
-    a.textContent = PRICE_BTN_LABEL[lang] || PRICE_BTN_LABEL.fr;
-
-    bot.appendChild(a);
-    bodyEl.appendChild(bot);
-
-    progressiveScrollLastBot();
-    return;
+// Si "prix" concerne un SERVICE, on NE PASSE PAS par Amenitiz
+if (
+  PRICE_REGEX.test(n) &&
+  /(reiki|boat|bateau|tintorera)/.test(n)
+) {
+  if (/(reiki)/.test(n)) {
+    intentFinal = "reiki";
+  } else {
+    intentFinal = "boat";
   }
+  // ⚠️ PAS de return → on laisse le flux normal continuer
+}
+
+
+ /* =====================================================
+   QUESTION PRIX — MULTI-LANGUE (SUITES UNIQUEMENT)
+   ===================================================== */
+
+if (
+  PRICE_REGEX.test(n) &&
+  !/(reiki|boat|bateau|tintorera)/.test(n)
+) {
+  const bot = document.createElement("div");
+  bot.className = "msg botMsg";
+
+  bot.innerHTML = `<div>${PRICE_MESSAGE[lang] || PRICE_MESSAGE.fr}</div>`;
+
+  const a = document.createElement("a");
+  a.href = BOOKING_URLS[lang] || BOOKING_URLS.fr;
+  a.target = "_blank";
+  a.className = "kbBookBtn";
+  a.textContent = PRICE_BTN_LABEL[lang] || PRICE_BTN_LABEL.fr;
+
+  bot.appendChild(a);
+  bodyEl.appendChild(bot);
+
+  progressiveScrollLastBot();
+  return;
+}
+
 
   /* =====================================================
      PRIORITÉ PALACE (NE JAMAIS CASSER BOAT / REIKI)
