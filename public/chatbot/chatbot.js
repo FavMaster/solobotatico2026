@@ -244,6 +244,51 @@ Waarmee kan ik je helpen?
 `
 };
 
+const PRICE_CLARIFY = {
+  fr: `
+Les tarifs dépendent de la suite et des dates choisies.
+
+Souhaitez-vous des informations sur nos suites
+ou consulter directement les disponibilités ?
+`,
+
+  en: `
+Rates depend on the suite and selected dates.
+
+Would you like information about our suites
+or to check availability directly?
+`,
+
+  es: `
+Las tarifas dependen de la suite y de las fechas elegidas.
+
+¿Deseas información sobre nuestras suites
+o consultar directamente la disponibilidad?
+`,
+
+  ca: `
+Les tarifes depenen de la suite i de les dates escollides.
+
+Vols informació sobre les nostres suites
+o consultar directament la disponibilitat?
+`,
+
+  nl: `
+De tarieven zijn afhankelijk van de suite en de gekozen data.
+
+Wil je informatie over onze suites
+of direct de beschikbaarheid bekijken?
+`,
+
+  "zh-cn": `
+价格取决于所选套房和日期。
+
+您想了解我们的套房，
+还是直接查看可用性？
+`
+};
+
+
 const HELP_PROMPT = {
   fr: `
 Je peux bien sûr vous aider.
@@ -680,6 +725,19 @@ if (
   PRICE_REGEX.test(n) &&
   !/(reiki|boat|bateau|tintorera)/.test(n)
 ) {
+
+  // 🔹 Cas PRIX FLOU (pas de suite, pas de date)
+  if (!/(suite|suites|chambre|room|rooms|dates|date)/.test(n)) {
+    bodyEl.insertAdjacentHTML(
+      "beforeend",
+      `<div class="msg botMsg" style="white-space:pre-line;">
+${PRICE_CLARIFY[lang] || PRICE_CLARIFY.en}
+      </div>`
+    );
+    return;
+  }
+
+  // 🔹 Cas PRIX CONTEXTUALISÉ (logique existante)
   const bot = document.createElement("div");
   bot.className = "msg botMsg";
 
@@ -697,6 +755,7 @@ if (
   progressiveScrollLastBot();
   return;
 }
+
 
 
   /* =====================================================
