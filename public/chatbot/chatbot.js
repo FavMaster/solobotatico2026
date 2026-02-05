@@ -661,6 +661,8 @@ async function sendMessage() {
 
  const n = normalize(raw);
 const lang = detectLang();
+let autoOpenSectionIndex = null;
+
 
 // 🔴 1. PRIORITÉ PRIX — TOUJOURS EN PREMIER
 if (
