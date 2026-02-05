@@ -719,44 +719,8 @@ if (
   intentFinal = "rooms";
 }
 
-/* ===== FULL PALACE — PRIX CONTEXTUALISÉ (SERVICES) ===== */
 
-if (
-  PRICE_REGEX.test(n) &&
-  /(reiki|boat|bateau|tintorera)/.test(n)
-) {
-  if (/(reiki)/.test(n)) {
-    intentFinal = "reiki";
-  } else {
-    intentFinal = "boat";
-  }
-
-  // 🔒 On neutralise la logique Palace pour ce tour
-  resetPalaceScore();
-}
-
-
-
- /* =====================================================
-   QUESTION PRIX — MULTI-LANGUE (SUITES UNIQUEMENT)
-   ===================================================== */
-
-if (
-  PRICE_REGEX.test(n) &&
-  !/(reiki|boat|bateau|tintorera)/.test(n)
-) {
-
-  // 🔹 Cas PRIX FLOU (pas de suite, pas de date)
-  if (!/(suite|suites|chambre|room|rooms|dates|date)/.test(n)) {
-    bodyEl.insertAdjacentHTML(
-      "beforeend",
-      `<div class="msg botMsg" style="white-space:pre-line;">
-${PRICE_CLARIFY[lang] || PRICE_CLARIFY.en}
-      </div>`
-    );
-    return;
-  }
-
+ 
   // 🔹 Cas PRIX CONTEXTUALISÉ (logique existante)
   const bot = document.createElement("div");
   bot.className = "msg botMsg";
