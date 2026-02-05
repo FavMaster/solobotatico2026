@@ -791,13 +791,13 @@ Wil je informatie over:
 `
   };
 
-  bodyEl.insertAdjacentHTML(
-    "beforeend",
-    `<div class="msg botMsg">
-      ${HELP_PROMPT[lang] || HELP_PROMPT.en}
-    </div>`
-  );
-  return;
+ bodyEl.insertAdjacentHTML(
+  "beforeend",
+  `<div class="msg botMsg" style="white-space:pre-line;">
+${HELP_PROMPT[lang] || HELP_PROMPT.en}
+  </div>`
+);
+return;
 }
 
 
