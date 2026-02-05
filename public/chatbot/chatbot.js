@@ -244,6 +244,55 @@ Waarmee kan ik je helpen?
 `
 };
 
+const HELP_PROMPT = {
+  fr: `
+Je peux bien sûr vous aider.
+
+Souhaitez-vous des informations :
+– sur nos suites
+– ou sur nos expériences Reiki et nos sorties en bateau ?
+`,
+
+  en: `
+I can of course help you.
+
+Would you like information about:
+– our suites
+– or our Reiki experiences and boat outings?
+`,
+
+  es: `
+Por supuesto puedo ayudarte.
+
+¿Deseas información:
+– sobre nuestras suites
+– o sobre nuestras experiencias Reiki y salidas en barco?
+`,
+
+  ca: `
+És clar que et puc ajudar.
+
+Vols informació:
+– sobre les nostres suites
+– o sobre les experiències Reiki i les sortides en vaixell?
+`,
+
+  nl: `
+Ik kan je natuurlijk helpen.
+
+Wil je informatie over:
+– onze suites
+– of onze Reiki-ervaringen en boottochten?
+`,
+
+  "zh-cn": `
+我当然可以帮助您。
+
+您想了解：
+– 我们的套房
+– 还是灵气体验和游船活动？
+`
+};
 
 
 bodyEl.insertAdjacentHTML(
@@ -751,13 +800,16 @@ if (
   if (intentFinal === "activities")
     files = ["04_que-faire/que-faire-escala.txt"];
 
-  if (!files.length) {
-    bodyEl.insertAdjacentHTML(
-      "beforeend",
-      `<div class="msg botMsg">${FALLBACK[lang]}</div>`
-    );
-    return;
-  }
+if (!files.length) {
+  bodyEl.insertAdjacentHTML(
+    "beforeend",
+    `<div class="msg botMsg">
+      ${HELP_PROMPT[lang] || HELP_PROMPT.en}
+    </div>`
+  );
+  return;
+}
+
 
   /* =====================================================
      RENDU FINAL KB
