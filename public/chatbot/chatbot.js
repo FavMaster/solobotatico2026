@@ -657,19 +657,14 @@ async function sendMessage() {
     `<div class="msg userMsg">${raw}</div>`
   );
 
-  const n = normalize(raw);
-  const lang = detectLang();
-  const typoIntent = detectTypoIntent(n);
-  let intentFinal = typoIntent || intent(raw);
-  let autoOpenSectionIndex = null;
+ const n = normalize(raw);
+const lang = detectLang();
 
-
-// 🔴 PRIORITÉ ABSOLUE AUX QUESTIONS DE PRIX (même "combien")
+// 🔴 1. PRIORITÉ PRIX — TOUJOURS EN PREMIER
 if (
   PRICE_REGEX.test(n) &&
   !/(reiki|boat|bateau|tintorera)/.test(n)
 ) {
-  // 🔹 PRIX FLOU (pas de suite, pas de date)
   if (!/(suite|suites|chambre|room|rooms|dates|date)/.test(n)) {
     bodyEl.insertAdjacentHTML(
       "beforeend",
@@ -681,7 +676,9 @@ ${PRICE_CLARIFY[lang] || PRICE_CLARIFY.en}
   }
 }
 
-
+// 🔹 ENSUITE SEULEMENT
+const typoIntent = detectTypoIntent(n);
+let intentFinal = typoIntent || intent(raw);
 
   /* =====================================================
      FULL PALACE — SCORING INTENTION
