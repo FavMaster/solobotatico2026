@@ -65,7 +65,8 @@
 /* ===== FULL PALACE — PRIX (MULTI-LANGUE) ===== */
 
 const PRICE_REGEX =
-  /(prix|tarif|tarifs|price|prices|rate|rates|precio|precios|preu|tarifa|preise|kosten|prijs)/;
+  /(prix|tarif|tarifs|price|prices|rate|rates|precio|precios|preu|tarifa|preise|kosten|prijs|combien|cout|cost)/;
+
 
 const PRICE_MESSAGE = {
   fr: "✨ Les tarifs varient selon la suite et les dates choisies.<br><br>Pour connaître les disponibilités et les meilleurs prix en temps réel, je vous invite à consulter notre moteur de réservation sécurisé.",
