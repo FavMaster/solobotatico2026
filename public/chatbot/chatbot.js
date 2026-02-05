@@ -663,6 +663,27 @@ async function sendMessage() {
   let intentFinal = typoIntent || intent(raw);
   let autoOpenSectionIndex = null;
 
+
+// 🔴 PRIORITÉ ABSOLUE AUX QUESTIONS DE PRIX (même "combien")
+if (
+  PRICE_REGEX.test(n) &&
+  !/(reiki|boat|bateau|tintorera)/.test(n)
+) {
+  // 🔹 PRIX FLOU (pas de suite, pas de date)
+  if (!/(suite|suites|chambre|room|rooms|dates|date)/.test(n)) {
+    bodyEl.insertAdjacentHTML(
+      "beforeend",
+      `<div class="msg botMsg" style="white-space:pre-line;">
+${PRICE_CLARIFY[lang] || PRICE_CLARIFY.en}
+      </div>`
+    );
+    return;
+  }
+}
+
+
+
+
   /* =====================================================
      FULL PALACE — SCORING INTENTION
      ===================================================== */
