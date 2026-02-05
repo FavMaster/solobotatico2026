@@ -267,7 +267,7 @@ bodyEl.insertAdjacentHTML(
       font-size:15px;
       font-weight:400;
       white-space:pre-line;
-      margin-top:-6px;
+      margin-top:-12px;
     ">
       ${WELCOME_MESSAGE[lang] || WELCOME_MESSAGE.en}
     </div>
